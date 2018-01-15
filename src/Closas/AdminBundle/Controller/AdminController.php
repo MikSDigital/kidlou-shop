@@ -17,6 +17,7 @@ use Closas\ShopBundle\Entity\Product\Image;
 use Closas\ShopBundle\Entity\Price;
 use Closas\ShopBundle\Entity\Map\ProductAdditional;
 use Doctrine\Common\Collections\ArrayCollection;
+use Closas\ShopBundle\Helper\Common As HelperCommon;
 
 class AdminController extends Controller {
 
@@ -59,10 +60,10 @@ class AdminController extends Controller {
      * @Template()
      * @Route("/new", name="admin_product_new")
      */
-    public function newAction() {
+    public function newAction(HelperCommon $helperCommon) {
         $reposProductTyp = $this->getDoctrine()->getRepository('ClosasShopBundle:Product\Typ');
         $productTyps = $reposProductTyp->findAll();
-        $navigation = $this->get('helper.common')->getNavigation('category');
+        $navigation = $helperCommon->getNavigation('category');
         $reposLanguage = $this->getDoctrine()->getRepository('ClosasShopBundle:Language');
         $languages = $reposLanguage->findAll();
 
@@ -154,13 +155,13 @@ class AdminController extends Controller {
      * @Route("/detail/{id}/", name="admin_product_detail")
      * @Route("/detail/{id}/{lang}/", defaults={"lang" = "fr"}, name="admin_product_detail_lang")
      */
-    public function detailAction($id, $lang = 'fr') {
+    public function detailAction($id, $lang = 'fr', HelperCommon $helperCommon) {
         $reposProduct = $this->getDoctrine()->getRepository('ClosasShopBundle:Product');
         $product = $reposProduct->findOneById($id);
         $children = $this->get('helper.product')->getChildrenByRealParent($id);
         $reposLanguage = $this->getDoctrine()->getRepository('ClosasShopBundle:Language');
         $languages = $reposLanguage->findAll();
-        $navigation = $this->get('helper.common')->getNavigation('category');
+        $navigation = $helperCommon->getNavigation('category');
 
         return array(
             'product' => $product,
@@ -322,7 +323,7 @@ class AdminController extends Controller {
      * @Template()
      * @Route("/upload/", name="admin_file_upload")
      */
-    public function upload(Request $request) {
+    public function upload(Request $request, HelperCommon $helperCommon) {
 
         $files = $request->files->get("sendimages");
         $product_id = $request->request->get('product_id');
@@ -330,7 +331,7 @@ class AdminController extends Controller {
         $reposProduct = $this->getDoctrine()->getRepository('ClosasShopBundle:Product');
         $product = $reposProduct->findOneById($product_id);
         $images = new ArrayCollection();
-        $images = $this->saveUploadImage($files, $product);
+        $images = $this->saveUploadImage($files, $product, '', $helperCommon);
 
 
         $html = $this->renderView('ClosasAdminBundle:Admin:image.html.twig', array(
@@ -685,7 +686,7 @@ class AdminController extends Controller {
      * @param product $product
      * @return int
      */
-    protected function saveUploadImage($files, $product, $priorOriginalName = '') {
+    protected function saveUploadImage($files, $product, $priorOriginalName = '', $helperCommon) {
         $newNodes = 0;
         $images = new ArrayCollection();
         foreach ($files as $file) {
@@ -700,7 +701,7 @@ class AdminController extends Controller {
             $sizes = $reposSize->findAll();
             foreach ($sizes as $key => $size) {
                 $_targetDir = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath();
-                $name = $this->get('helper.common')->getImageName($product->getSku(), $org_filename, $size->getName());
+                $name = $helperCommon->getImageName($product->getSku(), $org_filename, $size->getName());
                 $filename = $name . '.' . $file->getClientOriginalExtension();
                 $target_file = $_targetDir . $filename;
                 if ($key == 0) {
@@ -714,7 +715,7 @@ class AdminController extends Controller {
 
             foreach ($sizes as $key => $size) {
                 $_targetDir = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath();
-                $name = $this->get('helper.common')->getImageName($product->getSku(), $org_filename, $size->getName());
+                $name = $helperCommon->getImageName($product->getSku(), $org_filename, $size->getName());
                 $filename = $name . '.' . $file->getClientOriginalExtension();
                 $target_file = $_targetDir . $filename;
                 $this->get('helper.imageresizer')->resizeImage($target_file, $_targetDir, $name, $height = $size->getHeight());

@@ -19,6 +19,7 @@ use Closas\ShopBundle\Entity\Content\Group;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
 use Closas\ShopBundle\Helper\Image As HelperImage;
+use Closas\ShopBundle\Helper\Common As HelperCommon;
 
 /**
  * @Route("/cms")
@@ -29,9 +30,9 @@ class CmsController extends Controller {
      * @Template()
      * @Route("/", name="admin_cms_index")
      */
-    public function indexAction() {
+    public function indexAction(HelperCommon $helperCommon) {
 
-        $navigation = $this->get('helper.common')->getNavigation('category', false);
+        $navigation = $helperCommon->getNavigation('category', false);
         return array(
             'navigation' => $navigation
         );
@@ -211,7 +212,7 @@ class CmsController extends Controller {
      * @Template()
      * @Route("/savecontent/", name="admin_save_content")
      */
-    public function saveContentAction(Request $request, HelperImage $helperImage) {
+    public function saveContentAction(Request $request, HelperImage $helperImage, HelperCommon $helperCommon) {
         $catid = $request->request->get('catid');
         $reposCategory = $this->getDoctrine()->getRepository('ClosasShopBundle:Category');
         $reposLanguage = $this->getDoctrine()->getRepository('ClosasShopBundle:Language');
@@ -235,7 +236,7 @@ class CmsController extends Controller {
             }
             if (!$content) {
                 $newContent = true;
-                foreach ($this->get('helper.common')->getLanguages() as $lang) {
+                foreach ($helperCommon->getLanguages() as $lang) {
                     $arr_obj_contents[$lang->getId()] = new Content();
                 }
 
@@ -542,10 +543,10 @@ class CmsController extends Controller {
      * @Template()
      * @Route("/deletesite", name="admin_delete_site")
      */
-    public function deleteSiteAction(Request $request) {
+    public function deleteSiteAction(Request $request, HelperCommon $helperCommon) {
         $catid = $request->request->get('catid');
         $level = 0;
-        $navigation = $this->get('helper.common')->getNavigation('category', false);
+        $navigation = $helperCommon->getNavigation('category', false);
         $found = FALSE;
         $arr_catids = array();
         foreach ($navigation as $navi) {

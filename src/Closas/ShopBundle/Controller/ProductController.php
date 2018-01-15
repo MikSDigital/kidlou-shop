@@ -25,7 +25,6 @@ class ProductController extends Controller {
     public function viewAction($url_key1 = "", $url_key2 = "", $url_key3 = "", $url_key4 = "", $url_key5 = "", HelperNavigation $helperNavigation) {
         $typ = 'product';
         $categories = $helperNavigation->getNavigation($typ, $url_key1, $url_key2, $url_key3, $url_key4, $url_key5);
-        //$categories = $this->get('helper.navigation')->getNavigation($typ, $url_key1, $url_key2, $url_key3, $url_key4, $url_key5);
         if (!$categories) {
             throw $this->createNotFoundException('The category does not exist');
         }

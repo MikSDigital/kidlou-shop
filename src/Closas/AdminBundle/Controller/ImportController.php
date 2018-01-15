@@ -13,6 +13,7 @@ use Closas\ShopBundle\Entity\Product\Image\Size;
 use Closas\ShopBundle\Entity\Product\Description;
 use Closas\ShopBundle\Entity\Price;
 use Closas\ShopBundle\Entity\Map\ProductAdditional;
+use Closas\ShopBundle\Helper\Common As HelperCommon;
 
 class ImportController extends Controller {
 
@@ -31,7 +32,7 @@ class ImportController extends Controller {
      * @Template()
      * @Route("/import/{id}/{file}/", defaults={"id" = NULL, "file" = FALSE},  name="admin_import")
      */
-    public function importAction($id = NULL, $file = FALSE) {
+    public function importAction($id = NULL, $file = FALSE, HelperCommon $helperCommon) {
         ini_set('max_execution_time', 600);
         ini_set('memory_limit', '128 M');
         if ($id != NULL) {
@@ -72,7 +73,7 @@ class ImportController extends Controller {
                     $this->setProductDescription();
                     if ($this->getLanguageLocale() == 'fr') {
                         if ($file) {
-                            $this->setImages();
+                            $this->setImages($helperCommon);
                         }
                     }
                 }
@@ -247,7 +248,7 @@ class ImportController extends Controller {
         $em->flush();
     }
 
-    protected function setImages() {
+    protected function setImages($helperCommon) {
 
         $_dir = $this->get('kernel')->getRootDir() . '/../web/media/import/images/' . $this->_getSku() . '/';
         if (!is_dir($_dir)) {
@@ -268,7 +269,7 @@ class ImportController extends Controller {
 
                     foreach ($sizes as $size) {
                         $_targetDir = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath();
-                        $this->saveImage($size);
+                        $this->saveImage($size, $helperCommon);
                         $this->get('helper.imageresizer')->resizeImage($this->getOriginalFileSource(), $_targetDir, $this->getTargetName(), $height = $size->getHeight());
                     }
                 }
@@ -311,8 +312,8 @@ class ImportController extends Controller {
         }
     }
 
-    protected function saveImage($size) {
-        $new_filename = $this->get('helper.common')->getImageName($this->_getSku(), $this->getOriginalName(), $size->getName());
+    protected function saveImage($size, $helperCommon) {
+        $new_filename = $helperCommon->getImageName($this->_getSku(), $this->getOriginalName(), $size->getName());
         $this->_arr_targetFile['file'] = $new_filename . '.' . $this->getOriginalFileExtension();
         $this->_arr_targetFile['name'] = $new_filename;
         // prüfe ob in tabelle existiert
