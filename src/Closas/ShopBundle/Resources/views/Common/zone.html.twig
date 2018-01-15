@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ 'Zone' | trans }} {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block pagetitle %} {{ 'Zone' | trans }} {% endblock %}
+{% block body %}
+    <section class="box info">
+        <h4>{{ 'Vérifier si votre lieu de séjour est desservi par kidlou :' | trans  }}</h4>
+        <div class="row">
+            <div class="col-md-4">
+                <form action="{{ path('checkout_cart') }}" method="post" id="zone_shipping_post">
+                    <input id="zone_shipping" type="text" title="Code postal / Ville" name="autocomplete"  value="" class="form-control" placeholder="{{ 'Enter postalcode' | trans }}" />
+                    <input type="hidden" name="zone-plz" />
+                    <input type="hidden" name="zone-city" />
+                </form>
+            </div>
+            <div class="col-md-8">
+                <div class="zone-message"></div>
+            </div>
+        </div>
+
+
+
+        {% include 'include/googlemap.html.twig' %}
+
+        <div class="zone-show-data">
+            <h4>{{ 'Découvrez la zone de livraison :' | trans  }}</h4>
+            <div id="map-canvas"></div>
+        </div>
+
+        <div class="zone-data"
+             data-urlgeodata="{{ path('geodata') }}"
+             data-img="/media/icons/ajax-loader-16x16.gif"
+             data-txtdeliver="{{ 'Cette localité est desservie par kidlou' | trans }}"
+             data-txtnodeliver="{{ "Cette localité n'est pas desservie par kidlou" | trans }}"
+             data-urlcheckout="{{ path('checkout_cart') }}"
+             >
+        </div>
+
+    </section>
+{% endblock %}
+{% block additionalstylesheets %}
+    <link href="{{ asset('css/jquery-ui.css') }}" rel="stylesheet" />
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/zone.js') }}"></script>
+{% endblock %}
+
+
+
+

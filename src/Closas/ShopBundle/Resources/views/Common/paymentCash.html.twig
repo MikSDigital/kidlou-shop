@@ -1,0 +1,6 @@
+{% set cash_cost = app.session.get('cash_cost') %}
+<tr id="cash-cost">
+    <td class="a-left" style="border-right:0; border-bottom:0" colspan="3"><div style="padding-left:30px">{{ 'Cash cost' | trans }}</div></td>
+    <td class="a-right" style="border-left:0; border-bottom:0">{{ common.getCurrencyCode() }} {{ cash_cost | number_format(2) }}</td>
+</tr>
+

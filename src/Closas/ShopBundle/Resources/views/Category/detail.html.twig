@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {% for description in product.descriptions if common.getLanguage() == description.lang %}
+        {{ description.name }}
+    {% endfor %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <section class="box info">
+        <div class="product-grid-detail" data-product-id="{{ product.id }}">
+            <div class="row">
+                <div class="col-sm-5 col-xs-12">
+                    <p class="product-image">
+                        {% set imagedefault = 0 %}
+                        {% set countimagedefault = 0 %}
+                        {% for image in product.images if image.isdefault and image.size.name == 'image800' and countimagedefault == 0 %}
+                            {% set imagedefault = 1 %}
+                            {% set countimagedefault = 1 %}
+                            {% for description in product.descriptions if common.getLanguage() == description.lang %}
+                                <img src="/{{ image.size.path }}{{ image.name }}" title="{{description.name }}" class="img-responsive"/>
+                            {% endfor %}
+                        {% endfor %}
+                        {% if imagedefault == 0 %}
+                            <img src="/media/placeholder/placeholder800.jpg" title="" class="img-responsive"/>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-sm-7 col-xs-12">
+                    <div class="product-name">
+                        {% for description in product.descriptions if common.getLanguage() == description.lang %}
+                            <h1>{{ description.name }}</h1>
+                        {% endfor %}
+                    </div>
+                    <div class="description">
+                        <div class="std">
+                            {% for description in product.descriptions if common.getLanguage() == description.lang %}
+                                {{ description.longText | raw }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="box-container2">
+                        <div class="price-box">
+                            <span id="product-price" class="regular-price">
+                                <span class="price">{{ common.getCurrencyCode() }} {{ product.price.value | number_format(2) }} / {{ 'day' | trans }}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="box-container1">
+                        <div class="sku">
+                            <label>product code:</label>
+                            {{ product.sku }}
+                        </div>
+                    </div>
+                    {% if children|length > 0 %}
+                        <div class="box-container1">
+                            <div class="additional-title">
+                                <h2>{{ 'Additional Product' | trans }}</h2>
+                            </div>
+                            <div class="row">
+                                {% for child in children %}
+                                    {% if child is not null %}
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <div class="box-border-gray">
+                                                {% set string_select = '' %}
+                                                {% for additionalselect in additionalsselect %}
+                                                    {% if additionalselect == child.id %}
+                                                        {% set string_select = 'checked' %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <input name="additionalproduct[]" {{ string_select }} value="{{ child.id }}" type="checkbox">
+                                                {% if child.images | length > 0 %}
+                                                    {% for image in child.images if image.size.name == 'image80' %}
+                                                        <img id="image" class="img-center" src="/{{ image.size.path }}{{ image.name }}" alt="" title="">
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <img src="/media/placeholder/placeholder80.jpg" title="" class="img-center"/>
+                                                {% endif %}
+                                                <div class="txt-addproduct">
+                                                    <p class="txt-center"><span>{{ child.description.name }}</span></p>
+                                                    <p class="txt-center">
+                                                        <span id="addproduct-1">{{ common.getCurrencyCode() }} {{ child.price.value | number_format(2) }} / {{ 'day' | trans }}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="box-container1">
+                        <div class="kidlou-calendar" data-carturl="{{ path('add_cart', {'id': product.urlKey}) }}">
+                            {{ calendar.getHtmlInputFromTo(product.id) | raw }}
+                            <div class="calendar-dates-show">{{ calendar.getHtmlCalendar(product.id) | raw }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="product-collateral">
+                    <div class="col-sm-12 col-xs-12">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs product-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#properties" aria-controls="properties" role="tab" data-toggle="tab">{{ 'Caractéristiques' | trans }}</a></li>
+                            <li role="presentation"><a href="#technicaldesc" aria-controls="technicaldesc" role="tab" data-toggle="tab">{{ 'Eléments techniques' | trans }}</a></li>
+                            <li role="presentation"><a href="#instructions" aria-controls="instructions" role="tab" data-toggle="tab">{{ "Notice d'utilistation" | trans }}</a></li>
+                            <li role="presentation"><a href="#upsellprod" aria-controls="upsellprod" role="tab" data-toggle="tab">{{ "Upsell Products" | trans }}</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content kidlou-tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="properties">
+                                <div class="std">
+                                    {% for description in product.descriptions if common.getLanguage() == description.lang %}
+                                        {{ description.shortText | raw }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="technicaldesc">
+                                <div class="std">
+                                    {% for description in product.descriptions if common.getLanguage() == description.lang %}
+                                        {{ description.indicies | raw }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="instructions">
+                                <div class="std">
+                                    {% for description in product.descriptions if common.getLanguage() == description.lang %}
+                                        {% if description.accessoires starts with 'PDF_' %}
+                                            <a href="{{ path('pdf_product', {'id': id }) }}">
+                                                <img src="/media/icons/pdf_24x24.png">
+                                                {{ 'Notice_utilisation' | trans }}
+                                            </a>
+                                        {% else %}
+                                            {{ description.accessoires }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="upsellprod">
+                                <div class="std">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/calendar.js') }}"></script>
+{% endblock %}
+
+{% block bodyoverlay %}
+    <div id="bodyoverlay">
+        <div id="bodyoverlay-box"></div>
+    </div>
+{% endblock %}

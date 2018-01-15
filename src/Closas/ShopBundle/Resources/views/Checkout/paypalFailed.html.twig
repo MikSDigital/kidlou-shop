@@ -1,0 +1,10 @@
+<div class="order-overlay">
+    <p>
+    <div style="color:red">
+        <strong>{{ 'Paypal Error' | trans }}: {{ paypalmessage }}</strong>
+    </div>
+</p>
+<button class="btn btn-default box-button btn-primary" onclick="window.top.location.href = '{{ path("checkout_order_payment_home") }}';">{{ 'Weiter' | trans }}</button>
+</div>
+
+

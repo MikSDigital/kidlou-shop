@@ -1,0 +1,58 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Admin user' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            <div class="container">
+                <div class="row">
+                    <div class='col-md-3'></div>
+                    <div class="col-md-6">
+                        <div class="login-box well">
+                            <form action="{{ path('admin_login') }}"  method="post">
+                                <legend>{{ 'Sign In' | trans }}</legend>
+                                {% if error %}
+                                    <div class="error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                {% endif %}
+
+                                <div class="form-group">
+                                    <label for="username">{{ 'First name' | trans }}</label>
+                                    <input value='{{ user.firstName }}' id="username" name="first_name" placeholder="{{ 'First name' | trans }}" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">{{ 'Last name' | trans }}</label>
+                                    <input value='{{ user.lastName }}' id="username" name="last_name" placeholder="{{ 'Last name' | trans }}" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">{{ 'Username' | trans }}</label>
+                                    <input value='{{ user.username }}' id="username" name="username" placeholder="{{ 'Username' | trans }}" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">{{ 'Email' | trans }}</label>
+                                    <input id="password" value='{{ user.email }}' name="email" placeholder="{{ 'Email' | trans }}" type="password" class="form-control" />
+                                </div>
+                                <div class="input-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-default btn-login-submit btn-block m-t-md" value="{{ 'Register' | trans }}" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class='col-md-3'></div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

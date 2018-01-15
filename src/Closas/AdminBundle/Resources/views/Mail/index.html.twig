@@ -1,0 +1,26 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% set pagetitle = 'Admin Mail'| trans %}
+{% block pagetitle %}{{ pagetitle }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Email - Settings' | trans }}</div><a href="{{ path('admin_mail_list') }}"><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Email - Testmails - senden' | trans }}</div><a href="{{ path('admin_mail_send_detail_new') }}"><i class="fa fa-send" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Email - Testmails - liste' | trans }}</div><a href="{{ path('admin_mail_send_list') }}"><i class="fa fa-inbox" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Email - Kidlou - Mailbox' | trans }}</div><a href="{{ path('admin_in_box_list') }}"><i class="fa fa-inbox" aria-hidden="true"></i></a></div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

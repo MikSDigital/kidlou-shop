@@ -1,0 +1,324 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ 'Order' | trans }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Order' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        {% if message %}
+                            {% if success %}
+                                <span style="color:green;">{{ message }}</span>
+                            {% else %}
+                                <span style="color:red;">{{ message }}</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-green box-right send-order" data-url="{{ path('admin_send_mail', { 'id' : order.id }) }}" type="submit">{{ 'Send Order' | trans }}</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="admin-order-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th colspan="2">{{'Bestellung %s' | trans | format(order.order_number) }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ 'Bestelldatum' | trans }}</td>
+                                        <td>{{ order.created | date('Y-m-d H:i:s') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ 'Bestell Sprache' | trans }}</td>
+                                        <td>{{ order.lang }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% set addresses = order.address_name|split(',') %}
+
+                    <div class='col-md-6'>
+                        <div class="admin-order-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th colspan="2">{{'Benutzerkonto Information' | trans  }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ 'Name' | trans }}</td>
+                                        <td>{{ order.billing.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ 'E-Mail' | trans }}</td>
+                                        <td>{{ order.billing.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ 'Registred User ?' | trans }}</td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="admin-order-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th>{{'Rechnungsadresse' | trans    }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ order.billing.name }}<br />
+                                            {{ order.billing.street }}<br />
+                                            {{ order.billing.country }} - {{ order.billing.postcode }} {{ order.billing.city }}<br />
+                                            {{ order.billing.phone }}<br />
+                                            {% if order.billing.mobile != 'NULL' %}
+                                                {{ order.billing.mobile }}<br />
+                                            {% endif %}
+                                            {{ order.billing.email }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='col-md-6'>
+                        <div class="admin-order-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th>{{'Versandadresse' | trans    }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ order.shipping.name }}<br />
+                                            {{ order.shipping.street }}<br />
+                                            {{ order.shipping.country }} - {{ order.shipping.postcode }} {{ order.shipping.city }}<br />
+                                            {{ order.shipping.phone }}<br />
+                                            {% if order.shipping.mobile != 'NULL' %}
+                                                {{ order.shipping.mobile }}<br />
+                                            {% endif %}
+                                            {% if order.shipping.email != 'NULL' %}
+                                                {{ order.shipping.email }}<br />
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="admin-order-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th>{{'Zahlungsinformation' | trans    }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {% if order.status == 'canceled' %}
+                                                {{ order.additional_information }}
+                                            {% else %}
+                                                {% for name,additional in order.additional_information %}
+                                                    {% if name != 'formular_url' and name != 'status' and name != 'id' %}
+                                                        {{ name |replace({'_': ' '})| capitalize  }}: {{ additional }}<br />
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='col-md-6'>
+                        <div class="admin-order-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th colspan="2">{{'Lieferinformationen' | trans    }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><strong>{{ 'Lieferung' | trans }}:</strong></td>
+                                    </tr>
+                                    {% for data,items in order.item_data %}
+                                        <tr>
+                                            <td>
+                                                {{ data }}
+                                            </td>
+                                            <td>
+                                                {% for item in items %}
+                                                    {{ item.name }} ({{ item.sku }}) <br />
+                                                    {% if item.children is defined %}
+                                                        {% for child in item.children %}
+                                                            - {{ child.name }} ({{ child.sku }}) <br />
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="2"><strong>{{ 'Rückgabe' | trans }}:</strong></td>
+                                    </tr>
+                                    {% for items in order.item_data %}
+                                        <tr>
+                                            <td>
+                                                {% set isdateto = 0 %}
+                                                {% for item in items %}
+                                                    {% if isdateto == 0 %}
+                                                        {{ item.date_back_deliver }}
+                                                        {% set isdateto = 1 %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for item in items %}
+                                                    {{ item.name }} ({{ item.sku }}) <br />
+                                                    {% if item.children is defined %}
+                                                        {% for child in item.children %}
+                                                            - {{ child.name }} ({{ child.sku }}) <br />
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="admin-order-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th>{{'Depotkosten' | trans    }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ common.getCurrencyCode() }}  {{ order.caution_cost | number_format(2) }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <div class="admin-order-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th>{{'Lieferkosten' | trans    }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ common.getCurrencyCode() }}  {{ order.shipping_cost | number_format(2) }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-12'>
+                        <div class="admin-order-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th style="text-align: left;">{{ 'Name' | trans }}</th>
+                                        <th style="text-align: left;">{{ 'Sku' | trans }}</th>
+                                        <th style="text-align: left;">{{ 'From' | trans }}</th>
+                                        <th style="text-align: left;">{{ 'To' | trans }}</th>
+                                        <th style="text-align: left;">{{ 'Price per day' | trans }}</th>
+                                        <th style="text-align: right;">{{ 'Subtotal (CHF)' | trans }}</th>
+                                    </tr>
+                                    {% for date_from, items in order.item_data %}
+                                        {% for item in items %}
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    {{ item.name }}
+                                                    {% if item.children is defined %}
+                                                        {% for child in item.children %}
+                                                            <br /><span style="font-style: italic;">{{ child.name }}</span>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    {{ item.sku }}
+                                                    {% if item.children is defined %}
+                                                        {% for child in item.children %}
+                                                            <br /><span style="font-style: italic;">{{ child.sku }}</span>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    {{ date_from }}
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    {{ item.date_to }}
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    {{ item.price | number_format(2) }}
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    {{ item.subtotal_price | number_format(2) }}
+                                                    {% if item.children is defined %}
+                                                        {% for child in item.children %}
+                                                            <br /><span style="font-style: italic;">{{ child.subtotal_price | number_format(2) }}</span>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    <tr>
+                                        <td style="text-align: left;"><strong>{{ 'Subtotal' | trans }}</strong></td>
+                                        <td style="text-align: right;" colspan="5"><strong>{{ order.subtotal_cost | number_format(2) }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;"><strong>{{ 'Lieferkosten' | trans }}</strong></td>
+                                        <td style="text-align: right;" colspan="5"><strong>{{ order.shipping_cost | number_format(2) }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;"><strong>{{ 'Depotkosten' | trans }}</strong></td>
+                                        <td style="text-align: right;" colspan="5"><strong>{{ order.caution_cost | number_format(2) }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left; font-size:16px;"><strong>{{ 'Total' | trans }}</strong></td>
+                                        <td style="text-align: right; font-size:16px;" colspan="5"><strong>{{ (order.subtotal_cost + order.shipping_cost + order.caution_cost) | number_format(2) }}</strong></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/common.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ 'Panier' | trans }} {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block pagetitle %} {{ 'Panier' | trans }} {% endblock %}
+{% block body %}
+    <section class="box info">
+        <div class="cart-grid">
+            {% if items|length > 0 %}
+                <fieldset>
+                    <table id="shopping-cart-table" class="data-table cart-table">
+                        <thead>
+                            <tr class="first last">
+                                <th class="a-center"><span class="nobr">{{'Remove' | trans }}</span></th>
+                                <th>{{'Images' | trans }}</th>
+                                <th><span class="nobr">{{'Name' | trans }}</span></th>
+                                <th class="a-center"><span class="nobr">{{'Price per day' | trans }}</span></th>
+                                <th class="a-center"><span class="nobr">{{ 'Sout-total' | trans }}</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in items %}
+                                {% set arr_route_name = navigation.setProductPathFromUrl(product.url_key,'').getProductPathFromUrl() %}
+                                {% set arr = [] %}
+                                {% for key,value in arr_route_name %}
+                                    {% set arr = arr|merge({ (key) : (value) }) %}
+                                {% endfor %}
+                                {% set str_arr_length = (arr_route_name | length) + 1 %}
+                                {% set arr = arr|merge({ ('url_key' ~ str_arr_length) : (product.url_key) }) %}
+                                <tr class="first odd">
+                                    <td class="a-center {% if product.children|length > 0 %} td-no-border {% endif %}"><a class="btn-remove btn-remove2" href="{{ path('remove_cart', {'id': product.url_key }) }}" title=""><i class="fa fa-times" aria-hidden="true"></i></a></td>
+                                            {% if product.parent_imagename != '' %}
+                                        <td class="td-img-center {% if product.children|length > 0 %} td-no-border {% endif %}"><a class="product-image" href="{{ path('category_product' ~ str_arr_length, arr) }}" title="{{ product.parent_name }}"><img src="/{{ product.parent_imagepath }}{{ product.parent_imagename }}" class="img-responsive"></a></td>
+                                            {% else %}
+                                        <td class="td-img-center {% if product.children|length > 0 %} td-no-border {% endif %}"><a class="product-image" href="{{ path('category_product' ~ str_arr_length, arr) }}" title="{{ product.parent_name }}"><img src="/media/placeholder/placeholder80.jpg" title="" class="img-responsive"/></a></td>
+                                            {% endif %}
+                                    <td class="basket-datum {% if product.children|length > 0 %} td-no-border {% endif %}">
+                                        <div class="basket-datum-product-name">
+                                            <h2 class="product-name"><a href="{{ path('category_product' ~ str_arr_length, arr) }}">{{ product.parent_name }}</a></h2>
+                                        </div>
+                                        <div class="basket-datum-product-date"><br />
+                                            <strong>{{ 'Période de location' | trans }}:</strong><br/>
+                                            {% for datefrom_dateto in product.dates %}
+                                                {{ datefrom_dateto }}<br />
+                                                {{ product.days }} {{ 'days' | trans }}
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td class="a-right {% if product.children|length > 0 %} td-no-border {% endif %}"><span class = "cart-price">{{ common.getCurrencyCode() }} {{ product.price | number_format(2)}}</span></td>
+                                    <td class="a-right {% if product.children|length > 0 %} td-no-border {% endif %} last"><span class = "cart-price">{{ common.getCurrencyCode() }} {% set parent_subtotal = 0 %}{% for p_price in product.parent_price %} {% set parent_subtotal = parent_subtotal + p_price %} {% endfor %}{{ parent_subtotal | number_format(2) }}</span></td>
+                                </tr>
+                                {% set i = 1 %}
+                                {% for child in product.children %}
+                                    <tr class="first odd">
+                                        <td class="a-center {% if i < product.children|length %} td-no-border {% endif %}"><a class="btn-remove btn-remove3" href="{{ path('remove_cart', { 'id' : product.url_key, 'additional_id' : child.children_url_key }) }}" title=""><i class="fa fa-times" aria-hidden="true"></i></a></td>
+                                                {% if child.children_imagename != '' %}
+                                            <td class="td-img-center {% if i < product.children|length %} td-no-border {% endif %}"><img src="/{{ child.children_imagepath }}{{ child.children_imagename }}" class="img-responsive"></td>
+                                            {% else %}
+                                            <td class="td-img-center {% if i < product.children|length %} td-no-border {% endif %}"><img src="/media/placeholder/placeholder50.jpg" title="" class="img-responsive"/></td>
+                                            {% endif %}
+                                        <td class="basket-datum {% if i < product.children|length %} td-no-border {% endif %}">
+                                            <div class="basket-datum-product-name">
+                                                <h5 class="product-name">{{ child.children_name }}</h5>
+                                            </div>
+                                        </td>
+                                        <td class="a-right {% if i < product.children|length %} td-no-border {% endif %}"><span class = "cart-price">{{ common.getCurrencyCode() }} {{ child.price | number_format(2) }}</span></td>
+                                        <td class="a-right {% if i < product.children|length %} td-no-border {% endif %} last"><span class = "cart-price">{{ common.getCurrencyCode() }} {% set children_singleprice = 0 %}{% for c_price in child.children_price %} {% set children_singleprice =  children_singleprice + c_price %} {% endfor %}{{ children_singleprice | number_format(2) }}</span></td>
+                                    </tr>
+                                    {% set i = i + 1 %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="first last">
+                                <td class="a-left last" colspan="2">
+                                    <button class="button btn-continue" type="button" title="{{ 'Continuer vos achats' | trans }}" onclick="setLocation('/{{app.request.getLocale() }}')">
+                                        <span>
+                                            <span>{{ 'Continuer vos achats' | trans }}</span>
+                                        </span>
+                                    </button>
+                                </td>
+                                <td class="a-right last">&nbsp;</td>
+                                <td class="a-right last" colspan="2">
+                                    <button id="empty_cart_button" class="button btn-empty" type="button"  title="{{ 'Clear Shopping Cart' | trans }}" onclick="setLocation('{{ path('remove_cart_all') }}')">
+                                        <span>
+                                            <span>{{ 'Clear Shopping Cart' | trans }}</span>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </fieldset>
+                <div class="cart-collaterals">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 col-sms-4 col-smb-12">
+                            <div class="form-group">
+                                <label for="coupons">{{ 'Coupons' | trans }}</label>
+                                <input type="text" style="border-radius:0px;" class="form-control form-must-field" placeholder="{{ 'Coupons' | trans }}" name="coupons">
+                            </div>
+                            <div class="form-group">
+                                <button class="button btn-coupon" type="button" title="{{ 'Commander' | trans }}" onclick="window.location = '{{ path("zone_area") }}';">
+                                    <span>
+                                        <span>{{ 'Coupon einlösen' | trans }}</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-sms-4 col-smb-12"> </div>
+                        <div class="col-xs-12 col-sm-4 col-sms-4 col-smb-12">
+                            {% set shipping_cost = common.getShippingCost() %}
+                            {% set caution_cost = common.getCautionCost() %}
+                            {% set subtotal_price = app.session.get('price_subtotal') %}
+                            {% set total_price = subtotal_price + shipping_cost + caution_cost %}
+                            <div class="totals">
+                                <table id="shopping-cart-totals-table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="a-left" style="" colspan="1">{{ 'Sous-total' | trans }}</td>
+                                            <td class="a-right" style=""><nobr>CHF {{ subtotal_price | number_format(2) }}</nobr></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="a-left" style="" colspan="1">{{ 'Livraison' | trans }}</td>
+                                        <td class="a-right" style=""><nobr>CHF {{ shipping_cost | number_format(2) }}</nobr></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="a-left" style="" colspan="1">{{ 'Caution' | trans }}</td>
+                                        <td class="a-right" style=""><nobr>CHF {{ caution_cost | number_format(2) }}</nobr></td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td class="a-left" style="" colspan="1"><strong>{{ 'Montant global' | trans }}</strong></td>
+                                            <td class="a-right" style=""><nobr><strong>CHF {{ total_price | number_format(2) }} </strong></nobr></td>
+                                    </tr>
+                                    </tfoot>
+
+                                </table>
+                                <ul class="checkout-types">
+                                    <li>
+                                        <button class="button btn-proceed-checkout btn-checkout" type="button" title="{{ 'Commander' | trans }}" onclick="window.location = '{{ path("zone_area") }}';">
+                                            <span>
+                                                <span>{{ 'Commander' | trans }}</span>
+                                            </span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                {{ 'Panier il est vide' | trans}}
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}
+

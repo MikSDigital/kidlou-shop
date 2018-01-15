@@ -1,0 +1,32 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Admin payment' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="col-md-12" style="padding-right: 0;"></div>
+        <table class="table table-hover table-bordered table-admin">
+            <tbody>
+                <tr class="edit">
+                    <td>{{ 'Id' | trans }}</a></td>
+                    <td class="a-left">{{ 'Name' | trans }}</a></td>
+                    <td class="a-left">{{ 'Kurzname' | trans }}</a></td>
+                    <td>{{ 'Status' | trans }}</td>
+                </tr>
+                {% for payment in payments %}
+                    <tr class="edit">
+                        <td><a href="{{ path('admin_payment_detail' , {'id': payment.id} )}}">{{ payment.id }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_payment_detail' , {'id': payment.id} )}}">{{ payment.name }} {{ payment.shortName }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_payment_detail' , {'id': payment.id} )}}">{{ payment.shortName }}</a></td>
+                        <td><a href="{{ path('admin_payment_detail' , {'id': payment.id} )}}">{% if payment.status %} {{ 'active' | trans }}{% else %}{{ 'inactive' | trans }}{% endif %}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ 'Panier' | trans }} {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block pagetitle %} {{ 'Panier' | trans }} {% endblock %}
+{% block body %}
+    <section class="box info">
+        <div class="cart-grid">
+            {{ 'The cart is empty' | trans }}
+        </div>
+        <div class="cart-bottom">
+            <button class="button btn-continue" type="button" title="Continuer vos achats" onclick="setLocation('/{{ app.request.getLocale() }}'">
+                <span>
+                    <span>Continuer vos achats</span>
+                </span>
+            </button>
+        </div>
+    </section>
+{% endblock %}
+

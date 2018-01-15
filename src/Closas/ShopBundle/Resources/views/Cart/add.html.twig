@@ -1,0 +1,69 @@
+<div class="overlay-box">
+    {% set productname = '' %}
+    {% for description in product.descriptions if description.lang is not null and description.lang.shortName == app.request.getLocale() %}
+        {% set productname = description.name %}
+    {% endfor %}
+
+    {% set additionalnames = [] %}
+    {% for additional in additionals %}
+        {% for description in additional.descriptions if description.lang is not null and description.lang.shortName == app.request.getLocale() %}
+            {% set additionalnames = additionalnames|merge([description.name])  %}
+        {% endfor %}
+    {% endfor %}
+
+
+    {% set imagedefault = 0 %}
+    {% set countimagedefault = 0 %}
+    {% for image in product.images if image.isdefault and image.size.name == 'image80' and countimagedefault == 0 %}
+        {% set imagedefault = 1 %}
+        {% set countimagedefault = 1 %}
+        <div class="box-image">
+            <img src="/{{ image.size.path }}{{ image.name }}" title="{{ productname }}" class="img-responsive"/>
+            <div class="box-title">{{ productname }}</div>
+        </div>
+    {% endfor %}
+    {% if imagedefault == 0 %}
+        <div class="box-image">
+            <img src="/media/placeholder/placeholder80.jpg" title="" class="img-responsive"/>
+            <div class="box-title">{{ productname }}</div>
+        </div>
+    {% endif %}
+
+
+    {% for key, additional in additionals %}
+        {% set imagedefault = 0 %}
+        {% set countimagedefault = 0 %}
+        {% for image in additional.images if image.isdefault and image.size.name == 'image50' and countimagedefault == 0 %}
+            {% set imagedefault = 1 %}
+            {% set countimagedefault = 1 %}
+            <div class="box-image">
+                <img src="/{{ image.size.path }}{{ image.name }}" title="{{ productname }}" class="img-responsive"/>
+                <div class="box-title">{{ additionalnames[key] }}</div>
+            </div>
+
+        {% endfor %}
+        {% if imagedefault == 0 %}
+            <div class="box-image">
+                <img src="/media/placeholder/placeholder50.jpg" title="" class="img-responsive"/>
+                <div class="box-title">{{ additionalnames[key] }}</div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="box-abstand"></div>
+
+    <div class="box-dates">
+        {% set price_total = 0 %}
+        {% set price_total = price_total + (product.price.value * count_days) %}
+        {% for additional in additionals %}
+            {% set price_total = price_total + (additional.price.value * count_days) %}
+        {% endfor %}
+        <div class="box-text">{{ date_from }} - {{ date_to }}
+            <div class="box-right">{{ common.getCurrencyCode() }} {{ price_total | number_format(2) }}</div>
+        </div>
+        <!-- <div class="box-text">TOTAL <div class="box-right">{{ common.getCurrencyCode() }} {{ price_total | number_format(2) }}</div>-->
+    </div>
+</div>
+<div class="box-abstand"></div>
+<button type="button" class="btn btn-primary box-button" data-url="{{ path('category_product', {'url_key1': 'balader'}) }}">{{ 'Product' | trans }}</button>
+<button type="button" class="btn btn-primary box-button" data-url="{{ path('index_cart') }}" style="float:right;">{{ 'Cart' | trans }}</button>

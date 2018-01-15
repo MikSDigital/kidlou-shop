@@ -1,0 +1,8 @@
+<div class="order-overlay">
+    <form name="email_failed" action="{{ path("checkout_cart") }}" method="POST" target="_parent">
+        <p>{{ 'Email is already used' | trans}}</p>
+        <button class="btn btn-default box-button btn-primary" onclick="this.form.submit()">{{ 'Weiter' | trans }}</button>
+        <input type="hidden" name="zone-plz" value="{{ zoneplz }}">
+        <input type="hidden" name="zone-city" value="{{ zonecity }}">
+    </form>
+</div>

@@ -1,0 +1,37 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% if typ is empty %}
+    {% set pagetitle = 'Admin Area-Slider'| trans %}
+{% else %}
+    {% set pagetitle = 'Admin ' ~  typ|upper  ~ '-Slider'| trans %}
+{% endif %}
+{% block pagetitle %}{{ pagetitle }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            {% if typ is empty %}
+                <div class="col-md-4">
+                    <div class="admin-info-box"><div class="titel">{{ 'Nivo slider' | trans }}</div><a href="{{ path('admin_slider_index_typ', {'typ': 'nivo' }) }}"><i class="fa fa-sliders" aria-hidden="true"></i></a></div>
+                </div>
+                <div class="col-md-4">
+                    <div class="admin-info-box"><div class="titel">{{ 'Carussel slider' | trans }}</div><a href="{{ path('admin_slider_index_typ', {'typ': 'carussel' }) }}"><i class="fa fa-sliders" aria-hidden="true"></i></a></div>
+                </div>
+            {% else %}
+                <div class="col-md-4">
+                    {% if confid is empty %}
+                        <div class="admin-info-box"><div class="titel">{{ 'Configuration' | trans }}</div><a href="{{ path('admin_slider_conf_nivo') }}"><i class="fa fa-sliders" aria-hidden="true"></i></a></div>
+                            {% else %}
+                        <div class="admin-info-box"><div class="titel">{{ 'Configuration' | trans }}</div><a href="{{ path('admin_slider_conf_nivo_id', { 'id':confid }) }}"><i class="fa fa-sliders" aria-hidden="true"></i></a></div>
+                            {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <div class="admin-info-box"><div class="titel">{{ 'Items' | trans }}</div><a href="{{ path('admin_slider_item_nivo_list') }}"><i class="fa fa-sliders" aria-hidden="true"></i></a></div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

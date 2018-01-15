@@ -1,0 +1,14 @@
+{% set arr_route_name = navigation.setProductPathFromUrl(product.getUrlKey(),'').getProductPathFromUrl() %}
+{% set arr = [] %}
+{% for key,value in arr_route_name %}
+    {% set arr = arr|merge({ (key) : (value) }) %}
+{% endfor %}
+{% set str_arr_length = (arr_route_name | length) + 1 %}
+{% set arr = arr|merge({ ('url_key' ~ str_arr_length) : (product.getUrlKey()) }) %}
+
+<div class="overlay-box">
+    <div class="box-title">{{ 'Leider ist dieses Produkt im Zeitraum vom %s bis %s reserviert!' | trans | format(date_from,date_to) }}</div>
+    <div class="box-abstand"></div>
+</div>
+<div class="box-abstand"></div>
+<button type="button" class="btn btn-primary box-button" data-url="{{ path('category_product' ~ str_arr_length, arr) }}" style="display: flex; justify-content: center;">{{ 'Back' | trans }}</button>

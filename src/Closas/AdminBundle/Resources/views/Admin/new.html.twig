@@ -1,0 +1,108 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} {{ 'Product New' | trans }} {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pagetitle %}{{ 'Product New' | trans }}{% endblock %}
+{% block body %}
+
+
+    <section class="box info admin">
+        <div class="product-grid-detail">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cat">{{ 'Product Typ' | trans }}</label>
+                        <select class="form-control product-typ" disabled="disabled" name="product[typ]">
+                            {% for producttyp in producttyps %}
+                                <option value="{{ producttyp.shortName }}" {% if producttyp.shortName == 'SIP' %}selected{% endif %}> {{ producttyp.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cat">{{ 'Category' | trans }}</label>
+                        <select multiple class="form-control category" name="product[category]">
+                            {% for data in navigation %}
+                                {% set str = '' %}
+                                {% for i in range(1, data.level) %}
+                                    {% set str = str ~ '&mdash;' %}
+                                {% endfor %}
+                                {% set str = str ~ ' ' ~ data.name %}
+                                <option value='{{ data.catid }}'>{% autoescape false %}{{ str }}{% endautoescape %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="productnumber">{{ 'Product Number' | trans }}</label>
+                        <input class="form-control sku" type="text" name="product[sku]" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="productprice">{{ 'Product Price' | trans }}</label>
+                        <input class="form-control productprice" type="text" name="product[sale]"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <!--
+                        {#% for calendartyp in calendartyps %#}
+                            <label for="price_{{ calendartyp.name }}">{{ 'Price in CHF' | trans }} / {{ calendartyp.name | trans }}</label>
+                            <input class="form-control price_{{ calendartyp.name }}" type="text" name="product[price][{{ calendartyp.name }}]" />
+                        {#% endfor %#}
+                        -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for language in languages %}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="productname">{{ 'Product name ' | trans }} {{ language.name }}</label>
+                            <input class="form-control productname_{{ language.shortName }}" type="text" name="product[name][{{ language.shortName }}]"/>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-12" style="padding-top:10px; padding-bottom:10px; padding-right:15px;"><div class="form-group">
+                            <button data-url="{{ path('admin_product_new_save') }}"
+                                    data-url-redirect="{{ path('admin_product_detail_noid') }}"
+                                    data-error-message-select="{{ 'Please select' | trans }}"
+                                    data-error-message-input="{{ 'Field is empty' | trans }}"
+                                    data-error-message-input-price="{{ 'Is not a number' | trans }}"
+                                    data-error-message-send="{{ 'Sku exist already' | trans }}"
+                                    class="btn btn-default new-product admin-element-right">{{ 'Save' | trans }}</button>
+                        </div></div>
+                </div>
+            </div>
+            <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
+
+        </div>
+    </section>
+
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/common.js') }}"></script>
+{% endblock %}
+
+
+{% block bodyoverlay %}
+    <div id="bodyoverlay">
+        <div id="bodyoverlay-box"></div>
+    </div>
+{% endblock %}

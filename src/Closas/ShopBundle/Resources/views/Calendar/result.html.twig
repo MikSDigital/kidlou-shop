@@ -1,0 +1,39 @@
+<table class="table">
+    {% set total = 0 %}
+    <tbody>
+        <tr>
+            <td class="calendar-left">
+                {% for description in product.descriptions if common.getLanguage() == description.lang %}
+                    {{ description.name }} x {{ countdays }} {{ 'day' | trans }}
+                {% endfor %}
+            </td>
+            <td class="calendar-right">
+                {{ (product.price.value * countdays) | number_format(2) }} {{ common.getCurrencyCode() }}
+                {% set total = total + (product.price.value * countdays) %}
+            </td>
+        </tr>
+
+        {% for additional in additionals %}
+            <tr>
+                <td class="calendar-left">
+                    {% for description in additional.descriptions if common.getLanguage() == description.lang  %}
+                        {{ description.name }} x {{ countdays }} {{ 'day' | trans }}
+                    {% endfor %}
+                </td>
+                <td class="calendar-right">
+                    {{ (additional.price.value * countdays) | number_format(2) }} {{ common.getCurrencyCode() }}
+                    {% set total = total + (additional.price.value * countdays) %}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td class="calendar-left">
+                <strong>{{ 'Gesamtsumme' | trans }}</strong>
+            </td>
+            <td class="calendar-right">
+                <strong>{{ total | number_format(2) }} {{ common.getCurrencyCode() }}</strong>
+            </td>
+        </tr>
+    </tbody>
+</table>
+

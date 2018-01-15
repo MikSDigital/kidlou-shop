@@ -1,0 +1,6 @@
+<div class="order-overlay">
+    <p>{{ 'Bestellung %s war nicht erfolgreich' | format(order.orderNumber) | trans }}</p>
+    <button class="btn btn-default box-button btn-primary" onclick="window.top.location.href = '{{ path("checkout_order_payment_home") }}';">{{ 'Weiter' | trans }}</button>
+</div>
+
+

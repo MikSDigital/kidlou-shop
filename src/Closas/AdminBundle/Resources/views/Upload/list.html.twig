@@ -1,0 +1,58 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ 'Upload List' | trans }} {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pagetitle %}{{ 'Upload List' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="col-md-12" style="padding-right: 0;">
+            <button class="btn btn-default admin-element-right admin-element-bottom admin-upload-new" style="margin-left:10px;" data-new-url = '{{ path("admin_upload_index") }}' >{{ 'New Upload' | trans }}</button>
+        </div>
+        <table class="table table-hover table-bordered table-admin">
+            <thead>
+                <tr>
+                    <td class="a-left"><strong>{{ 'Filename' | trans }}</strong></td>
+                    <td class="a-left"><strong>{{ 'Datum' | trans }}</strong></td>
+                    <td><strong>{{ 'Delete' | trans }}</strong></td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for upload in uploads %}
+                    <tr class="edit list-import">
+                        <td class="a-left admin-import" data-import-url-nofile="{{ path('admin_import', {'id': upload.id, 'file': 0 }) }}" data-import-url-file="{{ path('admin_import', {'id': upload.id, 'file': 1 }) }}"><a href="{{ asset('media/import/csv/' ~ upload.products) }}">{{ upload.products }}</a></td>
+                        <td class="a-left">{{ upload.createdAt | date("Y-m-d H:i:s") }}</td>
+                        <td>
+                            <input type="checkbox"
+                                   class="admin-import-delete"
+                                   value="{{ upload.id }}"
+                                   name="import[]"
+                                   data-delete-url="{{ path('admin_upload_delete', {'id': upload.id }) }}"
+                                   data-delete-text="{{ 'Wollen Sie diese Datei wircklich löschen ?' }}"
+                                   />
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}
+
+{% block bodyoverlay %}
+    <div id="bodyoverlay">
+        <div id="bodyoverlay-dialogbox">
+            <div class="text">{{ 'Wollen Sie die Bilder auch neu importieren?' | trans }} <span class="dialogbox-close"><strong>X</strong></span></div>
+            <div class="button" style="padding-top:20px;">
+                <button class="btn btn-default import-ja">{{ 'Ja' | trans }}</button>
+                <button class="btn btn-default import-nein">{{ 'Nein' | trans }}</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/common.js') }}"></script>
+{% endblock %}

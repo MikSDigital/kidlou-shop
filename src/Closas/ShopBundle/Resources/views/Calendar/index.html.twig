@@ -1,0 +1,54 @@
+<div class="calendar-dates">
+    <table class="table table-bordered calendar-kidlou-table" data-calendar-month-id="{{ calendar.MonthCurrent }}" data-calendar-year-id="{{ calendar.YearCurrent }}" data-calendar-url="{{ path('calendar_index_index') }}">
+        <thead>
+            <tr>
+                <td class="kidlou-arrow-left">
+                    {% if calendar.MonthCurrent > nowMonth and calendar.YearCurrent == nowYear or calendar.YearCurrent > nowYear %}
+                        <a class="calendar-url-next-before" href="{{ path('calendar_index', { 'year': calendar.YearBefore, 'month': calendar.MonthBefore, 'product_id' : product_id }) }}">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        </a>
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
+                <td class="calendar-title" colspan="5">{{ calendar.MonthName }} {{ calendar.YearCurrent }} <img style="display:none;" src="/media/icons/ajax-loader-16x16.gif" /></td>
+                <td class="kidlou-arrow-right">
+                    <a class="calendar-url-next-before" href="{{ path('calendar_index', { 'year': calendar.YearAfter, 'month': calendar.MonthAfter, 'product_id' : product_id }) }}">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                {% for day in calendar.WeekDays %}
+                    <th>
+                        <strong>{{ day.Name }}</strong>
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% if beginDays > 0 %}
+                    {% for i in 1..beginDays %}
+                        <td class="emptydeliver">&nbsp;</td>
+                    {% endfor %}
+                {% endif %}
+                {% for day in calendar.Days %}
+                    <td id="{{ day.Date }}" class="{{ day.Css }}">{{ day.Day }}</td>
+                    {% if day.DayId % countDayWeek == moduloWeek %}
+                    </tr><tr>
+                    {% endif %}
+                {% endfor %}
+                {% if lastDays > 0 %}
+                    {% for i in 1..lastDays %}
+                        <td class="emptydeliver">&nbsp;</td>
+                    {% endfor %}
+                {% endif %}
+
+            </tr>
+        </tbody>
+    </table>
+    <div id="bodyoverlay-calendar">
+        <div id="bodyoverlay-box-calendar"></div>
+    </div>
+</div>

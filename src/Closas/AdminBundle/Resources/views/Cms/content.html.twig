@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-11">
+            <div class="checkbox">
+                <label>
+                    <input class="is_active" data-field="status" data-id="{{ uniqid }}" {{ status_checked }} type="checkbox" id="is_active-{{ uniqid }}">
+                    {{ 'Is active' | trans }}
+                </label>
+            </div>
+        </div>
+        <div class="col-md-1" style="padding-left:0px;">
+            <div class="checkbox">
+                <label>
+                    <input class="delete-content" data-url="{{ path('admin_delete_content') }}" data-catid="{{ cat.id }}" data-id="{{ uniqid }}" data-lang="{{ lang }}" data-message="{{ 'Wollen Sie diesen Eintrag löschen ?' | trans }}" type="checkbox" id="is_delete-{{ uniqid }}">
+                    {{ 'Delete' | trans }}
+                </label>
+            </div>
+        </div>
+
+        {% if cat.typ.shortName == 'BLOG' %}
+            <div class="col-md-6 admin-title">
+                <label for="date">{{ 'Datum' | trans }}</label>
+                <input class="form-control" disabled="disabled" data-field="updatet_at" data-id="{{ uniqid }}" value="{{ created_at | date('Y-m-d H:i:s') }}"  type="text">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group admin-title">
+                    <label for="author">{{ 'Author' | trans }}</label>
+                    <input class="form-control" disabled="disabled" data-field="user" data-id="{{ uniqid }}" data-value="{{ app.user.id }}" value="{{ app.user.firstName }} {{ app.user.lastName }}"  type="text">
+                </div>
+            </div>
+        {% endif %}
+        <div class="col-md-6 admin-title" style="padding-top:10px;">
+            {% for la in common.getLanguages() %}
+                {% if la.shortName == lang %}
+                    <div class="form-group admin-title">
+                        <label for="titel" >{{ 'Titel' | trans }}</label>
+                        <input class="form-control content-titel" data-field="title" data-id="{{ uniqid }}" data-lang="{{ la.shortName }}" id="title-{{ uniqid }}"  value="{{ title }}" type="text">
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if cat.typ.shortName == 'BLOG' %}
+            <div class="col-md-6 admin-title" style="padding-top:10px;">
+                <div class="form-group admin-title">
+                    {% if image is not empty %}
+                        {% for size in image.sizes %}
+                            {% if size.name == 'image50' %}
+                                <div class="col-md-3">
+                                    <img src="/{{ size.path }}{{ image.name }}" />
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <div class="col-md-9">
+                        <label for="blog_image" >{{ 'Blog image' | trans }}</label>
+                        <input class="image" name="image" type="file" data-field="image" data-id="{{ uniqid }}">
+                        {% if image is not empty %}
+                            {% for size in image.sizes %}
+                                {% if size.name == 'image50' %}
+                                    <div class="checkbox">
+                                        <label>
+                                            <input class="delete-content-image" data-url="{{ path('admin_delete_content_image') }}" data-catid="{{ cat.id }}" data-id="{{ uniqid }}" data-lang="{{ lang }}" data-message="{{ 'Wollen Sie dieses Image löschen ?' | trans }}" type="checkbox">
+                                            {{ 'Delete Image' | trans }}
+                                        </label>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 admin-title">{{ 'Content' | trans }}</div>
+</div>
+{% for la in common.getLanguages() %}
+    {% if la.shortName == lang %}
+        <div class="row">
+            <div class="col-md-12"><textarea class="new-content" data-field="long_text" data-id="{{ uniqid }}" data-lang="{{ la.shortName }}" id="content-{{ uniqid }}">{{ long_text }}</textarea></div>
+        </div>
+    {% endif %}
+{% endfor %}
+<div class="row">
+    <div class="col-md-12" style="border-top: 1px solid #CCCCCC;">&nbsp;</div>
+</div>

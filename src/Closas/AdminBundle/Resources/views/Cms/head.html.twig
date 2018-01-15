@@ -1,0 +1,88 @@
+<div class="col-md-12 admin-head">
+    {% for label in cat.labels %}
+        {% if label.lang.shortName == lang %}
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>{{ label.name }}</h2>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-green box-right admin-save-site" data-message-nok="{{ 'Bitte page typ wählen' | trans }}" data-catid="{{ cat.id }}" data-url="{{ path('admin_cms_site_save') }}" type="submit">{{ 'Save page' | trans }}</button>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="row">
+        <div class="col-md-1">
+            <div><label>{{ 'Active' | trans }}</label></div>
+            <input class="is_active" type="checkbox" {% if cat.status == 1 %}checked='checked'{% endif %} />
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="typ">{{ 'Typ' | trans }}:</label>
+                {% if cat.typ is null %}{{ common.categoryTyp('undefined') | raw }}{% else %}{{ common.categoryTyp(cat.typ.id) | raw }}{% endif %}
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="typ">{{ 'Url key' | trans }}:</label>
+                <input class="form-control url_key" type="text" name="url_key" value="{{ cat.urlKey }}"
+                       data-message-nok="{{ 'Diese Url ist bereits vergeben' | trans }}"
+                       data-url-key-current="{{ cat.urlKey }}"
+                       data-url-keys="{{ urlkeys | json_encode() }}"
+                       />
+            </div>
+        </div>
+        <div class="col-md-1">
+            {#
+            {% for image in cat.images if image.isdefault and image.size.name == 'image50' %}
+                <img src="/{{ image.size.path }}{{ image.name }}" />
+            {% endfor %}
+            #}
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="bild">{{ 'Bild' | trans }}:</label>
+                <input type="file" name="image" class="image" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <div><label for="delete_image">{{ 'Delete image' | trans }}:</label></div>
+                <input type="checkbox" name="delete_image" class="delete_image">
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% for label in cat.labels %}
+            <div class="col-md-3 form-inline">
+                <div class="form-group">
+                    <label for="{{ label.lang.shortName }}">{{ label.lang.shortName }}</label><input type="text" class="form-control category-label" data-labelid="{{ label.id }}" value="{{ label.name }}" />
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="col-md-12 admin-content">
+    <div class="row">
+        <div class="col-md-12"><h2>{{ 'Content' | trans }}</h2></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <button {% if cat.contents|length  %} style="display:block;" {% endif %} class="btn btn-green box-right admin-element-left admin-save-content" {% if cat.typ is null %}disabled{% endif %} data-catid="{{ cat.id }}" data-url="{{ path('admin_save_content') }}" type="submit">{{ 'Save content' | trans }}</button>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <select {% if cat.contents|length  %} style="display:block;" {% endif %} class="select-category-typ form-control admin-save-content-lang" data-url="{{ path('admin_cms_detail', {'id': cat.id }) }}">
+                    {% for la in common.getLanguages() %}
+                        <option value="{{ la.shortName }}" {% if la.shortName == lang %}selected='selected'{% endif %}>{{ la.shortName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-green box-right admin-add-content" {% if cat.typ is null %}disabled{% endif %} data-url="{{ path('admin_add_new_content', {'id': cat.id, 'lang' : lang }) }}" type="submit">{{ 'Add content' | trans }}</button>
+        </div>
+    </div>
+    {{ content | raw }}
+</div>

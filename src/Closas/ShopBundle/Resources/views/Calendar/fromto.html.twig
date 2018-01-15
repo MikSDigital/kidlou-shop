@@ -1,0 +1,26 @@
+<div class="calendar" data-count-days="{{ path('calendar_count_days_from_to') }}">
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+            <label for="date_from">{{ 'from date' | trans }}</label>
+            <input id="date-from" class="form-control from-to-date" name="date_from" value="{{ input_from }}" autocomplete="off" type="text" placeholder="TT.MM.JJJJ">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+            <label for="date_to">{{ 'to date' | trans }}</label>
+            <input id="date-to" class="form-control from-to-date" name="date_to" value="{{ input_to }}" autocomplete="off" type="text" placeholder="TT.MM.JJJJ">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 calendar-result">{{ calendar.getCountDaysFromTo(product_id) | raw }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="request-resevierung">
+                <button class="button btn-cart" type="button">
+                    <span>
+                        <span>{{ 'Resevierung anfragen' | trans }}</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

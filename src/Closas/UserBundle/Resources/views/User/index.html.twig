@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'User Area' | trans }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pagetitle %}{{ 'User Area' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info">
+        <div class="ym-grid linearize-level-1">
+            <div class="col-md-4">
+                <div class="info-box"><div class="titel">{{ 'Personales' | trans }}</div><a href="{{ path('personales') }}"><i class="fa fa-address-card" aria-hidden="true"></i></a></div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

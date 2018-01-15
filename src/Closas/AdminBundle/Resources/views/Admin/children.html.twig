@@ -1,0 +1,51 @@
+{% if images | length > 0 %}
+    {% for image in images if image.size.name == 'image50' %}
+        <div class="row additionalelement">
+            <div class="col-md-1 col-image"><img id="image" src="/{{ image.size.path }}{{ image.name }}" alt="" title="" /></div>
+            <div class="col-md-2"><input disabled="" data-child-id="{{ child.id }}" type="text" class="form-control" name="additional[sku][{{ child.id }}]" value="{{ child.sku }}" /></div>
+            <div class="col-md-6">
+                <input type="file" class="image" name="additional[image][{{ child.id }}]">
+            </div>
+            <div class="col-md-1">
+                {% for price in prices %}
+                    <nobr><input data-element-price-id="{{ price.id }}" data-price-txt={{ 'day' | trans }} type="text" class="form-control additional-price" name="additional[price][{{ child.id }}]" value="{{ price.value | number_format(2) }}" /> / {{ 'day' | trans }}</nobr><br />
+                    {% endfor %}
+            </div>
+            <div class="col-md-2">
+                <input type="checkbox" class="additional-remove admin-element-right"  data-additional-remove="{{ child.id }}" name="additional[remove][{{ child.id }}]" />
+            </div>
+        </div>
+        <div class="row additionalelement">
+            {% for description in descriptions if description.lang is not null %}
+                <div class="col-md-3"><input type="text" data-element-description-id="{{ description.id }}" class="form-control" name="additional[descriptionname][{{ description.lang.id }}][{{ child.id }}]" value="{{ description.name }}" /></div>
+                {% endfor %}
+        </div>
+        <div class="row additionalelement">
+            <div class="col-md-12"><div class="line-space"></div></div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="row additionalelement">
+        <div class="col-md-1 col-image"><img src="/media/placeholder/placeholder50.jpg" title=""/></div>
+        <div class="col-md-2"><input disabled="" data-child-id="{{ child.id }}" type="text" class="form-control" name="additional[sku][{{ child.id }}]" value="{{ child.sku }}" /></div>
+        <div class="col-md-6">
+            <input type="file" class="image" name="additional[image][{{ child.id }}]">
+        </div>
+        <div class="col-md-1">
+            {% for price in prices %}
+                <nobr><input data-element-price-id="{{ price.id }}" data-price-calendar-typ-id="" data-price-txt={{ 'day' | trans }} type="text" class="form-control" name="additional[price][{{ child.id }}]" value="{{ price.value | number_format(2) }}" /> / {{ 'day' | trans }}</nobr><br />
+                {% endfor %}
+        </div>
+        <div class="col-md-2">
+            <input type="checkbox" class="additional-remove admin-element-right"  data-additional-remove="{{ child.id }}" name="additional[remove][{{ child.id }}]" />
+        </div>
+    </div>
+    <div class="row additionalelement">
+        {% for description in descriptions if description.lang is not null %}
+            <div class="col-md-3"><input type="text" data-element-description-id="{{ description.id }}" class="form-control" name="additional[descriptionname][{{ description.lang.id }}][{{ child.id }}]" value="{{ description.name }}" /></div>
+            {% endfor %}
+    </div>
+    <div class="row additionalelement">
+        <div class="col-md-12"><div class="line-space"></div></div>
+    </div>
+{% endif %}

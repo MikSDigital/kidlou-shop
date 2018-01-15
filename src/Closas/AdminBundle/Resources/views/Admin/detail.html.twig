@@ -1,0 +1,378 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Product Detail {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pagetitle %}{{ 'Product Detail' | trans }}{% endblock %}
+{% block body %}
+    <form action="" method="POST">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="language">{{ 'Sprache' | trans }}</label>
+                    <select class="language form-control" onchange="if (this.value)
+                                window.location.href = this.value" >
+                        {% for language in languages %}
+                            <option data-lang-shortname="{{ language.shortName }}" data-lang-name="{{ language.name }}" data-lang-id="{{ language.id }}" {% if lang == language.shortName %} selected='selected' {% endif %} value="{{ path('admin_product_detail_lang', {'id': product.id, 'lang': language.shortName }) }}">{{ language.Name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <section class="box info admin">
+            <div class="product-grid-detail">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cat">{{ 'Category' | trans }}</label>
+                            <select multiple class="form-control category">
+                                {% for data in navigation %}
+                                    {% set str = '' %}
+                                    {% for i in range(1, data.level) %}
+                                        {% set str = str ~ '&mdash;' %}
+                                    {% endfor %}
+                                    {% set str = str ~ ' ' ~ data.name %}
+                                    {% if product.categories | length == 0 %}
+                                        <option value='{{ data.catid }}'>{% autoescape false %}{{ str }}{% endautoescape %}</option>
+                                    {% endif %}
+                                    {% set selected = '' %}
+                                    {% for category in product.categories %}
+                                        {% if category.id == data.catid %}
+                                            {% set selected = 'selected' %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <option value='{{ data.catid }}' {{ selected }} >{% autoescape false %}{{ str }}{% endautoescape %}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="col-md-12" style="padding-top:10px; padding-bottom:10px; padding-right:0px;"><div class="form-group"><button data-url="{{ path('admin_category') }}" class="btn btn-default mutation-category admin-element-right">{{ 'Mutation Category' | trans }}</button></div></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cat">{{ 'Status' | trans }}</label>
+                            <div><input class="mutation-status" data-url="{{ path('admin_status') }}" data-txt-status-ok="{{ 'active' | trans }}" data-txt-status-nok="{{ 'no active' | trans }}"{% if product.status == 1 %} checked {% endif %}type="checkbox"><span style="padding-left:20px;" class="txt-status">{% if product.status == 1 %}{{ 'active' | trans }}{% else %}{{ 'no active' | trans }}{% endif %}</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id">Product Id</label>
+                            <input type="text" disabled="" class="form-control" placeholder="Product Id" name="product[update][id]" value="{{ product.id }}" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="sku">Product Number</label>
+                            <input type="text" disabled="" class="form-control" placeholder="Product Number" name="product[update][sku]" value="{{ product.sku }}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="price">Price in CHF / {{ 'day' | trans }}</label>
+                            <input type="text" class="form-control price" name="product[update][price]" value="{{ product.price.value | number_format(2) }}" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        {% for description in product.descriptions if description.lang is not null and description.lang.shortName == lang %}
+                            <div class="form-group">
+                                <label for="descriptionname">Product name</label>
+                                <input type="text" class="form-control descriptionname" placeholder="Product name" name="product[update][description][{{ description.lang.id }}][name]" value="{{ description.name }}" />
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-bottom:10px; padding-right:0px;"><div class="form-group"><button data-url="{{ path('admin_price_text_save') }}" data-fields="descriptionname-price" class="btn btn-default mutation-price-text admin-element-right">Mutation Name/Price</button></div></div>
+                <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for description in product.descriptions if description.lang is not null and description.lang.shortName == lang %}
+                            <div class="form-group">
+                                <label for="longtext">Product text</label>
+                                <textarea class="tinymelongtext" id="longtext" name="product[update][description][{{ description.lang.id }}][longtext]">{{ description.longText | raw }}</textarea>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-bottom:10px; padding-right:0px;"><div class="form-group"><button data-url="{{ path('admin_price_text_save') }}" data-fields="tinymelongtext" class="btn btn-default mutation-price-text admin-element-right">Mutation Description</button></div></div>
+                <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for description in product.descriptions if description.lang is not null and description.lang.shortName == lang %}
+                            <div class="form-group">
+                                <label for="shorttext">Product short text</label>
+                                <textarea class="tinymeshorttext" id="shorttext" name="product[update][description][{{ description.lang.id }}][shorttext]">{{ description.shortText }}</textarea>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-bottom:10px; padding-right:0px;"><div class="form-group"><button data-url="{{ path('admin_price_text_save') }}" data-fields="tinymeshorttext" class="btn btn-default mutation-price-text admin-element-right">Mutation Short Text</button></div></div>
+                <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for description in product.descriptions if description.lang is not null and description.lang.shortName == lang %}
+                            <div class="form-group">
+                                <label for="indicies">Eléments techniques</label>
+                                <textarea class="tinymeindicies" id="indicies" name="product[update][description][{{ description.lang.id }}][indicies]">{{ description.indicies }}</textarea>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-bottom:10px; padding-right:0px;"><div class="form-group"><button data-url="{{ path('admin_price_text_save') }}" data-fields="tinymeindicies" class="btn btn-default mutation-price-text admin-element-right">Mutation Eléments techniques</button></div></div>
+                <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label for="pdf_accessoires">
+                                {{ 'Notice_utilisation' | trans }}
+                            </label>
+                            <div class="pdf_icon_accessoires">
+                                {% set isFound = 0 %}
+                                {% for description in product.descriptions if description.lang is not null and description.lang.shortName == lang %}
+                                    {% if description.accessoires starts with 'PDF_' %}
+                                        {% set isFound = 1 %}
+                                        <a href="{{ path('pdf_product_admin', {'id': '0', 'product_id': product.id, 'lang': lang }) }}">
+                                            <img src="/media/icons/pdf_24x24.png">
+                                            {{ 'Notice_utilisation' | trans }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if isFound == 0 %}
+                                    {% for description in product.descriptions if description.lang is not null and description.lang.shortName == 'fr' %}
+                                        {% if description.accessoires starts with 'PDF_' %}
+                                            {% set isFound = 1 %}
+                                            <a href="{{ path('pdf_product_admin', {'id': '0', 'product_id': product.id, 'lang': 'fr' }) }}">
+                                                <img src="/media/icons/pdf_24x24.png">
+                                                {{ 'Notice_utilisation' | trans }}
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                {% if isFound == 0 %}
+                                    {{ 'No PDF File' | trans }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="pdf_accessoires">&nbsp;</label>
+                            <input type="file"name="product[update][description][1][accessoires]" class="pdf_accessoires" id="pdf_accessoires">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-bottom:10px; padding-right:0px;"><div class="form-group"><button data-url="{{ path('admin_pdf_accessoires') }}" class="btn btn-default mutation-pdf-accessoires admin-element-right">PDF Accessoires</button></div></div>
+                <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" id="anchorimages">
+                            <label for="image">
+                                Images
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row productimages">
+                    {% set imagedefault = 0 %}
+                    {% set countimagedefault = 0 %}
+                    {% for image in product.images if image.isdefault and image.size.name == 'image80' and countimagedefault == 0 %}
+                        {% set imagedefault = 1 %}
+                        {% set countimagedefault = 1 %}
+                        {% for description in product.descriptions if description.lang is not null and description.lang.shortName == lang %}
+                            <div class="col-md-2 col-image"><img src="/{{ image.size.path }}{{ image.name }}" title="{{ description.name }}" class="img-responsive"/></div>
+                            <div class="col-md-2"><input type="radio" data-image-id="{{ image.id }}" name="product[update][image][default][]" class="image-default" checked='checked' /></div>
+                            <div class="col-md-3">{{ image.originalName }}</div>
+                            <div class="col-md-4">
+                                <input type="file" name="product[update][image][{{ image.id }}]">
+                            </div>
+                            <div class="col-md-1"><input class="image-remove  admin-element-right" data-image-remove="{{ image.id }}" type="checkbox" name="product[remove][image][{{ image.id }}]" /></div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% if imagedefault == 0 %}
+                        <div class="col-md-2 col-image"><img src="/media/placeholder/placeholder80.jpg" title="" class="img-responsive"/></div>
+                        <div class="col-md-2"><input type="radio" name="product[insert][image][default][]"  checked='checked' /></div>
+                        <div class="col-md-4">Placeholder</div>
+                        <div class="col-md-3">
+                            <input type="file" name="product[insert][image][]">
+                        </div>
+                        <div class="col-md-1"></div>
+                    {% endif %}
+                </div>
+                {% for image in product.images if image.isdefault == 0 and image.size.name == 'image80' %}
+                    {% for description in product.descriptions if description.lang is not null and description.lang.shortName == lang %}
+                        <div class="row productimages">
+                            <div class="col-md-2 col-image"><img src="/{{ image.size.path }}{{ image.name }}" title="{{ description.name }}" class="img-responsive"/></div>
+                            <div class="col-md-2"><input type="radio" data-image-id="{{ image.id }}" name="product[update][image][default][]" class="image-default" /></div>
+                            <div class="col-md-3">{{ image.originalName }}</div>
+                            <div class="col-md-4"><input type="file" data-image-id="{{ image.id }}"  class="image" name="product[update][image][{{ image.id }}]" ></div>
+                            <div class="col-md-1"><input type="checkbox" class="image-remove  admin-element-right" data-image-remove="{{ image.id }}" name="product[remove][image][{{ image.id }}]" /></div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                <div class="row admin-rowsendimage">
+                    <div class="col-md-12" style="padding-bottom:10px;"><button data-urlimage="{{ path('admin_file_upload') }}" data-urlimageremove="{{ path('admin_file_delete') }}" class="btn btn-default sendimage">Send Image</button></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9" style="margin-bottom: 10px;"><button class="btn btn-default newimage">Add new image element</button></div>
+                    <div class="col-md-3" style="padding-bottom:10px;"><button data-url-image-update="{{ path('admin_image_update') }}" data-url-image-default="{{ path('admin_image_default') }}" class="btn btn-default mutationimage admin-element-right">Mutation Image</button></div>
+                </div>
+
+                <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="additional">
+                                Additional Products
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                {% for child in children %}
+                    {% if child is not null %}
+                        {% if child.images | length > 0  %}
+                            {% for image in child.images if image.size.name == 'image50' %}
+                                <div class="row additionalelement">
+                                    <div class="col-md-1 col-image"><img data-element-image-id="{{ image.id }}" id="image" src="/{{ image.size.path }}{{ image.name }}" alt="" title="" /></div>
+                                    <div class="col-md-2"><input disabled="" data-child-id="{{ child.id }}" type="text" class="form-control" name="additional[sku][{{ child.id }}]" value="{{ child.sku }}" /></div>
+                                    <div class="col-md-6">
+                                        <input type="file" class="image additionalimage" name="additional[image][{{ child.id }}]">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <nobr><input data-element-price-id="{{ child.price.id }}" data-price-calendar-typ-id="" data-price-txt="" type="text" class="form-control additional-price" name="additional[price][{{ child.id }}]" value="{{ child.price.value | number_format(2) }}" /> / {{ 'day' | trans }}</nobr><br />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" class="additional-remove admin-element-right" data-additional-remove="{{ child.id }}" name="additional[remove][{{ child.id }}]" />
+                                    </div>
+                                </div>
+                                <div class="row additionalelement">
+                                    {% for description in child.descriptions if description.lang is not null %}
+                                        <div class="col-md-3"><strong><label>{{ description.lang.shortName | upper }}</label></strong><input type="text"  data-element-description-id="{{ description.id }}" class="form-control" name="additional[descriptionname][{{ description.lang.id }}][{{ child.id }}]" value="{{ description.name }}" /></div>
+                                                {% endfor %}
+                                </div>
+                                <div class="row additionalelement">
+                                    <div class="col-md-12"><div class="line-space"></div></div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="row additionalelement">
+                                <div class="col-md-1 col-image"><img data-element-image-id="0" src="/media/placeholder/placeholder50.jpg" title=""/></div>
+                                <div class="col-md-2"><input disabled="" data-child-id="{{ child.id }}" type="text" class="form-control" name="additional[sku][{{ child.id }}]" value="{{ child.sku }}" /></div>
+                                <div class="col-md-6">
+                                    <input type="file" class="image" name="additional[image][{{ child.id }}]">
+                                </div>
+                                <div class="col-md-1">
+                                    <nobr><input data-element-price-id="{{ child.price.id }}" data-price-calendar-typ-id="" data-price-txt="" type="text" class="form-control" name="additional[price][{{ child.id }}]" value="{{ child.price.value | number_format(2) }}" /> / {{ 'day' | trans }}</nobr><br />
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="checkbox" class="additional-remove  admin-element-right" data-additional-remove="{{ child.id }}" name="additional[remove][{{ child.id }}]" />
+                                </div>
+                            </div>
+                            <div class="row additionalelement">
+                                {% for description in child.descriptions if description.lang is not null %}
+                                    <div class="col-md-3"><strong><label>{{ description.lang.shortName | upper }}</label></strong><input type="text"  data-element-description-id="{{ description.id }}" class="form-control" name="additional[descriptionname][{{ description.lang.id }}][{{ child.id }}]" value="{{ description.name }}" /></div>
+                                            {% endfor %}
+                            </div>
+                            <div class="row additionalelement">
+                                <div class="col-md-12"><div class="line-space"></div></div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                <div class="row admin-rowsenadditionalelement">
+                    <div class="col-md-12" style="padding-bottom:10px;"><button data-urlelement="{{ path('admin_element_upload') }}" data-urlelementremove="{{ path('admin_element_delete') }}" class="btn btn-default sendadditionalelement">Send Additional Element</button></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-9" style="margin-bottom: 10px;"><button  class="btn btn-default newadditionalelement">Add new element</button></div>
+                    <div class="col-md-3" style="padding-bottom:10px;"><button data-url-element-update="{{ path('admin_element_update') }}" class="btn btn-default mutationelement admin-element-right">Mutation Element</button></div>
+                </div>
+                <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
+
+            </div>
+        </section>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="hidden" name="product_id" value="{{ product.id }}" />
+                <input type="hidden" name="lang" value="{{ lang }}" />
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/common.js') }}"></script>
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+    <script>
+                        tinymce.init({
+                            selector: "#longtext,#shorttext,#indicies",
+                            height: 300,
+                            plugins: [
+                                "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+                                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                                "table contextmenu directionality emoticons template textcolor paste fullpage textcolor colorpicker textpattern filemanager"
+                            ],
+                            toolbar1: "newdocument fullpage | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+                            toolbar2: "cut copy paste | searchreplace | bullist numlist | outdent indent blockquote | undo redo | link unlink anchor image media code | insertdatetime preview | forecolor backcolor",
+                            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | print fullscreen | ltr rtl | spellchecker | visualchars visualblocks nonbreaking template pagebreak restoredraft",
+                            menubar: false,
+                            toolbar_items_size: 'small',
+                            style_formats: [{
+                                    title: 'Bold text',
+                                    inline: 'b'
+                                }, {
+                                    title: 'Red text',
+                                    inline: 'span',
+                                    styles: {
+                                        color: '#ff0000'
+                                    }
+                                }, {
+                                    title: 'Red header',
+                                    block: 'h1',
+                                    styles: {
+                                        color: '#ff0000'
+                                    }
+                                }, {
+                                    title: 'Example 1',
+                                    inline: 'span',
+                                    classes: 'example1'
+                                }, {
+                                    title: 'Example 2',
+                                    inline: 'span',
+                                    classes: 'example2'
+                                }, {
+                                    title: 'Table styles'
+                                }, {
+                                    title: 'Table row 1',
+                                    selector: 'tr',
+                                    classes: 'tablerow1'
+                                }],
+                            templates: [{
+                                    title: 'Test template 1',
+                                    content: 'Test 1'
+                                }, {
+                                    title: 'Test template 2',
+                                    content: 'Test 2'
+                                }],
+                            content_css: [
+                                '/css/admin.css',
+                                '//www.tinymce.com/css/codepen.min.css'
+                            ]
+                        });
+
+    </script>
+
+{% endblock %}
+
+
+{% block bodyoverlay %}
+    <div id="bodyoverlay">
+        <div id="bodyoverlay-box"></div>
+    </div>
+{% endblock %}

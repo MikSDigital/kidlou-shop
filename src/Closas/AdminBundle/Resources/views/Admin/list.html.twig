@@ -1,0 +1,27 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Product List {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pagetitle %}{{ 'Product List' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="col-md-12" style="padding-right: 0;"><button class="btn btn-default admin-element-right admin-element-bottom" onclick="location.href = '{{ path("admin_product_new") }}';" >{{ 'New Product' | trans }}</button></div>
+        <table class="table table-hover table-bordered table-admin">
+            <tbody>
+                {% for product in products %}
+                    {% set productdes = '' %}
+                    {% for description in product.descriptions if description.lang is not null and description.lang.shortName == 'fr' %}
+                        <tr class="edit">
+                            <td><a href="{{ path('admin_product_detail' , {'id': product.id} )}}">{{ product.id }}</a></td>
+                            <td class="a-left"><a href="{{ path('admin_product_detail' , {'id': product.id} )}}">{{ product.sku }}</a></td>
+                            <td class="a-left"><a href="{{ path('admin_product_detail' , {'id': product.id} )}}">{{ description.name | raw }}</a></td>
+                            <td><a href="{{ path('admin_product_detail' , {'id': product.id} )}}">{% if product.status %} {{ 'active' | trans }}{% else %}{{ 'inactive' | trans }}{% endif %}</a></td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

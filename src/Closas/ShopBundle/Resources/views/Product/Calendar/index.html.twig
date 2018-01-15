@@ -1,0 +1,38 @@
+<table class="table table-bordered calendar-kidlou-table">
+    <thead>
+        <tr>
+            <td class="kidlou-arrow-left">
+                <a class="calendar-url-next-before-test" href="' . $calendar_before_url . '">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                </a>
+            </td>';
+            <td class="calendar-title" colspan="3"><td class="ajax-loader" colspan="2"><img style="display:none;" src="/media/icons/ajax-loader-16x16.gif" /></td></td>
+            <td class="kidlou-arrow-right">
+                <a class="calendar-url-next-before-test" href="' . $calendar_after_url . '">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th><strong></strong></th>
+        </tr>
+    </thead>
+
+
+
+
+
+    <tr>
+        {% for weekday in weekdays1 %}
+            <th>
+                <p>{{ weekday.name }}</p>
+            </th>
+        {% endfor %}
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>sss</td>
+    </tr>
+</tbody>
+</table>

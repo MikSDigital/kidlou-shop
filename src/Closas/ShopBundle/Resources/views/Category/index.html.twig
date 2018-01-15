@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Category {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <section class="box info">
+        <div class="product-grid-view">
+            <div class="row">
+                {% for product in products %}
+
+                    {% for image in product.images if image.isdefault %}
+                        {% if image.size.name == 'image500' %}
+                            <div class="col-sm-4 col-xs-12 item">
+                                <div class="item-inner">
+                                    <div class="images-container">
+                                        <a href="" class="product-image">
+                                            <img src="/{{ image.size.path }}{{ image.name }}" title="{{ image.originalName }}" class="img-responsive"/>
+                                        </a>
+                                    </div>
+                                    <div class="des-container">
+                                        <h2 class="product-name">
+                                            {% for description in product.descriptions if description.lang is not null and description.lang.shortName == app.request.getLocale() %}
+                                                <a href="" title="{{ description.name }}">{{ description.name }}</a>
+                                            {% endfor %}
+                                        </h2>
+                                        <div class="price-box">
+                                            <span id="product-price-32" class="regular-price">
+                                                <span class="price">CHF {{ product.price.week | number_format(2) }}</span>
+                                                <span class="price-text"> / semaine</span>
+                                            </span>
+                                        </div>
+                                        <div class="ma-desc"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

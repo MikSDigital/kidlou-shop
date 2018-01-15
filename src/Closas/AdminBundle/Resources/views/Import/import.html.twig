@@ -1,0 +1,18 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ 'Import CSV' | trans }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Upload CSV' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            <div class="container">
+                <div class="row">
+                    <div class='col-md-12'>{{ 'Import war erfogreich' | trans }}</div>
+                </div>
+            </div>
+    </section>
+{% endblock %}
