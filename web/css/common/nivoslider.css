@@ -1,0 +1,459 @@
+@font-face {
+    font-family: 'sfu_insigniaregular';
+    src: url('../../fonts/nivoslider/sfuinsigniaregular-webfont.eot');
+    src: url('../../fonts/nivoslider/sfuinsigniaregular-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../../fonts/nivoslider/sfuinsigniaregular-webfont.woff2') format('woff2'),
+        url('../../fonts/nivoslider/sfuinsigniaregular-webfont.woff') format('woff'),
+        url('../../fonts/nivoslider/sfuinsigniaregular-webfont.ttf') format('truetype'),
+        url('../../fonts/nivoslider/sfuinsigniaregular-webfont.svg#sfu_insigniaregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+/* Browser Resets */
+.ma-banner7-container .flex-container a:active,
+.ma-banner7-container .flexslider a:active,
+.ma-banner7-container .flex-container a:focus,
+.ma-banner7-container .flexslider a:focus  {outline: none;}
+.ma-banner7-container .slides,
+.ma-banner7-container .flex-control-nav,
+.ma-banner7-container .flex-direction-nav {margin: 0; padding: 0; list-style: none;}
+
+/* FlexSlider Necessary Styles
+*********************************/
+.ma-banner7-container .flexslider {margin: 0; padding: 0;}
+.ma-banner7-container .flexslider .slides > li {display: none; -webkit-backface-visibility: hidden; position: relative; } /* Hide the slides before the JS is loaded. Avoids image jumping */
+.ma-banner7-container .flexslider .slides img { display: block;}
+.ma-banner7-container .flex-pauseplay span {text-transform: capitalize;}
+
+/* Clearfix for the .slides element */
+.ma-banner7-container .slides:after {content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0;}
+html[xmlns] .ma-banner7-container .slides {display: block;}
+* html .ma-banner7-container .slides {height: 1%;}
+
+/* No JavaScript Fallback */
+/* If you are not using another script, such as Modernizr, make sure you
+ * include js that eliminates this class on page load */
+.no-js .ma-banner7-container .slides > li:first-child {display: block;}
+
+
+/* FlexSlider Default Theme
+*********************************/
+.ma-banner7-container .flexslider {padding: 0; position: relative; zoom: 1;}
+.ma-banner7-container .flex-viewport {max-height: 2000px; -webkit-transition: all 1s ease; -moz-transition: all 1s ease; transition: all 1s ease;}
+.ma-banner7-container .loading .flex-viewport {max-height: 300px;}
+.ma-banner7-container .flexslider .slides {zoom: 1;}
+
+.ma-banner7-container .carousel li {margin-right: 5px}
+
+
+/* Direction Nav */
+.ma-banner7-container .flex-direction-nav {*height: 0;}
+.ma-banner7-container .flex-direction-nav a,
+.nivo-directionNav a { width: 47px; height: 47px; margin: -29px 0 0; display: block; background: url(../../media/site/nivoslider/banner7_owl_control.png) no-repeat 0 0; position: absolute; top: 50%; cursor: pointer; text-indent: -9999px; z-index: 9;  }
+.ma-banner7-container .flex-direction-nav a, .nivo-directionNav a{ }
+.ma-banner7-container .flex-direction-nav .flex-next,
+.ma-banner7-container .nivo-directionNav a.nivo-nextNav { background-position: 100% 0; right: 0px; opacity: 0; transition: all 0.3s ease-out; }
+.ma-banner7-container .flex-direction-nav .flex-prev,
+.ma-banner7-container .nivo-directionNav a.nivo-prevNav { left: 0px; opacity: 0; transition: all 0.3s ease-out;}
+.ma-banner7-container:hover .nivo-directionNav a.nivo-nextNav {right: 30px; opacity:1;}
+.ma-banner7-container:hover .nivo-directionNav a.nivo-prevNav {left: 30px; opacity:1;}
+.ma-banner7-container .flexslider .flex-next:hover, .ma-banner7-container .nivo-directionNav a.nivo-nextNav:hover { background-position: 100% 100%; }
+.ma-banner7-container .flexslider .flex-prev:hover, .ma-banner7-container .nivo-directionNav a.nivo-prevNav:hover {opacity: 1; background-position: 0 100%; }
+.ma-banner7-container .flex-direction-nav .flex-disabled {opacity: .3!important; filter:alpha(opacity=30); cursor: default; }
+/* Control Nav */
+
+.ma-banner7-container .flex-control-nav li { margin: 0 6px; display: inline-block; zoom: 1; *display: inline; }
+
+.ma-banner7-container .flex-control-thumbs {margin: 5px 0 0; position: static; overflow: hidden;}
+.ma-banner7-container .flex-control-thumbs li {width: 25%; float: left; margin: 0;}
+.ma-banner7-container .flex-control-thumbs img {width: 100%; display: block; opacity: .7; cursor: pointer;}
+.ma-banner7-container .flex-control-thumbs img:hover {opacity: 1;}
+.ma-banner7-container .flex-control-thumbs .flex-active {opacity: 1; cursor: default;}
+.ma-nivoslider {
+    overflow: hidden;
+}
+.nivoslider {
+    position: relative;
+    overflow: hidden;
+    height: auto;
+    width: 100%;
+}
+.nivoslider img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+.nivo-controlNav {
+    text-align: center;
+}
+
+.banner7-caption {
+    position: absolute;
+    left:0;
+    top:0;
+    width: 100%;
+    background: none;
+    color: #fff;
+    font-size: 16px;
+    z-index: 999;
+}
+.ma-banner7-container .ma-loading {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    z-index: 99;
+    background: url(../../media/site/nivoslider/loader.gif) no-repeat ;
+    top: 50%;
+    left: 50%;
+    margin: -8px 0 0 -8px;
+}
+/* The Nivo Slider styles */
+.nivoSlider {
+    position:relative;
+    width:100%;
+    height:auto;
+    overflow: hidden;
+}
+.nivoSlider img {
+    position:absolute;
+    top:0px;
+    left:0px;
+    max-width: none;
+}
+.nivo-main-image {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+/* If an image is wrapped in a link */
+.nivoSlider a.nivo-imageLink {
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100%;
+    border:0;
+    padding:0;
+    margin:0;
+    z-index:6;
+    display:none;
+    background:white;
+    filter:alpha(opacity=0);
+    opacity:0;
+}
+/* The slices and boxes in the Slider */
+.nivo-slice {
+    display:block;
+    position:absolute;
+    z-index:5;
+    height:100%;
+    top:0;
+}
+.nivo-box {
+    display:block;
+    position:absolute;
+    z-index:5;
+    overflow:hidden;
+}
+.nivo-box img { display:block; }
+
+.nivo-caption {
+    position:absolute;
+    left:0;
+    top:0;
+    color:#fff;
+    width:100%;
+    height: 100%;
+    z-index:8;
+}
+.nivo-html-caption {
+    display: none;
+}
+.nivo-main-image {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+/* If an image is wrapped in a link */
+.nivoSlider a.nivo-imageLink {
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100%;
+    border:0;
+    padding:0;
+    margin:0;
+    z-index:6;
+    display:none;
+    background:white;
+    filter:alpha(opacity=0);
+    opacity:0;
+}
+/* The slices and boxes in the Slider */
+.nivo-slice {
+    display:block;
+    position:absolute;
+    z-index:5;
+    height:100%;
+    top:0;
+}
+.nivo-box {
+    display:block;
+    position:absolute;
+    z-index:5;
+    overflow:hidden;
+}
+
+
+.nivo-caption {
+    position:absolute;
+    left:0;
+    top:0;
+    color:#4c4c4c;
+    width:100%;
+    z-index:8;
+    height: 100%;
+}
+.nivo-html-caption {
+    display: none;
+}
+@-webkit-keyframes myfirst {
+    from {width: 0;}
+    to {width: 100%;}
+}
+@keyframes myfirst {
+    from {width: 0;}
+    to {width: 100%;}
+}
+.timethai.pos_hover{
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused;
+
+}
+.ma-banner7-container{
+    position :relative;
+    min-height: 200px
+}
+
+/*===================================================Content-banner7===========================================================*/
+.nivoSlider {
+    position:relative;
+    width:100%;
+    height:auto;
+    overflow: hidden;
+}
+.banner7-content{ height: 100%; position: relative;}
+
+.bannerslideshow{position: absolute; z-index: 1; top: 50%; margin-top: -113px; left: 50%; text-align: left; margin-left: -585px; width: 600px; }
+
+.banner7-content h1,
+.banner7-content h2,
+.banner7-content h3{ text-transform: uppercase; }
+
+.banner7-content h1{
+    -webkit-animation: bounceIn 1500ms ease-in-out;
+    -moz-animation: bounceIn 1500ms ease-in-out;
+    -ms-animation: bounceIn 1500ms ease-in-out;
+    animation: bounceIn 1500ms ease-in-out;
+
+}
+.banner7-content .title1 {  font-size: 24px; display: block; color: #000; }
+.banner7-content h2{
+    -webkit-animation: bounceIn 1800ms ease-in-out;
+    -moz-animation: bounceIn 1800ms ease-in-out;
+    -ms-animation: bounceIn 1800ms ease-in-out;
+    animation: bounceIn 1800ms ease-in-out;
+    clear: both;
+}
+.banner7-content h2  {
+    color: #000;
+    font-size: 101px ; line-height: 70px; letter-spacing: 2px;
+    font-family: RobotoBold;
+
+}
+.banner7-content h3{
+    -webkit-animation: bounceIn 2200ms ease-in-out;
+    -moz-animation: bounceIn 2200ms ease-in-out;
+    -ms-animation: bounceIn 2200ms ease-in-out;
+    animation: bounceIn 2200ms ease-in-out;
+    float: right;
+    clear: both;
+    padding: 10px;
+    text-transform: capitalize;
+    color: #fff;
+    font-family: arial;
+    background-color: rgba(67, 66, 64, 0.54);
+    font-size: 1.3em;
+    line-height:1.8;
+    margin-bottom: 10px
+}
+.banner7-content .banner7-readmore{
+    -webkit-animation: bounceInUp 2200ms ease-in-out;
+    -moz-animation: bounceInUp 2200ms ease-in-out;
+    -ms-animation: bounceInUp 2200ms ease-in-out;
+    animation: bounceInUp 2200ms ease-in-out;
+    clear: both;
+    margin-top: 20px;
+}
+.banner7-content .banner7-readmore a{
+    font-size: 14px;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    display: inline-block;
+    border: 2px solid #000;
+    color: #000;
+}
+
+.banner7-content .banner7-readmore a:hover{ background: #000; border-color: #000; color: #fff }
+.banner7-content .banner7-des{
+    -webkit-animation: bounceIn 2000ms ease-in-out;
+    -moz-animation: bounceIn 2000ms ease-in-out;
+    -ms-animation: bounceIn 2000ms ease-in-out;
+    animation: bounceIn 2000ms ease-in-out;
+    clear: both;
+    margin-top: 15px;
+}
+
+.banner7-content img { position: absolute; top: 0; left: 50%; height: 100%; margin-left: 150px }
+.banner7-content img.img1 {
+    -webkit-animation: fadeInRight 800ms ease-in-out;
+    -moz-animation: fadeInRight 800ms ease-in-out;
+    -ms-animation: fadeInRight 800ms ease-in-out;
+    animation: fadeInRight 800ms ease-in-out;
+}
+.banner7-content img.img2 {
+    -webkit-animation: zoomInRight 2200ms ease-in-out;
+    -moz-animation: zoomInRight 2200ms ease-in-out;
+    -ms-animation: zoomInRight 2200ms ease-in-out;
+    animation: zoomInRight 2200ms ease-in-out;
+    height: auto; margin-top: 20px; margin-left: 135px;
+
+}
+
+.slider-2 h1{
+    -webkit-animation: bounceInDown 1500ms ease-in-out;
+    -moz-animation: bounceInDown 1500ms ease-in-out;
+    -ms-animation: bounceInDown 1500ms ease-in-out;
+    animation: bounceInDown 1500ms ease-in-out;
+}
+.slider-2 h2.title2{
+    -webkit-animation: bounceInDown 1800ms ease-in-out;
+    -moz-animation: bounceInDown 1800ms ease-in-out;
+    -ms-animation: bounceInDown 1800ms ease-in-out;
+    animation: bounceInDown 1800ms ease-in-out;
+
+}
+.slider-2 h3{
+    -webkit-animation: bounceInDown 2200ms ease-in-out;
+    -moz-animation: bounceInDown 2200ms ease-in-out;
+    -ms-animation: bounceInDown 2200ms ease-in-out;
+    animation: bounceInDown 2200ms ease-in-out;
+}
+.slider-2 .banner7-des{
+    -webkit-animation: bounceInDown 2000ms ease-in-out;
+    -moz-animation: bounceInDown 2000ms ease-in-out;
+    -ms-animation: bounceInDown 2000ms ease-in-out;
+    animation: bounceInDown 2000ms ease-in-out;
+}
+.slider-2 img.img1 {
+    -webkit-animation: bounceIn 1500ms ease-in-out;
+    -moz-animation: bounceIn 1500ms ease-in-out;
+    -ms-animation: bounceIn 1500ms ease-in-out;
+    animation: bounceIn 1500ms ease-in-out;
+}
+.slider-2 img.img2 {
+    margin-left: 70px;
+}
+.slider-3 h1{
+    -webkit-animation: fadeInRight 1500ms ease-in-out;
+    -moz-animation: fadeInRight 1500ms ease-in-out;
+    -ms-animation: fadeInRight 1500ms ease-in-out;
+    animation: fadeInRight 1500ms ease-in-out;
+}
+.slider-3 h2{
+    -webkit-animation: fadeInRight 1800ms ease-in-out;
+    -moz-animation: fadeInRight 1800ms ease-in-out;
+    -ms-animation: fadeInRight 1800ms ease-in-out;
+    animation: fadeInRight 1800ms ease-in-out;
+}
+.slider-3 h3{
+    -webkit-animation: fadeInRight 2200ms ease-in-out;
+    -moz-animation: fadeInRight 2200ms ease-in-out;
+    -ms-animation: fadeInRight 2200ms ease-in-out;
+    animation: fadeInRight 2200ms ease-in-out;
+}
+.slider-3 .banner7-des{
+    -webkit-animation: fadeInRight 2000ms ease-in-out;
+    -moz-animation: fadeInRight 2000ms ease-in-out;
+    -ms-animation: fadeInRight 2000ms ease-in-out;
+    animation: fadeInRight 2000ms ease-in-out;
+}
+.slider-3 img.img1 {
+    margin-left: -60px;
+    -webkit-animation: rotateIn 1500ms ease-in-out;
+    -moz-animation: rotateIn 1500ms ease-in-out;
+    -ms-animation: rotateIn 1500ms ease-in-out;
+    animation: rotateIn 1500ms ease-in-out;
+}
+.slider-3 img.img2 {
+    margin-left: -220px;
+    -webkit-animation: bounceIn 1500ms ease-in-out;
+    -moz-animation: bounceIn 1500ms ease-in-out;
+    -ms-animation: bounceIn 1500ms ease-in-out;
+    animation: bounceIn 1500ms ease-in-out;
+}
+
+@-moz-document url-prefix() {
+}
+@media ( max-width: 1400px) {
+    @-moz-document url-prefix() {
+    }
+}
+@media ( max-width: 1199px) {
+    .bannerslideshow { margin-left: -470px; margin-top: -105px; width: 500px;  }
+    .banner7-content .title1 { font-size: 20px; }
+    .banner7-content h2 { font-size: 70px; line-height: 55px; }
+    .banner7-content img.img2 { margin-left: 105px; }
+    .slider-2 img.img2 { margin-left: 60px; }
+}
+
+@media ( max-width: 991px) {
+    .ma-banner7-container .flex-direction-nav a, .nivo-directionNav a { display: none; }
+    .nivoSlider { height: 300px; }
+    .nivoSlider .nivo-main-image { height: 100% !important; }
+    .bannerslideshow { margin-left: -360px; margin-top: -111px; width: 400px; }
+    .banner7-content img { margin-left: 33px; }
+    .banner7-content img.img2 { margin-left: 15px; }
+    .slider-2 img.img2 { margin-left: 47px; }
+}
+
+@media ( max-width: 767px) {
+    .bannerslideshow { margin-left: -200px; text-align: center; }
+    .banner7-content img { margin-left: -163px; }
+    .banner7-content img.img2 { margin-left: -185px; }
+    .slider-2 img.img2 { margin-left: -242px; }
+}
+@media ( max-width: 640px) {
+    .nivoSlider { height: 200px; }
+    .bannerslideshow { margin-top: -92px; }
+    .banner7-content .title1 { font-size: 15px; }
+    .banner7-content .title2 { font-size: 48px; line-height: 40px; }
+    .banner7-content .banner7-readmore a { padding: 5px 10px; }
+    .banner7-content img { margin-left: -120px;}
+    .slider-2 img.img2 { margin-left: -210px; }
+}
+
+@media ( max-width: 480px) {
+
+}
+
+@media ( max-width: 320px) {
+    .bannerslideshow { width: 300px; margin-left: -150px; }
+    .banner7-content img.img2 { margin-left: -143px; }
+    .slider-2 img.img2 { margin-left: -150px; }
+}

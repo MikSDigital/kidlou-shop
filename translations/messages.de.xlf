@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="fr" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>week</source>
+                <target>Woche</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Additional Product</source>
+                <target>Zusätzliche Produkte</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Add to cart</source>
+                <target>In den Warenkorb</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Caractéristiques</source>
+                <target>Eigenschaften</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>Eléments techniques</source>
+                <target>Technische Angaben</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Notice d'utilistation</source>
+                <target>Bedienungsanleitung</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>Upsell Products</source>
+                <target>Zusätzliche Artikel</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Notice_utilisation</source>
+                <target>Bedienungsanleitung herunterladen</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>Cart</source>
+                <target>Warenkorb</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>Product</source>
+                <target>Produkte</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>Sprache</source>
+                <target>Sprache</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>Dieses Produkt %sku% existiert bereits</source>
+                <target>Dieses Produkt %sku% existiert bereits</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

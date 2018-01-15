@@ -2,3 +2,12 @@
 /nbproject
 /app/config/parameters.yml
 /app/config/parameters.yml.dist
+/vendor/
+/web/.htaccess
+/web/media/dynamisch/
+/web/media/import/
+/web/media/mail/
+/var/
+/web/media/images/
+/web/media/tinymce/
+/web/js/tinymce/plugins/filemanager/thumbs/

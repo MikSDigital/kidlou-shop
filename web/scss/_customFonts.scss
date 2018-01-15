@@ -1,0 +1,49 @@
+@font-face {
+    font-family: 'RobotoCondensedRegular';
+    src: url('#{$custom-font-path}#{$font-robotcondensed}.eot');
+    src: url('#{$custom-font-path}#{$font-robotcondensed}.eot') format('embedded-opentype'),
+        url('#{$custom-font-path}#{$font-robotcondensed}.woff') format('woff'),
+        url('#{$custom-font-path}#{$font-robotcondensed}.ttf') format('truetype'),
+        url('#{$custom-font-path}#{$font-robotcondensed}.svg#RobotoCondensedRegular') format('svg');
+}
+
+
+@font-face {
+    font-family: 'RobotoSlabRegular';
+    src: url('#{$custom-font-path}#{$robotoslab-regular}.eot');
+    src: url('#{$custom-font-path}#{$robotoslab-regular}.eot') format('embedded-opentype'),
+        url('#{$custom-font-path}#{$robotoslab-regular}.woff2') format('woff2'),
+        url('#{$custom-font-path}#{$robotoslab-regular}.woff') format('woff'),
+        url('#{$custom-font-path}#{$robotoslab-regular}.ttf') format('truetype'),
+        url('#{$custom-font-path}#{$robotoslab-regular}.svg#RobotoSlabRegular') format('svg');
+}
+
+@font-face {
+    font-family: 'RobotoMedium';
+    src: url('#{$custom-font-path}#{$roboto-medium}.eot');
+    src: url('#{$custom-font-path}#{$roboto-medium}.eot') format('embedded-opentype'),
+        url('#{$custom-font-path}#{$roboto-medium}.woff2') format('woff2'),
+        url('#{$custom-font-path}#{$roboto-medium}.woff') format('woff'),
+        url('#{$custom-font-path}#{$roboto-medium}.ttf') format('truetype'),
+        url('#{$custom-font-path}#{$roboto-medium}.svg#RobotoMedium') format('svg');
+}
+
+@font-face {
+    font-family: 'RobotoRegular';
+    src: url('#{$custom-font-path}#{$roboto-regular}.eot');
+    src: url('#{$custom-font-path}#{$roboto-regular}.eot') format('embedded-opentype'),
+        url('#{$custom-font-path}#{$roboto-regular}.woff2') format('woff2'),
+        url('.#{$custom-font-path}#{$roboto-regular}.woff') format('woff'),
+        url('#{$custom-font-path}#{$roboto-regular}.ttf') format('truetype'),
+        url('#{$custom-font-path}#{$roboto-regular}.svg#RobotoRegular') format('svg');
+}
+
+@font-face {
+    font-family: 'RobotoBold';
+    src: url('#{$custom-font-path}#{$roboto-bold}.eot');
+    src: url('#{$custom-font-path}#{$roboto-bold}.eot') format('embedded-opentype'),
+        url('#{$custom-font-path}#{$roboto-bold}.woff2') format('woff2'),
+        url('#{$custom-font-path}#{$roboto-bold}.woff') format('woff'),
+        url('#{$custom-font-path}#{$roboto-bold}.ttf') format('truetype'),
+        url('#{$custom-font-path}#{$roboto-bold}.svg#RobotoBold') format('svg');
+}

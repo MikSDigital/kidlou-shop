@@ -1,0 +1,947 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 28.11.2016, 10:16:16
+    Author     : jmclosas
+*/
+@import "customVariables";
+@import "customFonts";
+@import "bootstrap-sass-3.3.7/assets/stylesheets/bootstrap";
+@import "font-awesome-4.7.0/font-awesome";
+
+body {
+    /* padding-top: 70px; */
+    font-family: RobotoRegular;
+}
+
+
+.main {
+    margin: 50px auto;
+    min-height: 400px;
+    padding: 0;
+    text-align: left;
+}
+
+.main .page-title {
+    border-bottom: 1px solid $kidlou-clear-gray;
+    margin-bottom: 30px;
+}
+
+.main .page-title h1 {
+    font-size: 24px;
+    line-height: 40px;
+    text-transform: uppercase;
+}
+
+h1, h2, h3, h4, span  {
+    font-family: RobotoCondensedRegular;
+}
+
+.form-control:focus {
+    border-color: $kidlou-gruen;
+}
+
+h1 { font-size: 20px; }
+
+h2 { font-size: 18px; margin:0px; }
+
+#bodyoverlay {
+    display:none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    /*background-color: $kidlou-body-overlay; */
+    background:rgba($kidlou-body-overlay-rgba,$kidlou-body-overlay-rgba,$kidlou-body-overlay-rgba,$kidlou-body-overlay-opacity);
+    width:100%;
+    height:100%;
+    //Cross-browser opacity below
+    /*    -moz-opacity:.80;
+        filter:alpha(opacity=80);
+        opacity:.80;
+    */
+    z-index: 10000;
+    background-image: url('../media/icons/ajax-loader.gif');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+#bodyoverlay-box {
+    display:none;
+    box-shadow:0 0 25px #111;
+    -webkit-box-shadow:0 0 25px #111;
+    -moz-box-shadow:0 0 25px #111;
+    /*width: 250px;
+    height:200px; */
+    background-color: #FFFFFF;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin:auto;
+    background: rgba(255, 255, 255, 1);
+    //Cross-browser opacity below
+
+    /*max-width:100%;
+        max-height:100%;
+        overflow:auto;
+    */
+}
+
+#bodyoverlay-dialogbox {
+    width: 350px;
+    position: relative;
+    color:#000000;
+    border: 1px solid #FFFFFF;
+    background: #FFFFFF;
+    -webkit-box-shadow:0 0 25px #111;
+    -moz-box-shadow:0 0 25px #111;
+    padding: 10px;
+    text-align: center;
+
+}
+
+.dialogbox-close {
+    float: right;
+    cursor: pointer;
+}
+
+.box-image .img-responsive{
+    margin:0 auto;
+}
+
+.box-title {
+    text-align: center;
+}
+
+.box-right {
+    float:right;
+}
+
+.box-abstand {
+    height:5px;
+}
+
+.box-button {
+    background-color: $kidlou-gruen;
+    border-color: $kidlou-gruen;
+}
+
+.btn-primary:hover {
+    background: $kidlou-violet;
+    border: $kidlou-violet;
+}
+
+.overlay-box {
+    position: relative;
+    font-family: RobotoCondensedRegular;
+}
+
+.navbar {
+    border-radius: 0px;
+    min-height: 80px;
+}
+
+
+.custom-header {
+    height:10   0px
+}
+
+.img-center {
+    display: block;
+    margin: 0 auto;
+}
+
+/****** Product view*****/
+.product-grid-view .images-container {
+    background-color: #eeeef9;
+}
+
+.product-grid-view .product-name a {
+    color: #454545;
+    font-size: 16px;
+    text-transform: capitalize;
+}
+.product-grid-view .item-inner {
+    background-color: #eeeef9;
+}
+
+
+.product-grid-view .item {
+    text-align: left; margin-top: 30px;
+}
+
+.product-grid-view .product-image {
+    display:block;
+}
+
+.item .item-inner .des-container {
+    padding: 10px 20px;
+}
+
+
+.price-box .price {
+    font-family: RobotoMedium;
+    font-size: 24px;
+    font-weight: normal;
+}
+.price {
+    white-space: nowrap !important;
+}
+
+
+/****** Product detail *****/
+.product-grid-detail {
+    margin-top: 50px;
+}
+
+.product-grid-detail .col-sm-5 .product-image {
+    border: 1px solid #e5e5e5;
+    margin: 0 0 21px;
+}
+
+.product-grid-detail .col-sm-7 .product-name h1 {
+    color: #454545;
+    font-size: 48px;
+    font-weight: normal;
+    margin: 0;
+    text-transform: capitalize;
+}
+
+.product-grid-detail .col-sm-7 .description {
+    border-top: 1px solid #e5e5e5;
+    color: #a2a1a1;
+    font-size: 13px;
+    line-height: 23px;
+    margin: 10px 0;
+    padding: 15px 0 0;
+}
+
+.product-grid-detail .col-sm-7 .price-box .price {
+    font-size: 48px;
+}
+
+.product-grid-detail .col-sm-7 .box-container1 {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.product-grid-detail .col-sm-7 .box-container1 .sku {
+    color: $kidlou-gruen;
+    display: inline-block;
+    font-family: arial;
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 15px;
+    text-transform: capitalize;
+}
+
+
+.table td, .table th {
+    text-align: center;
+}
+
+table.calendar-kidlou-table a {
+    color: $kidlou-gruen;
+    text-decoration: none;
+
+}
+
+table.calendar-kidlou-table > thead > tr > td.calendar-title {
+    color: $kidlou-violet;
+    font-weight: bold;
+    text-align: center;
+}
+
+table.calendar-kidlou-table > thead > tr > td {
+    border-left: 0 none;
+    border-right: 0 none;
+}
+
+table.calendar-kidlou-table > thead > tr > td {
+    padding-bottom: 16px;
+    padding-top: 16px;
+}
+
+table.calendar-kidlou-table > thead > tr > td.calendar-ajax img {
+    display: none;
+}
+
+table.calendar-kidlou-table > thead > tr > th {
+    background: #cccccc none repeat scroll 0 0;
+    opacity: 0.6;
+}
+
+table.calendar-kidlou-table > thead > tr > th > p {
+    color: $kidlou-violet;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.product-grid-detail .box-border-gray {
+    border: 1px solid #e5e5e5;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.product-grid-detail .txt-addproduct {
+    height: 70px;
+}
+
+.product-grid-detail .txt-addproduct .txt-center {
+    color: $kidlou-violet;
+    text-align: center;
+}
+
+.product-grid-detail .box-border-gray input {
+    margin: 10px 10px 0 0;
+    position: absolute;
+    right: 15px;
+}
+
+.product-grid-detail .product-collateral {
+    margin-top: 30px;
+}
+
+.product-grid-detail .kidlou-tab-content{
+    padding:20px;
+}
+
+.product-grid-detail .kidlou-tab-content .std {
+    color: #959595;
+}
+
+.product-grid-detail .kidlou-tab-content .std ul li {
+    line-height: 25px;
+    list-style: outside none disc;
+}
+
+.product-grid-detail ul, .product-grid-detail ol {
+    list-style: outside none none;
+    margin: 0;
+}
+
+.product-grid-detail .product-tabs li.first {
+    border-left: 0 none;
+}
+
+.product-grid-detail .product-tabs li {
+    float: left;
+    margin-right: 3px;
+}
+
+.product-grid-detail li {
+    list-style: outside none none;
+}
+
+.product-grid-detail .kidlou-tab-content .std ul {
+    padding-left: 10px;
+}
+
+
+.product-grid-detail a {
+    color: $kidlou-gruen;
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+
+.nav-tabs > li > a {
+    /*border: 1px solid transparent;*/
+    border:0;
+    border-radius: 0;
+    line-height: 1.42857;
+    margin-right: 2px;
+
+}
+
+.product-grid-detail .product-tabs {
+    border-bottom: 2px solid $kidlou-gruen;
+    overflow: hidden;
+}
+
+.product-grid-detail .product-tabs a {
+    color: #afafaf;
+    display: block;
+    font-size: 18px;
+    line-height: 37px;
+    padding: 10px 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.product-grid-detail .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    background-color: $kidlou-gruen;
+    color: #FFFFFF;
+}
+
+/* Add to Cart */
+button.button span {
+    display: block;
+}
+
+button.button span span {
+    background: $kidlou-gruen;
+    color: #FFFFFF;
+    display: block;
+    font-size: 12px;
+    font-family: RobotoMedium;
+    line-height: 38px;
+    padding: 5px 30px;
+    text-transform: uppercase;
+}
+
+.add-to-cart button.button {
+    margin-left: 0;
+    border:0;
+    padding: 0;
+}
+
+.table.calendar-kidlou-table > tbody > tr > td.calendar-free  {
+    cursor: pointer;
+}
+
+table.calendar-kidlou-table > tbody > tr > td.calendar-move {
+    background-color: $kidlou-gruen;
+}
+
+table.calendar-kidlou-table > tbody > tr > td.calendar-pre-reserved {
+    background-color: $kidlou-pre-reserved;
+    cursor: pointer;
+}
+
+/** Cart **/
+
+.btn-remove2, .btn-remove3 {
+    background: #f1f1f1 url("../media/icons/remove.png") no-repeat scroll 0 0;
+    border: 1px solid #e6e6e6;
+    border-radius: 100%;
+    display: block;
+    font-size: 0;
+    height: 39px;
+    line-height: 0;
+    margin: auto;
+    overflow: hidden;
+    text-indent: -999em;
+    width: 39px;
+}
+
+.btn-remove3 {
+    border-radius: 80%;
+}
+.cart-bottom {
+    margin-top: 50px;
+}
+.cart-bottom button, .cart-table button {
+    background: $kidlou-gruen;
+    border: 0px;
+}
+
+.data-table {
+    width: 100%;
+}
+
+
+.data-table thead th {
+    padding: 15px 20px;
+    border: 1px solid $kidlou-table-border-color;
+    color: #000;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 10px;
+    text-align: center;
+    text-transform: capitalize;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.data-table tbody th, .data-table tbody td {
+    border-bottom: 1px solid $kidlou-table-border-color;
+    border-right: 1px solid $kidlou-table-border-color;
+    border-left: 1px solid $kidlou-table-border-color;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.data-table tbody th.a-right, .data-table tbody td.a-right {
+    text-align: right;
+}
+
+.cart-table td {
+    padding: 10px;
+}
+
+.cart-table .td-img-center .img-responsive {
+    margin: 0 auto;
+}
+
+.cart-table .product-name a{
+    color: #262626;
+}
+
+.cart-table .td-no-border {
+    border-bottom:0px;
+}
+
+.cart-table .td-img-center {
+    margin: 0 auto;
+}
+
+.cart-table tfoot td {
+    border: 0;
+    border-bottom: 1px solid $kidlou-table-border-color;
+}
+
+.cart-table tfoot .a-left {
+    padding-left: 0;
+}
+
+.cart-table tfoot .a-right {
+    padding-right: 0;
+    text-align: right;
+}
+
+.cart-grid .cart-collaterals {
+    padding: 25px 0 0;
+}
+.cart-grid .totals table {
+    width: 100%;
+    border-bottom: 1px solid #3f3b70;
+}
+
+
+.cart-grid .totals {
+    background: #292560;
+    color: #fff;
+    padding: 20px 30px;
+}
+
+.cart-grid .totals tr {
+    font-size: 16px;
+}
+
+.cart-grid .totals td {
+    padding: 10px 0;
+}
+
+.cart-grid .totals .a-right {
+    text-align: right !important;
+}
+
+.cart-grid .totals .checkout-types {
+    font-size: 13px;
+    padding: 0;
+    text-align: right;
+}
+
+.cart-grid .totals .checkout-types li {
+    clear: both;
+    margin: 10px 0;
+    text-align: right;
+    list-style: outside none none;
+}
+
+.cart-grid .totals .checkout-types button.button {
+    width: 100%;
+    border: 0;
+    padding: 0;
+}
+
+
+/* Zone */
+
+.zone-show-data {
+    display: none;
+}
+
+#map-canvas {
+    height:480px;
+    margin:0;
+    padding:0;
+}
+
+.zone-message {
+    line-height: 30px;
+}
+
+/* checkout */
+.checkout-title h1 {
+    border-bottom: 2px solid #000;
+    color: #222222;
+    font-size: 16px;
+    font-weight: normal;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 0 20px;
+    text-transform: uppercase;
+    font-family: RobotoRegular;
+}
+
+
+/* admin */
+
+.table-admin .a-left {
+    text-align: left;
+}
+
+.table-admin .edit {
+    cursor: pointer;
+}
+
+.table-admin a {
+    color:$kidlou-body-overlay
+}
+
+.mce-content-body {
+    font-family: RobotoRegular !important;
+}
+
+.mce-content-body p, .mce-content-body ul {
+    font-family: RobotoRegular !important;
+}
+
+.product-grid-detail .box-border-gray input.admin {
+    margin: 10px 10px 0 0;
+    position: relative;
+    left:0px;
+
+}
+
+.admin-image {
+    padding-bottom: 10px;
+}
+
+.col-image {
+    padding-bottom: 10px;
+}
+
+.input-image {
+    height:80px;
+    line-height: 80px;
+}
+
+.admin-border-bottom {
+    border-bottom: 1px solid $kidlou-color-gray;
+    margin-bottom: 10px;
+}
+
+.admin-rowsendimage, .admin-rowsenadditionalelement {
+    display: none;
+}
+
+.admin .row {
+    margin-bottom: 10px;
+}
+
+
+.admin-element-right {
+    float:right;
+}
+
+.admin-element-left {
+    float:left;
+}
+
+.admin-element-bottom {
+    margin-bottom: 10px;
+}
+
+.line-space {
+    border-bottom: 1px solid $kidlou-color-gray;
+    padding-bottom: 15px;
+}
+
+.error-message {
+    color: $kidlou-color-error-massage;
+    font-style: italic;
+}
+
+.navbar-inverse {
+    background-color: $kidlou-gruen;
+    border-color: $kidlou-gruen;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #000000;
+}
+
+.navbar-brand {
+    font-size:28px;
+    padding: 25px;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #000000;
+}
+
+.navbar-nav > li > a {
+    padding-bottom: 25px;
+    padding-top: 25px;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: $kidlou-gruen;
+}
+
+ul {
+    margin:0 0 0 0;
+    list-style-type:none;
+    padding-left:15px;
+}
+
+ul.admin-navigation  li {
+    list-style-type:none;
+    padding:0.1em;
+}
+
+
+ul.admin-navigation  li span{
+    font-family: RobotoRegular;
+}
+
+div.admin-navigation-root {
+    padding-bottom: 20px;
+    padding-left: 0;
+    padding-right: 5px;
+}
+
+div.cms-body {
+    height:80vh;
+    border-left: 1px solid $kidlou-clear-gray;
+}
+
+div.select-category-typ {
+    display: none;
+}
+
+div.select-category-text {
+    padding-bottom: 10px;
+}
+
+/*.admin-navi-status, ul.admin-navigation  li.admin-navi-status a{
+    color:$kidlou-status-deactive;
+}*/
+
+div.select-category-continue {
+    padding-top: 10px;
+}
+
+ul.admin-navigation{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+ul.admin-navigation  li a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+ul.admin-navigation  li {
+    cursor: pointer;
+}
+
+ul.admin-navigation > li {
+    background: $kidlou-gruen;
+    padding: 7px;
+    /*border-bottom: 1px solid #FFFFFF;*/
+    margin-bottom: 1px;
+}
+
+ul.admin-navigation span,  {
+    color: #FFFFFF;
+}
+
+div.admin-head {
+    border-bottom: 1px solid $kidlou-clear-gray;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+label {
+    display: inline-block;
+    font-weight: normal;
+    margin-bottom: 5px;
+    max-width: 100%;
+}
+
+label.control-label, .admin-padding-left-0 {
+    padding-left: 0;
+}
+
+.admin-head h2 {
+    text-transform: uppercase;
+}
+
+.btn-green {
+    background-color: #fff;
+    border-color: $kidlou-gruen;
+    color: #333;
+}
+
+.btn-green:hover {
+    background-color: $kidlou-gruen;
+    color: #fff;
+}
+
+/* admin login box */
+
+.well{
+    background-color:#fff!important;
+    border-radius:4px;
+    border:black solid 1px;
+}
+
+.well.login-box, .admin-info-box {
+    /*width:400px; */
+    border:$kidlou-box-border-color solid 1px;
+    margin:0 auto;
+    margin-top:30px;
+}
+.well.login-box legend {
+    font-size:26px;
+    text-align:center;
+    font-weight:300;
+}
+.well.login-box label {
+    font-weight:300;
+    font-size:13px;
+
+}
+.well.login-box input[type="text"] {
+    box-shadow:none;
+    border-color:#ddd;
+    border-radius:4px;
+}
+
+.well .error-message {
+    padding-bottom: 10px;
+    color: $kidlou-error-color;
+}
+
+/*Loged in*/
+.btn-default {
+    color: #333;
+    background-color: #f9f9f9;
+    border-color: #ccc;
+    border: 1px solid;
+    text-align: center;
+    cursor: pointer;
+    color: #5e5e5e;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fefefe), color-stop(100%, #f9f9f9)), #f9f9f9;
+    background: -moz-linear-gradient(#fefefe, #f9f9f9), #f9f9f9;
+    background: -webkit-linear-gradient(#fefefe, #f9f9f9), #f9f9f9;
+    background: linear-gradient(#fefefe, #f9f9f9), #f9f9f9;
+    border-color: #c3c3c3 #c3c3c3 #bebebe;
+    -moz-box-shadow: rgba(0, 0, 0, 0.06) 0 1px 0, rgba(255, 255, 255, 0.1) 0 1px 0 0 inset;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.06) 0 1px 0, rgba(255, 255, 255, 0.1) 0 1px 0 0 inset;
+    box-shadow: rgba(0, 0, 0, 0.06) 0 1px 0, rgba(255, 255, 255, 0.1) 0 1px 0 0 inset;
+}
+
+.admin-user-icon {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.admin-container {
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .admin-user-info {
+        position: absolute;
+        right:0;
+        top:0;
+    }
+
+
+}
+
+.admin-user-info {
+    position: absolute;
+    right:100px;
+    top:0;
+}
+
+.admin-info-box {
+    border-radius: 4px;
+    text-align: center;
+}
+
+.admin-info-box span, .admin-info-box i,  {
+    line-height: 150px;
+}
+
+.admin-info-box .glyphicon, .admin-info-box .fa {
+    font-size: 75px;
+    color: $kidlou-violet;
+}
+
+.admin-info-box .titel {
+    font-size:24px;
+    padding-top: 5px;
+    color: $kidlou-gruen;
+}
+
+.admin-save-content, .admin-save-content-lang {
+    display: none;
+}
+
+
+.admin-title, .admin-title label {
+    font-family: RobotoBold;
+}
+
+.admin-title input {
+    font-family: RobotoRegular;
+}
+
+.email-response-box, .email-response-box-new {
+    display: none;
+}
+
+.admin-order-box {
+    border: 1px solid $kidlou-color-gray;
+}
+
+.admin-order-box .table-responsive table tr th {
+    font-size: 14px;
+}
+
+.admin-order-box .table-responsive table tr th, .admin-order-box .table-responsive table tr td  {
+    text-align: left;
+}
+
+.admin-order-box .table-responsive .table {
+    margin-bottom: 0px;
+}
+
+.calendar-dates .deliver {
+    cursor: pointer;
+    background: $kidlou-calendar-deliver;
+}
+
+.calendar-dates .nodeliver {
+    cursor: pointer;
+    background: $kidlou-calendar-nodeliver;
+}
+
+.calendar-dates .emptydeliver {
+    background: $kidlou-calendar-emptydeliver;
+}
