@@ -1,0 +1,49 @@
+<script src='https://maps.googleapis.com/maps/api/js?key=sensor=false&key=AIzaSyBdrOdrOeVRV2HB7m_O1DLBah2cVeF2NI8'></script>
+<script type="text/javascript">
+
+
+    var center = new google.maps.LatLng("{{ common.getStartLatitude }}", "{{ common.getStartLongitude }}");
+    var citymap = {};
+
+    citymap['sion'] = {
+        center: center,
+        population: 15000
+    };
+    var cityCircle;
+    var map;
+    var populationOptions;
+    function initialize() {
+        // Create the map.
+
+        var mapOptions = {
+            zoom: 10,
+            center: center,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        // Construct the circle for each value in citymap.
+        // Note: We scale the population by a factor of 20.
+        for (var city in citymap) {
+            populationOptions = {
+                strokeColor: '#AECC08',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#AECC08',
+                fillOpacity: 0.35,
+                map: map,
+                center: citymap[city].center,
+                radius:{{ common.getZoneKmForGoogle }}
+            };
+            // Add the circle for this city to the map.
+            cityCircle = new google.maps.Circle(populationOptions);
+        }
+        google.maps.event.trigger(map, 'resize');
+        map.setCenter(center);
+
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+

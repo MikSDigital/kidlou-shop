@@ -1,0 +1,66 @@
+<div class="custom-header">
+    <div class="container">
+        <div class="search-data" data-url="{{ path('search') }}" data-img="/media/icons/ajax-loader-16x16.gif"></div>
+        <div class="row">
+            <div class="col-md-3 col-sm-4 col-xs-12">
+                <div class="logo-container flex-container">
+                    <h1 class="logo"><a href="{{ path('index_page') }}" title="kidlou.com" class="logo"><img class="img-responsive" src="/media/site/logo_300.png" alt="kidlou.com" /></a></h1>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-4 col-xs-12">
+                <div class="media-middle input-search">
+                    <input id="search" type="text" class="form-control ui-autocomplete-input" name="search" />
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-12">
+                <div class="link-inner flex-container">
+                    <div class="language-currency" id="language-currency">
+                        <span class="icon-language-currency">language currency</span>
+                        <div class="box-container">
+                            <div class="form-language">
+                                <ul>
+                                    {% set languages = common.getLanguages() %}
+                                    {% for language in languages %}
+                                        <li class="select-item {% if language.shortName == app.request.getLocale() %}active{% endif %} ">
+                                            <a href="{{ common.getCurrentLanguageUrl(language.shortName) }}">{{ language.name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top-link" id="top-link">
+                        <span class="toplink-hover">account</span>
+                        <div class="toplink-inner">
+                            <ul class="links">
+                                <li class="first" ><a href="{{ path('index_cart') }}" title="{{ 'Mon panier' | trans }}" class="top-link-cart">{{ 'Mon panier' | trans }}</a></li>
+                                <li><a href="{{ path('zone_area') }}" title="{{ 'Commander' | trans }}" class="top-link-checkout">{{ 'Commander' | trans }}</a></li>
+                                <li><a href="{{ path('content', {'url_key1' : 'blog'}) }}" title="{{ 'Blog' | trans }}" >{{ 'Blog' | trans }}</a></li>
+                                    {% if app.session.get('_security_frontendlogin') %}
+                                    <li><a href="{{ path('user_index') }}" title="{{ 'User Area' | trans }}" >{{ 'User Area' | trans }}</a></li>
+                                    <li><a href="{{ path('user_logout') }}" title="{{ 'User Area' | trans }}" >{{ 'Logout' | trans }}</a></li>
+                                    {% else %}
+                                    <li><a href="{{ path('user_login') }}" title="{{ 'Login' | trans }}" >{{ 'Login' | trans }}</a></li>
+                                    {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="top-cart-wrapper">
+                        <div class="top-cart-contain">
+                            <div id ="mini_cart_block">
+                                <div class="block-cart mini_cart_ajax">
+                                    <div class="block-cart">
+                                        <span class="count-item">{{ app.session.get('basket_items')|length }}</span>
+                                        <div class="top-cart-content">
+                                            {% include 'include/headerbasket.html.twig' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
