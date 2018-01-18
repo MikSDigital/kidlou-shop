@@ -1,0 +1,11 @@
+twig:
+    paths: ['%kernel.project_dir%/templates']
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    globals:
+        common: "@helper.common"
+        order: "@helper.order"
+        navigation: "@helper.navigation"
+        calendar: "@helper.calendar"
+    form_themes:
+            - 'bootstrap_3_kidlou_horizontal_layout.html.twig'

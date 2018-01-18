@@ -1,0 +1,8 @@
+{{ order.billing.name }}<br />
+{{ order.billing.street }}<br />
+{{ order.billing.country }} - {{ order.billing.postcode }} {{ order.billing.city }}<br />
+{{ order.billing.phone }}<br />
+{% if order.billing.mobile != 'NULL' %}
+    {{ order.billing.mobile }}<br />
+{% endif %}
+{{ order.billing.email }}

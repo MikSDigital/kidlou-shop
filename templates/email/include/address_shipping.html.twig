@@ -1,0 +1,10 @@
+{{ order.shipping.name }}<br />
+{{ order.shipping.street }}<br />
+{{ order.shipping.country }} - {{ order.shipping.postcode }} {{ order.shipping.city }}<br />
+{{ order.shipping.phone }}<br />
+{% if order.shipping.mobile != 'NULL' %}
+    {{ order.shipping.mobile }}<br />
+{% endif %}
+{% if order.shipping.email != 'NULL' %}
+    {{ order.shipping.email }}<br />
+{% endif %}

@@ -1,0 +1,38 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+closas_admin:
+    resource: ../../src/Closas/AdminBundle/Controller/
+    type:     annotation
+    prefix:   /admin/
+
+closas_user:
+    resource: ../../src/Closas/UserBundle/Controller/
+    type:     annotation
+    prefix:   /{_locale}/user/
+    requirements:
+        _locale: fr|de|en|es
+
+closas_shop:
+    resource: ../../src/Closas/ShopBundle/Controller/
+    type:     annotation
+    prefix:   /{_locale}/
+    requirements:
+        _locale: fr|de|en|es
+
+
+#app:
+#    resource: "@AppBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+
+# redirecting the root
+root:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /fr/
+        prefix:   /{_locale}/
+        permanent: true
+
