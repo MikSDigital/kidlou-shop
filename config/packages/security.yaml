@@ -1,18 +1,102 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-    providers:
-        in_memory: { memory: ~ }
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            anonymous: ~
 
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        backend_provider:
+            chain:
+                providers: [db_admin_username, db_admin_email]
+        db_admin_username:
+            entity:
+                class: ClosasAdminBundle:User
+                property: username
+        db_admin_email:
+            entity:
+                class: ClosasAdminBundle:User
+                property: email
+        frontend_provider:
+            chain:
+                providers: [db_user_username, db_user_email]
+        db_user_username:
+            entity:
+                class: ClosasUserBundle:User
+                property: username
+        db_user_email:
+            entity:
+                class: ClosasUserBundle:User
+                property: email
+
+
+    encoders:
+        Closas\AdminBundle\Entity\User:
+            algorithm: bcrypt
+        Closas\UserBundle\Entity\User:
+            algorithm: bcrypt
+    #    Symfony\Component\Security\Core\User\User: plaintext
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        #pattern: ^/admin
+        adminlogin:
+            pattern: ^/admin
+            anonymous: ~
+            form_login:
+                login_path: admin_login
+                check_path: admin_login
+                provider: backend_provider
+                default_target_path: admin_index
+            logout:
+                path:   admin_logout
+                target: admin_login
+                invalidate_session: false
+            logout_on_user_change: true
+        #pattern: ^/%locale%/user
+        frontendlogin:
+            pattern: ^/%locale%/user
+            anonymous: ~
+            form_login:
+                login_path: user_login
+                check_path: user_login
+                provider: frontend_provider
+                default_target_path: user_index
+                failure_handler: authentication_handler
+                success_handler: authentication_handler
+            logout:
+                path:   user_logout
+                target: user_login
+                invalidate_session: false
+            logout_on_user_change: true
+
+
+                #delete_cookies:
+                #    a: { path: null, domain: null }
+                #    b: { path: null, domain: null }
+
+        #dev:
+        #    pattern: ^/(_(profiler|wdt)|css|images|js)/
+        #    security: false
+
+        #main:
+        #    anonymous: ~
             # activate different ways to authenticate
 
             # http_basic: ~
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
 
             # form_login: ~
-            # https://symfony.com/doc/current/security/form_login_setup.html
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+        #default:
+        #    anonymous: ~
+        #    http_basic: ~
+
+
+    access_control:
+            # require ROLE_ADMIN for /admin*
+        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/%locale%/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user/new, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/%locale%/user, roles: ROLE_USER }
+
