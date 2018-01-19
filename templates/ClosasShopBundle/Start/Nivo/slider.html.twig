@@ -1,0 +1,72 @@
+{% if config is not empty %}
+    {% if config.status %}
+        <div class="ma-banner7-container">
+            <div class="flexslider ma-nivoslider">
+                <div class="ma-loading"></div>
+                <div id="ma-inivoslider-banner7" class="slides">
+
+                    {% set qty_item = config.qtyItem %}
+                    {% if qty_item > slide|length %}
+                        {% set qty_item = slide|length %}
+                    {% endif %}
+                    {% set i = 1 %}
+                    {% for s in slide %}
+                        {% if i <= qty_item %}
+                            {% if s.link is not empty %}
+                                <a href="{{ s.link }}" title="{{ 'Read more' | trans }}">
+                                {% endif %}
+                                <img style="display: none;" src="/media/dynamisch/{{ s.image }}" alt="" title="#banner7-caption{{ i }}"  />
+                                {% if s.link is not empty %}
+                                </a>
+                            {% endif %}
+                            {% set i = i + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% set i = 1 %}
+                {% for s in slide %}
+
+                    <div id="banner7-caption{{ i }}" class="banner7-caption nivo-html-caption nivo-caption">
+                        <div class="timethai" style="
+                             position:absolute;
+                             top:0;
+                             left:0;
+                             background-color: rgba(49, 56, 72, 0.298);
+                             height:5px;
+                             -webkit-animation: myfirst {{ config.speed }}ms ease-in-out;
+                             -moz-animation: myfirst {{ config.speed }}ms ease-in-out;
+                             -ms-animation: myfirst {{ config.speed }}ms ease-in-out;
+                             animation: myfirst {{ config.speed }}ms ease-in-out;
+
+                             ">
+                        </div>
+                        <div class="banner7-content slider-{{ i }}">
+                            <div class="bannerslideshow">
+                                {% if s.title is not empty %}<h1 class="title1">{{ s.title }}</h1>{% endif %}
+                                {% if s.title2 is not empty %}<h2 class="title2" >{{ s.title2 }}</h2>{% endif %}
+                                {% if s.description is not empty %}
+                                    <div class="banner7-des">
+                                        {{ s.description }}
+                                    </div>
+                                {% endif %}
+                                {% if s.title3 is not empty %}<h3 class="title3">{{ s.title3 }}</h3>{% endif %}
+
+                                {% if s.link is not empty %}
+                                    <div class="banner7-readmore">
+                                        <a href="{{ s.link }}" title="{{ 'Read more' | trans }}">{{ 'shop now' | trans }}</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {% if s.image2 is not empty %}<img class="img1" src="/media/dynamisch/{{ s.image2 }}" alt="" />{% endif %}
+                            {% if s.image3 is not empty %}<img class="img2" src="/media/dynamisch/{{ s.image3 }}" alt="" />{% endif %}
+                        </div>
+                    </div>
+                    {% set i = i + 1 %}
+                {% endfor %}
+
+
+            </div>
+            <!--</div>-->
+        </div>
+    {% endif %}
+{% endif %}

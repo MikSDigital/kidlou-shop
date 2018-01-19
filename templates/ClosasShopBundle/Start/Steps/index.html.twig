@@ -1,0 +1,38 @@
+<div class="container step">
+    <div class="row row-eq-height">
+        <div class="col-md-4 col-sm-4">
+            <div class="box">
+                <h1>{{ 'Etape 1 : Zone de livraison' | trans }}</h1>
+                <p>{{ 'Vérifiez si votre lieu de séjour est desservi par kidlou' | trans}}</p>
+                <div class="form-group">
+                    <form>
+                        <label for="codepostal">{{ 'Code postal / Ville' | trans}}</label>
+                        <input id="zone_shipping" type="text" title="Code postal / Ville" name="autocomplete"  value="" class="form-control" placeholder="{{ 'Code postal / Ville' | trans }}" />
+                        <input type="hidden" name="zone-plz" />
+                        <input type="hidden" name="zone-city" />
+                    </form>
+                </div>
+                <div class="zone-data"
+                     data-urlgeodata="{{ path('geodata_start') }}"
+                     data-img="/media/icons/ajax-loader-16x16.gif"
+                     data-txtdeliver="{{ 'Cette localité est desservie par kidlou' | trans }}"
+                     data-txtnodeliver="{{ "Cette localité n'est pas desservie par kidlou" | trans }}"
+                     >
+                </div>
+                <p class="zone-message-start">&nbsp;</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4">
+            <div class="box">
+                <h1>{{ 'Etape 2 : Choix de produits' | trans }}</h1>
+                <p>{{ 'Choisissez les articles qui correspondent à vos besoins et réservez les directement online dans le calendrier selon la durée de votre séjour.' | trans}}</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4">
+            <div class="box">
+                <h1>{{ 'Etape 3 : Paiment et livraison' | trans }}</h1>
+                <p>{{ 'Payez simplement online et rendez-vous le jour de votre arrivée sur votre lieu de séjour pour la livraison de tout l’équipement choisi pour votre enfant.' | trans }}</p>
+            </div>
+        </div>
+    </div>
+</div>

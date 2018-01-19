@@ -1,0 +1,32 @@
+<div class="main-container col1-layout">
+    <div class="container">
+        <div class="main">
+            <div class="col-main">
+                <div class="std"></div>
+                <div class="category-container">
+                    <div class="categorytabslider">
+                        <div class="categorytab-title title-group"><h2>Categories Tabs</h2></div>
+                        {% set csshtml = "" %}
+                        <ul class="tabs tabs-blog_tabs tab_blogs">
+                            {% for category in categories %}
+                                {% if loop.index0 == 0 %}
+                                    {% set csshtml = "class=active" %}
+                                {% else %}
+                                    {% set csshtml = "" %}
+                                {% endif %}
+                                {% for label in category.labels %}
+                                    {% if label.lang.shortName ==  app.request.getLocale() %}
+                                        <li {{ csshtml }}><p class="tab{{ category.id }}-blog_tabs">{{ label.name }}</p></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                        </ul>
+                        <div class="tab_container">
+                            {{ blogs | raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

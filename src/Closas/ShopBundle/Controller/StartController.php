@@ -26,12 +26,12 @@ class StartController extends Controller {
         $carousel = $helperCommon->setCategoryCarousel('category');
         $carouselcatproducts = $carousel->getMainCategories();
         $htmlproducts = $this->getCarouselProductHtml($carousel, $helperProduct);
-        $carouselhtml = $this->renderView('ClosasShopBundle:Start\Catslider:slider.html.twig', array('categories' => $carouselcatproducts, 'products' => $htmlproducts));
+        $carouselhtml = $this->renderView('ClosasShopBundle/Start/Catslider/slider.html.twig', array('categories' => $carouselcatproducts, 'products' => $htmlproducts));
         // zweiter Argument ist für inner
         $carousel = $helperCommon->setCategoryCarousel('blog', FALSE);
         $carouselblogs = $carousel->getMainCategories();
         $htmlblogs = $this->getCarouselBlogHtml($carousel, $helperContent);
-        $carouselbloghtml = $this->renderView('ClosasShopBundle:Start\Blog:slider.html.twig', array('categories' => $carouselblogs, 'blogs' => $htmlblogs));
+        $carouselbloghtml = $this->renderView('ClosasShopBundle/Start/Blog/slider.html.twig', array('categories' => $carouselblogs, 'blogs' => $htmlblogs));
 
         return array(
             'config' => $config,
@@ -53,7 +53,7 @@ class StartController extends Controller {
         $catsliders = $carousel->getCategories();
         foreach ($catsliders as $maincatid => $catslider) {
             $products = $helperProduct->getProducts($catslider);
-            $htmlproducts .= $this->renderView('ClosasShopBundle:Start\Catslider:product.html.twig', array('catid' => $maincatid, 'products' => $products));
+            $htmlproducts .= $this->renderView('ClosasShopBundle/Start/Catslider/product.html.twig', array('catid' => $maincatid, 'products' => $products));
         }
         return $htmlproducts;
     }
@@ -67,7 +67,7 @@ class StartController extends Controller {
         $catsliders = $carousel->getCategories();
         foreach ($catsliders as $maincatid => $catslider) {
             $contents = $helperContent->getCarouselContents($catslider, 'BLOG');
-            $htmlcontents .= $this->renderView('ClosasShopBundle:Start\Blog:index.html.twig', array('catid' => $maincatid, 'contents' => $contents));
+            $htmlcontents .= $this->renderView('ClosasShopBundle/Start/Blog/index.html.twig', array('catid' => $maincatid, 'contents' => $contents));
         }
         return $htmlcontents;
     }

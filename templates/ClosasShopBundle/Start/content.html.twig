@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Shop Page {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pathinfo %}{{ navigation.showCurrentUrlPath() | raw }}{% endblock %}
+{% block pagetitle %}{{ navigation.showCurrentTitle() | raw }}{% endblock %}
+{% block body %}
+    {% set urlkey = '' %}
+    {% if content is not null %}
+        <h2>{{ content.title }}</h2>
+        {{ content.longText | raw }}
+    {% endif %}
+    {% if contents is not null %}
+        {% if contents.cattyp.shortName == 'CMS'%}
+            {% for content in contents.content %}
+                {% if content is not null %}
+                    <h2>{{ content.title }}</h2>
+                    {{ content.longText | raw }}
+                {% endif %}
+            {% endfor %}
+        {% elseif contents.cattyp.shortName == 'BLOG'%}
+            {% for content in contents.content %}
+                {% if content is not null %}
+                {% for category in content.categories %}{% set urlkey = category.urlKey %}{% endfor %}
+                <div class="postTitle">
+                    <h2>
+                        <a href="{{ path('content3', {'url_key1':'blog', 'url_key2': urlkey, 'url_key3':content.group.urlKey}) }}">{{ content.title }}</a>
+                    </h2>
+                    <h3>{{ content.updatetAt | date('l d F Y H:i:s e') }}</h3>
+                </div>
+                {{ content.longText  | slice(0,200) | raw }}{{ '...' }}
+                <div class="readmore"><a href="{{ path('content3', {'url_key1':'blog', 'url_key2': urlkey, 'url_key3':content.group.urlKey}) }}">{{ 'Read more' }}</a></div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+    {% if allcontents is not null %}
+        {% for key, contents in allcontents.content %}
+            {% for content in contents %}
+                {% if allcontents.cattyp[key].shortName == 'CMS' %}
+                    {% if content is not null %}
+                    <h2>{{ content.title }}</h2>
+                    {{ content.longText | raw }}
+                {% endif %}
+            {% elseif allcontents.cattyp[key].shortName == 'BLOG' %}
+                {% if content is not null %}
+                {% for category in content.categories %}{% set urlkey = category.urlKey %}{% endfor %}
+                <div class="postTitle">
+                    <h2>
+                        <a href="{{ path('content3', {'url_key1':'blog', 'url_key2': urlkey, 'url_key3':content.group.urlKey}) }}">{{ content.title }}</a> ( {% for category in content.categories %} {% for label in category.labels %} {% if app.request.getLocale() == label.lang.shortName %} {{ label.name }} {% endif %} {% endfor %} {% endfor %} )
+                    </h2>
+                    <h3>{{ content.updatetAt | date('l d F Y H:i:s e') }}</h3>
+                </div>
+                {{ content.longText  | slice(0,200) | raw }}{{ '...' }}
+                <div class="readmore"><a href="{{ path('content3', {'url_key1':'blog', 'url_key2': urlkey, 'url_key3':content.group.urlKey}) }}">{{ 'Read more' }}</a></div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+{% endblock %}
+
+

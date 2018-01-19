@@ -22,3 +22,12 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> symfony/web-server-bundle ###
+.web-server-pid
+###< symfony/web-server-bundle ###
+/public/media/mail/
+/public/media/tinymce/
+/public/media/dynamisch/
+/public/media/images/
+/public/media/import/
