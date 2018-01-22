@@ -244,7 +244,7 @@ class Calendar {
     private function getDateToInput($product_id) {
         $date_to = $this->getRequest()->get('date_to');
         if ($date_to != '') {
-            return $this->getConvertDate($date_from, '-');
+            return $this->getConvertDate($date_to, '-');
         } else {
             if ($this->getQuoteDateTo($product_id) != '') {
                 return $this->getQuoteDateTo($product_id)->format('d.m.Y');
@@ -367,7 +367,7 @@ class Calendar {
     public function getHtmlCalendar($product_id = '') {
         $this->setCheckCalendar($product_id);
         $engine = $this->container->get('templating');
-        return $engine->render('ClosasShopBundle:Calendar:index.html.twig'
+        return $engine->render('ClosasShopBundle/Calendar/index.html.twig'
                         , array(
                     'calendar' => $this,
                     'product_id' => $product_id,
@@ -386,7 +386,7 @@ class Calendar {
      */
     public function getHtmlInputFromTo($product_id = '') {
         $engine = $this->container->get('templating');
-        return $engine->render('ClosasShopBundle:Calendar:fromto.html.twig'
+        return $engine->render('ClosasShopBundle/Calendar/fromto.html.twig'
                         , array(
                     'product_id' => $product_id,
                     'input_from' => $this->getDateFromInput($product_id),
@@ -449,7 +449,7 @@ class Calendar {
             }
         }
 
-        return $engine->render('ClosasShopBundle:Calendar:result.html.twig'
+        return $engine->render('ClosasShopBundle/Calendar/result.html.twig'
                         , array(
                     'product' => $product,
                     'additionals' => $arr_additionals,

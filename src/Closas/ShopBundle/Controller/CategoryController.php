@@ -25,7 +25,7 @@ class CategoryController extends Controller {
     }
 
     /**
-     * @Template()
+     * @Template("ClosasShopBundle/Category/view.html.twig")
      * @Route("/{url_key1}/", defaults={"url_key1" = ""}, name="category_product")
      * @Route("/{url_key1}/{url_key2}/", defaults={"url_key2" = ""}, name="category_product2")
      * @Route("/{url_key1}/{url_key2}/{url_key3}/", defaults={"url_key3" = ""}, name="category_product3")
@@ -36,6 +36,8 @@ class CategoryController extends Controller {
      *
      */
     public function viewAction($url_key1 = "", $url_key2 = "", $url_key3 = "", $url_key4 = "", $url_key5 = "", $url_key6 = "", $url_key7 = "", Request $request, HelperNavigation $helperNavigation, HelperProduct $helperProduct, HelperCommon $helperCommon, HelperOrder $helperOrder) {
+        print_r($this->getDoctrine()->getRepository('ClosasShopBundle:Quote')->getBasketItems(140, 'image80', 'image80', 'fr'));
+        exit;
         $sitepage = 1;
         $typ = 'product';
         $object = $helperNavigation->getNavigation($typ, $url_key1, $url_key2, $url_key3, $url_key4, $url_key5, $url_key6, $url_key7);
@@ -95,7 +97,7 @@ class CategoryController extends Controller {
         $calendarorders = $helperOrder->getOrderData($product);
 
 
-        return $this->render('ClosasShopBundle:Category:detail.html.twig', array(
+        return $this->render('ClosasShopBundle/Category/detail.html.twig', array(
                     'id' => $id,
                     'product' => $product,
                     'arr_route_name' => $arr_route_name,

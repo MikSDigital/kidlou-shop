@@ -13,7 +13,8 @@ framework:
     fragments: ~
     php_errors:
         log: true
-
+    templating:
+        engines: ['twig']
     cache:
         # The app cache caches to the filesystem by default. Other options include:
 

@@ -1,0 +1,10 @@
+<form action="{{ url }}" id="post_payment_checkout" method="POST">
+    {% for name,value in fields %}
+        <input name="{{ name }}" value="{{ value }}" type="hidden" />
+    {% endfor %}
+</form>
+<script type="text/javascript">
+    document.getElementById("post_payment_checkout").submit();
+</script>
+
+

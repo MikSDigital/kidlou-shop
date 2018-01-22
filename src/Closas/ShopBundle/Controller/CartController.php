@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Closas\ShopBundle\Entity\Quote;
 use Closas\ShopBundle\Entity\Calendar;
 use Closas\ShopBundle\Entity\Map\QuoteProductAdditional;
+use Closas\ShopBundle\Helper\Calendar As HelperCalendar;
+use Closas\ShopBundle\Helper\Common As HelperCommon;
+use Closas\ShopBundle\Helper\Cart As HelperCart;
 
 /**
  * @Route("/cart")
@@ -20,7 +23,7 @@ use Closas\ShopBundle\Entity\Map\QuoteProductAdditional;
 class CartController extends Controller {
 
     /**
-     * @Template()
+     * @Template("ClosasShopBundle/Cart/index.html.twig")
      * @Route("/index/", name="index_cart")
      */
     public function indexAction(Request $request) {
@@ -38,8 +41,7 @@ class CartController extends Controller {
      * @Template()
      * @Route("/add/{id}", name="add_cart")
      */
-    public function addAction($id, Request $request) {
-
+    public function addAction($id, Request $request, HelperCalendar $helperCalendar, HelperCart $helperCart, HelperCommon $helperCommon) {
         $em = $this->getDoctrine()->getManager();
         $carttime = new \DateTime();
         $quote_id = 0;
@@ -61,11 +63,11 @@ class CartController extends Controller {
             $quote = $this->getDoctrine()->getRepository('ClosasShopBundle:Quote')->findOneBy(array('id' => $quote_id));
         }
 
-        $product = $this->get('helper.cart')->getProduct($id);
+        $product = $helperCart->getProduct($id);
         $dates = $request->request->get('dates');
         $dates = json_decode($dates);
-        $date_from = new \DateTime($this->get('helper.calendar')->getConvertDate($dates->date_from));
-        $date_to = new \DateTime($this->get('helper.calendar')->getConvertDate($dates->date_to));
+        $date_from = new \DateTime($helperCalendar->getConvertDate($dates->date_from));
+        $date_to = new \DateTime($helperCalendar->getConvertDate($dates->date_to));
         $interval = $date_from->diff($date_to);
         $count_days = $interval->format('%a');
 
@@ -77,8 +79,8 @@ class CartController extends Controller {
         }
 
         // check ob product im warenkorb liegen
-        if ($this->getProductIsInBasket($product, $dates)) {
-            $html = $this->renderView('ClosasShopBundle:Cart:productinbasket.html.twig'
+        if ($this->getProductIsInBasket($product, $dates, $helperCalendar)) {
+            $html = $this->renderView('ClosasShopBundle/Cart/productinbasket.html.twig'
                     , array(
                 'date_from' => $dates->date_from,
                 'date_to' => $dates->date_to,
@@ -87,7 +89,6 @@ class CartController extends Controller {
             );
             return new JsonResponse(array('html' => $html));
         }
-
         //         //
         // write in calendar
         $reposCalendar = $this->getDoctrine()->getRepository('ClosasShopBundle:Calendar');
@@ -118,7 +119,6 @@ class CartController extends Controller {
             $em->flush();
         }
 
-
         // remove all from parent
         $quoteProductAdditionals = $this->getDoctrine()->getRepository('ClosasShopBundle:Map\QuoteProductAdditional')->findBy(
                 array(
@@ -131,6 +131,7 @@ class CartController extends Controller {
                 $em->flush();
             }
         }
+
         // This part is with by additional products
         // remove old additional
 
@@ -157,11 +158,11 @@ class CartController extends Controller {
         }
 
 // write in session for warenkorb
-        $basket = $this->get('helper.common')->setBasket();
+        $basket = $helperCommon->setBasket();
         $this->container->get('session')->set('basket_items', $basket->getBasketItems());
         $this->container->get('session')->set('price_subtotal', $basket->getSubtotal());
 
-        $html = $this->renderView('ClosasShopBundle:Cart:add.html.twig'
+        $html = $this->renderView('ClosasShopBundle/Cart/add.html.twig'
                 , array(
             'date_from' => $dates->date_from,
             'date_to' => $dates->date_to,
@@ -271,11 +272,11 @@ class CartController extends Controller {
      * @param type $quote_id
      * @param type $dates
      */
-    private function getProductIsInBasket($product, $dates) {
-        $this->get('helper.calendar')->setCheckCalendar($product->getId());
+    private function getProductIsInBasket($product, $dates, $helperCalendar) {
+        $helperCalendar->setCheckCalendar($product->getId());
         // check if first or last day is reserved
-        $request_dates = $this->get('helper.calendar')->getRequestCalendarDates($dates);
-        $current_dates = $this->get('helper.calendar')->getCurrentCalendar();
+        $request_dates = $helperCalendar->getRequestCalendarDates($dates);
+        $current_dates = $helperCalendar->getCurrentCalendar();
         foreach ($request_dates as $request_date) {
             foreach ($current_dates as $current_date) {
                 if ($request_date == $current_date) {

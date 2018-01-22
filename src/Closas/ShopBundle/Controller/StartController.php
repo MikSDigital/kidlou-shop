@@ -16,7 +16,7 @@ use Closas\ShopBundle\Helper\Navigation As HelperNavigation;
 class StartController extends Controller {
 
     /**
-     * @Template()
+     * @Template("ClosasShopBundle/Start/index.html.twig")
      * @Route("/", name="index_page")
      */
     public function indexAction(HelperCommon $helperCommon, HelperProduct $helperProduct, HelperContent $helperContent) {
