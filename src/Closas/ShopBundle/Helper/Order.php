@@ -81,12 +81,6 @@ class Order {
 
     /**
      *
-     * @var mailer $mailer
-     */
-    private $mailer;
-
-    /**
-     *
      * @var mailer $templating
      */
     private $templating;
@@ -111,13 +105,12 @@ class Order {
      * @param \Closas\ShopBundle\Helper\Common $common
      *
      */
-    public function __construct(EntityManager $entityManager, RequestStack $requestStack, Container $container, Common $common, \Swift_Mailer $mailer) {
+    public function __construct(EntityManager $entityManager, RequestStack $requestStack, Container $container, Common $common) {
         $this->em = $entityManager;
         $this->requestStack = $requestStack;
         $this->setCurrentRequest();
         $this->container = $container;
         $this->common = $common;
-        $this->mailer = $mailer;
         $this->setNowTime();
     }
 
@@ -174,13 +167,6 @@ class Order {
      */
     private function getCommon() {
         return $this->common;
-    }
-
-    /**
-     * @return mailer $mailer
-     */
-    private function getMailer() {
-        return $this->mailer;
     }
 
     /**
@@ -721,20 +707,18 @@ class Order {
      *
      * @param string $html
      */
-    public function sendEmailMessage($order) {
+    public function sendEmailMessage($order, $mailer) {
         $order = $this->getOrderDataById($order->getId());
         $engine = $this->container->get('templating');
         $mail = $this->getEm()->getRepository('ClosasShopBundle:Mail')->findOneBy(array('status' => TRUE, 'type' => 'product'));
         $html = $engine->render('email/' . $this->getRequest()->getLocale() . '_' . strtolower($order['payment_name']) . '.html.twig', array('order' => $order, 'mail' => $mail));
         $arr_bcc_mails = explode(',', $mail->getBccEmail());
-        $message = \Swift_Message::newInstance()
-                ->setSubject($order['payment_name'])
+        $message = (new \Swift_Message($order['payment_name']))
                 ->setFrom([$mail->getFromEmail() => $mail->getFromName()])
                 ->setBcc($arr_bcc_mails)
                 ->setTo($order['billing']['email'])
                 ->setBody($html, 'text/html');
-
-        return $this->getMailer()->send($message);
+        return $mailer->send($message);
     }
 
     public function getOrderData($product) {

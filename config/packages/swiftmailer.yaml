@@ -1,24 +1,24 @@
-#swiftmailer:
-#    url: '%env(MAILER_URL)%'
+swiftmailer:
+    url: '%env(MAILER_URL)%'
 #    spool: { type: 'memory' }
 
-swiftmailer:
-    default_mailer: mailer
-    mailers:
-        mailer:
-            transport: smtp
-            host:      asmtp.mail.hostpoint.ch
+#swiftmailer:
+#    default_mailer: mailer
+#    mailers:
+#        mailer:
+#            transport: smtp
+#            host:      asmtp.mail.hostpoint.ch
             #port:      "%mailer_port"
             #encryption: %mailer_encryption%
             #auth_mode:  "%mailer_auth_mode%"
-            username:  info@kidlou.com
-            password:  zhrfM5WQ
+#            username:  info@kidlou.com
+#            password:  zhrfM5WQ
             #spool:     { type: memory }
-        mailercommon:
-            transport: smtp
-            host:      asmtp.mail.hostpoint.ch
+#        mailercommon:
+#            transport: smtp
+#            host:      asmtp.mail.hostpoint.ch
             #port:      "%mailer_port"
             #encryption: %mailer_encryption%
             #auth_mode:  "%mailer_auth_mode%"
-            username:  info@kidlou.com
-            password:  zhrfM5WQ
+#            username:  info@kidlou.com
+#            password:  zhrfM5WQ

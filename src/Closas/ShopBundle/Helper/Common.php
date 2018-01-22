@@ -105,12 +105,6 @@ class Common {
 
     /**
      *
-     * @var mailer $mailercommon
-     */
-    private $mailercommon;
-
-    /**
-     *
      * @var type array
      */
     private $arr_basket_items = array();
@@ -169,12 +163,11 @@ class Common {
      */
     private $service_navigation;
 
-    public function __construct(EntityManager $entityManager, RequestStack $requestStack, Translator $translator, Container $container, \Swift_Mailer $mailercommon, Navigation $navigation) {
+    public function __construct(EntityManager $entityManager, RequestStack $requestStack, Translator $translator, Container $container, Navigation $navigation) {
         $this->em = $entityManager;
         $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->container = $container;
-        $this->mailercommon = $mailercommon;
         $this->service_navigation = $navigation;
         $this->setCurrentRequest();
         $this->setZone();
@@ -203,13 +196,6 @@ class Common {
      */
     protected function getContainer() {
         return $this->container;
-    }
-
-    /**
-     * @return mailer $mailer
-     */
-    private function getMailercommon() {
-        return $this->mailercommon;
     }
 
     /**
@@ -1118,8 +1104,8 @@ class Common {
         if ($mail->getBccEmail() != '') {
             $arr_bcc_mails = explode(', ', $mail->getBccEmail());
         }
-        $message = \Swift_Message::newInstance()
-                ->setSubject($subject)
+        $message = (new \Swift_Message($subject))
+                //->setSubject($subject)
                 ->setFrom([$mail->getFromEmail() => $mail->getFromName()])
                 //->setBcc($arr_bcc_mails)
                 ->setTo($to_email)

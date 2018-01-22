@@ -22,7 +22,7 @@ use Closas\ShopBundle\Helper\Common As HelperCommon;
 class AdminController extends Controller {
 
     /**
-     * @Template()
+     * @Template("ClosasAdminBundle/Admin/index.html.twig")
      * @Route("/", name="admin_index")
      */
     public function indexAction() {
@@ -30,7 +30,7 @@ class AdminController extends Controller {
     }
 
     /**
-     * @Template()
+     * @Template("ClosasAdminBundle/Admin/login.html.twig")
      * @Route("/login/", name="admin_login")
      */
     public function loginAction() {

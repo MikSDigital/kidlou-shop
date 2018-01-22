@@ -94,13 +94,13 @@ class CheckoutController extends Controller {
                     // set additional information
                     $paypal = $helperOrder->setPaypal('getExpressCheckoutDetails')->sendHttpPost();
                     $helperOrder->setAdditionalInformation($paypal->getExpressCheckoutResult());
-                    $this->removeSessions();
+                    $this->removeSessions($helperOrder);
                     return $this->render('ClosasShopBundle/Checkout/paypalSuccess.html.twig', array('order' => $order));
                 } else {
                     // set status canceled
                     $helperOrder->setOrderStatus('canceled');
                     $helperOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-                    $this->removeSessions();
+                    $this->removeSessions($helperOrder);
                     return $this->render('ClosasShopBundle/Checkout/paypalFailed.html.twig', array('paypalmessage' => $paypal->getExpressCheckoutResult()['L_LONGMESSAGE0']));
                 }
             } else {
@@ -135,10 +135,10 @@ class CheckoutController extends Controller {
     }
 
     /**
-     * @Template()
+     * @Template("ClosasShopBundle/Checkout/bankSuccess.html.twig")
      * @Route("/bank/success", name="checkout_order_bank_success")
      */
-    public function bankSuccessAction(Request $request, HelperOrder $helperOrder) {
+    public function bankSuccessAction(Request $request, HelperOrder $helperOrder, \Swift_Mailer $mailer) {
 
         $order = $helperOrder->getCurrentOrder();
         // status order
@@ -146,9 +146,9 @@ class CheckoutController extends Controller {
         // additional information
         $helperOrder->setAdditionalInformation($helperOrder->getInstitutPaymentAsArray('Bank'));
         // remove sessions
-        $this->removeSessions();
+        $this->removeSessions($helperOrder);
 
-        $helperOrder->sendEmailMessage($order);
+        $helperOrder->sendEmailMessage($order, $mailer);
 
         return array(
             'order' => $order
@@ -173,7 +173,7 @@ class CheckoutController extends Controller {
 
         // additional information
         $helperOrder->setAdditionalInformation($post->getParamsForHashCodeOut());
-        $this->removeSessions();
+        $this->removeSessions($helperOrder);
         if ($status) {
             return $this->render('ClosasShopBundle/Checkout/postSuccess.html.twig', array('order' => $order));
         } else {
@@ -189,7 +189,7 @@ class CheckoutController extends Controller {
         $order = $helperOrder->getCurrentOrder();
         $helperOrder->setOrderStatus('canceled');
         $helperOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-        $this->removeSessions();
+        $this->removeSessions($helperOrder);
         return array(
             'order' => $order
         );
@@ -201,7 +201,7 @@ class CheckoutController extends Controller {
      */
     public function postBackAction(HelperOrder $helperOrder) {
         $order = $helperOrder->getCurrentOrder();
-        $this->removeSessions();
+        $this->removeSessions($helperOrder);
         return array();
     }
 
@@ -213,7 +213,7 @@ class CheckoutController extends Controller {
         $order = $helperOrder->getCurrentOrder();
         $helperOrder->setOrderStatus('canceled');
         $helperOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-        $this->removeSessions();
+        $this->removeSessions($helperOrder);
         return array();
     }
 
@@ -259,7 +259,7 @@ class CheckoutController extends Controller {
         $order = $helperOrder->getCurrentOrder();
         $helperOrder->setOrderStatus('canceled');
         $helperOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-        $this->removeSessions();
+        $this->removeSessions($helperOrder);
         return array('order' => $order);
     }
 

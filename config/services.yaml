@@ -96,7 +96,7 @@ services:
 #        arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container"]
 
     Closas\ShopBundle\Helper\Common:
-        arguments: ["@doctrine.orm.entity_manager","@request_stack","@translator.default","@service_container","@swiftmailer.mailer.mailercommon","@helper.navigation"]
+        arguments: ["@doctrine.orm.entity_manager","@request_stack","@translator.default","@service_container","@helper.navigation"]
 
 
 #    helper.common:

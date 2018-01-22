@@ -29,7 +29,7 @@ class CartController extends Controller {
     public function indexAction(Request $request) {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle:Cart:empty.html.twig');
+            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
         }
         $basket_items = $this->container->get('session')->get('basket_items');
 //        $basket = $this->get('helper.common')->setBasket();
@@ -184,7 +184,7 @@ class CartController extends Controller {
     public function removeAction($id = "", $additional_id = "") {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle:Cart:empty.html.twig');
+            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
         }
 
         $reposQuote = $this->getDoctrine()->getRepository('ClosasShopBundle:Quote');
