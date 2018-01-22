@@ -250,13 +250,13 @@ class UserController extends Controller {
     }
 
     /**
-     * @Template()
+     * @Template("ClosasUserBundle/User/cart.html.twig")
      * @Route("/checkout/cart/", name="user_checkout_cart")
      */
     public function cartAction(Request $request, HelperPayment $helperPayment) {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle:Cart:empty.html.twig');
+            return $this->render('ClosasUserBundle/Cart/empty.html.twig');
         }
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $_personal = '';
