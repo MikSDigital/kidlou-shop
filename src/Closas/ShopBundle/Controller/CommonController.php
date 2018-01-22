@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Closas\ShopBundle\Entity\Repository\Postalcode;
 use Doctrine\Common\Collections\ArrayCollection;
 use Closas\ShopBundle\Helper\Common As HelperCommon;
+use Closas\ShopBundle\Helper\Navigation As HelperNavigation;
 
 /**
  * @Route("/common")
@@ -49,8 +50,8 @@ class CommonController extends Controller {
     /**
      * @Route("/search/", name="search")
      */
-    public function searchAction(HelperCommon $helperCommon) {
-        return $helperCommon->getSearchData();
+    public function searchAction(HelperCommon $helperCommon, HelperNavigation $helperNavigation) {
+        return $helperCommon->getSearchData($helperNavigation);
     }
 
     /**

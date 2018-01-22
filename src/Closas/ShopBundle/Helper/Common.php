@@ -458,7 +458,7 @@ class Common {
      * Get plz and city
      * @return \Closas\ShopBundle\Helper\JsonResponse
      */
-    public function getSearchData() {
+    public function getSearchData($helperNavigation) {
         $name = $this->getRequest()->get('term');
         $lang = $this->getRequest()->getLocale();
         $products = $this->em->getRepository('ClosasShopBundle:Product')->findShopProducts($name, $lang);
@@ -468,7 +468,7 @@ class Common {
             $arr_res[$key]["name"] = $product['name'];
             $arr_res[$key]["filename"] = '/' . $product['path'] . $product['image'];
             $arr_urls = array();
-            $arr_route_name = $this->service_navigation->setProductPathFromUrl($product['url_key'])->getProductPathFromUrl();
+            $arr_route_name = $helperNavigation->setProductPathFromUrl($product['url_key'])->getProductPathFromUrl();
             foreach ($arr_route_name as $url_name => $name) {
                 $arr_urls[$url_name] = $name;
             }
