@@ -13,27 +13,17 @@ doctrine:
         charset: utf8mb4
 
         # With Symfony 3.3, remove the `resolve:` prefix
-        url: '%env(resolve:DATABASE_URL)%'
+        url: '%env(DATABASE_URL)%'
     orm:
-        
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-        dql:
-            string_functions:
-                GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
-                IFNULL: DoctrineExtensions\Query\Mysql\IfNull
-                DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
 
-#        entity_managers:
-#            default:
-#                naming_strategy: doctrine.orm.naming_strategy.underscore
-#                auto_mapping: true
-#                dql:
-#                    string_functions:
-#                        GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
-#                        IFNULL: DoctrineExtensions\Query\Mysql\IfNull
-#                        DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
+#        dql:
+#            string_functions:
+#                GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
+#                IFNULL: DoctrineExtensions\Query\Mysql\IfNull
+#                DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
 
 
         mappings:
@@ -46,21 +36,27 @@ doctrine:
             Closas\ShopBundle:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Entity'
+                dir: '%kernel.project_dir%/src/Closas/ShopBundle/Entity'
                 prefix: 'Closas\ShopBundle\Entity'
                 alias: ClosasShopBundle
             Closas\AdminBundle:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Entity'
+                dir: '%kernel.project_dir%/src/Closas/AdminBundle/Entity'
                 prefix: 'Closas\AdminBundle\Entity'
                 alias: ClosasAdminBundle
             Closas\UserBundle:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Entity'
+                dir: '%kernel.project_dir%/src/Closas/UserBundle/Entity'
                 prefix: 'Closas\UserBundle\Entity'
                 alias: ClosasUserBundle
+            DoctrineExtensions\Query:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/DoctrineExtensions/Query/Mysql'
+                prefix: 'DoctrineExtensions\Query\Mysql'
+                alias: DoctrineExtensions
 
 
 

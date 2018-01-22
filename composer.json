@@ -9,6 +9,7 @@
             "Closas\\ShopBundle\\": "src/Closas/ShopBundle",
             "Closas\\UserBundle\\": "src/Closas/UserBundle",
             "Glifery\\EntityHiddenTypeBundle\\": "src/Glifery/EntityHiddenTypeBundle",
+            "DoctrineExtensions\\Query\\Mysql\\": "src/DoctrineExtensions/Query/Mysql",
             "App\\": "src/"
         }
     },

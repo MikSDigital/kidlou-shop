@@ -2,8 +2,6 @@
 
 namespace Closas\ShopBundle\Entity\Repository;
 
-//use DoctrineExtensions\Query\Mysql\DateFormat;
-
 /**
  * Quote
  *

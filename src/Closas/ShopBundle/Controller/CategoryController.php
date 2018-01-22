@@ -36,8 +36,6 @@ class CategoryController extends Controller {
      *
      */
     public function viewAction($url_key1 = "", $url_key2 = "", $url_key3 = "", $url_key4 = "", $url_key5 = "", $url_key6 = "", $url_key7 = "", Request $request, HelperNavigation $helperNavigation, HelperProduct $helperProduct, HelperCommon $helperCommon, HelperOrder $helperOrder) {
-        print_r($this->getDoctrine()->getRepository('ClosasShopBundle:Quote')->getBasketItems(140, 'image80', 'image80', 'fr'));
-        exit;
         $sitepage = 1;
         $typ = 'product';
         $object = $helperNavigation->getNavigation($typ, $url_key1, $url_key2, $url_key3, $url_key4, $url_key5, $url_key6, $url_key7);
