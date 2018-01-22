@@ -22,7 +22,7 @@ use Closas\ShopBundle\Helper\Order As HelperOrder;
 class CheckoutController extends Controller {
 
     /**
-     * @Template()
+     * @Template("ClosasShopBundle/Checkout/cart.html.twig")
      * @Route("/cart/", name="checkout_cart")
      */
     public function cartAction(Request $request, HelperPayment $helperPayment) {

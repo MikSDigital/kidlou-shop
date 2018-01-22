@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Closas\ShopBundle\Entity\Repository\Postalcode;
 use Doctrine\Common\Collections\ArrayCollection;
+use Closas\ShopBundle\Helper\Common As HelperCommon;
 
 /**
  * @Route("/common")
@@ -16,13 +17,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 class CommonController extends Controller {
 
     /**
-     * @Template()
+     * @Template("ClosasShopBundle/Common/zone.html.twig")
      * @Route("/zone/", name="zone_area")
      */
     public function zoneAction() {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle:Cart:empty.html.twig');
+            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
         }
         return array();
     }
@@ -30,32 +31,32 @@ class CommonController extends Controller {
     /**
      * @Route("/geodata/", name="geodata")
      */
-    public function geodataAction(Request $request) {
+    public function geodataAction(Request $request, HelperCommon $helperCommon) {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle:Cart:empty.html.twig');
+            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
         }
-        return $this->get('helper.common')->getGeodataPlzCity();
+        return $helperCommon->getGeodataPlzCity();
     }
 
     /**
      * @Route("/geodatastart/", name="geodata_start")
      */
-    public function geodataStartAction() {
-        return $this->get('helper.common')->getGeodataPlzCity();
+    public function geodataStartAction(HelperCommon $helperCommon) {
+        return $helperCommon->getGeodataPlzCity();
     }
 
     /**
      * @Route("/search/", name="search")
      */
-    public function searchAction() {
-        return $this->get('helper.common')->getSearchData();
+    public function searchAction(HelperCommon $helperCommon) {
+        return $helperCommon->getSearchData();
     }
 
     /**
      * @Route("/paymentcash/{typ}/", name="payment_cash")
      */
-    public function paymentCashAction($typ) {
+    public function paymentCashAction($typ, HelperCommon $helperCommon) {
         $quote_id = $this->container->get('session')->get('quote_id');
         $cash_cost = 0;
         if ($quote_id) {
@@ -72,10 +73,10 @@ class CommonController extends Controller {
         }
         $this->container->get('session')->set('cash_cost', $cash_cost);
         // total
-        $total_price = $this->get('helper.common')->getShippingCost() + $this->get('helper.common')->getCautionCost() + $cash_cost + $this->container->get('session')->get('price_subtotal');
-        $txt_total_price = $this->get('helper.common')->getCurrencyCode() . ' ' . number_format($total_price, 2);
+        $total_price = $helperCommon->getShippingCost() + $helperCommon->getCautionCost() + $cash_cost + $this->container->get('session')->get('price_subtotal');
+        $txt_total_price = $helperCommon->getCurrencyCode() . ' ' . number_format($total_price, 2);
         if ($cash_cost) {
-            $html_cash_cost = $this->renderView('ClosasShopBundle:Common:paymentCash.html.twig');
+            $html_cash_cost = $this->renderView('ClosasShopBundle/Common/paymentCash.html.twig');
             return new JsonResponse(array('html_cash_cost' => $html_cash_cost, 'txt_total_price' => $txt_total_price));
         } else {
             return new JsonResponse(array('html_cash_cost' => '', 'txt_total_price' => $txt_total_price));
