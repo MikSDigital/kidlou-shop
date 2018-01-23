@@ -28,57 +28,73 @@ services:
 
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    AppBundle\:
-        resource: '../src/AppBundle/*'
+    App\:
+        resource: '../src/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../src/AppBundle/{Entity,Tests}'
+        exclude: '../src/{Entity,Migrations,Tests}'
 
-    Closas\ShopBundle\:
-        resource: '../src/Closas/ShopBundle/*'
-        # you can exclude directories or files
-        # but if a service is unused, it's removed anyway
-        exclude: '../src/Closas/ShopBundle/{Entity,Tests}'
 
-    Closas\UserBundle\:
-        resource: '../src/Closas/UserBundle/*'
-        # you can exclude directories or files
-        # but if a service is unused, it's removed anyway
-        exclude: '../src/Closas/UserBundle/{Entity,Tests}'
 
-    Closas\AdminBundle\:
-        resource: '../src/Closas/AdminBundle/*'
+#    AppBundle\:
+#        resource: '../src/AppBundle/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../src/Closas/AdminBundle/{Entity,Tests,AdminBundle}'
+#        exclude: '../src/AppBundle/{Entity,Tests}'
+
+#    Closas\ShopBundle\:
+#        resource: '../src/Closas/ShopBundle/*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+#        exclude: '../src/Closas/ShopBundle/{Entity,Tests}'
+
+#    Closas\UserBundle\:
+#        resource: '../src/Closas/UserBundle/*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+#        exclude: '../src/Closas/UserBundle/{Entity,Tests}'
+
+#    Closas\AdminBundle\:
+#        resource: '../src/Closas/AdminBundle/*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+#        exclude: '../src/Closas/AdminBundle/{Entity,Tests,AdminBundle}'
 
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
-    AppBundle\Controller\:
-        resource: '../src/AppBundle/Controller'
+
+
+    App\Controller\:
+        resource: '../src/Controller'
         public: true
         tags: ['controller.service_arguments']
 
-    Closas\ShopBundle\Controller\:
-        resource: '../src/Closas/ShopBundle/Controller'
-        public: true
-        tags: ['controller.service_arguments']
 
-    Closas\UserBundle\Controller\:
-        resource: '../src/Closas/UserBundle/Controller'
-        public: true
-        tags: ['controller.service_arguments']
+#    AppBundle\Controller\:
+#        resource: '../src/AppBundle/Controller'
+#        public: true
+#        tags: ['controller.service_arguments']
 
-    Closas\AdminBundle\Controller\:
-        resource: '../src/Closas/AdminBundle/Controller'
-        public: true
-        tags: ['controller.service_arguments']
+#    Closas\ShopBundle\Controller\:
+#        resource: '../src/Closas/ShopBundle/Controller'
+#        public: true
+#        tags: ['controller.service_arguments']
 
-    Closas\AdminBundle\Listener\:
-        resource: '../src/Closas/AdminBundle/Listener    '
-        public: true
-        tags: ['controller.service_arguments']
+#    Closas\UserBundle\Controller\:
+#        resource: '../src/Closas/UserBundle/Controller'
+#        public: true
+#        tags: ['controller.service_arguments']
+
+#    Closas\AdminBundle\Controller\:
+#        resource: '../src/Closas/AdminBundle/Controller'
+#        public: true
+#        tags: ['controller.service_arguments']
+
+#    Closas\AdminBundle\Listener\:
+#        resource: '../src/Closas/AdminBundle/Listener    '
+#        public: true
+#        tags: ['controller.service_arguments']
 
     Psr\Log\LoggerInterface: "@logger"
 
@@ -88,88 +104,41 @@ services:
 #    helper.imageresizer:
 #        class: Closas\ShopBundle\Helper\ImageResizer
 
-    Closas\ShopBundle\Helper\Navigation:
+    App\Service\Navigation:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container"]
 
-#    helper.navigation:
-#        class: Closas\ShopBundle\Helper\Navigation
-#        arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container"]
-
-    Closas\ShopBundle\Helper\Common:
+    App\Service\Common:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@translator.default","@service_container","@helper.navigation"]
 
-
-#    helper.common:
-#        class: Closas\ShopBundle\Helper\Common
-#        arguments: ["@doctrine.orm.entity_manager","@request_stack","@translator.default","@service_container","@swiftmailer.mailer.mailercommon","@helper.navigation"]
-
-#    helper.product:
-#        class: Closas\ShopBundle\Helper\Product
-#        arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common"]
-
-    Closas\ShopBundle\Helper\Product:
+    App\Service\Product:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common"]
 
-#    helper.content:
-#        class: Closas\ShopBundle\Helper\Content
-#        arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common"]
-
-    Closas\ShopBundle\Helper\Content:
+    App\Service\Content:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common"]
 
-#    helper.cart:
-#        class: Closas\ShopBundle\Helper\Cart
-#        arguments: ["@doctrine.orm.entity_manager","@helper.common"]
-
-    Closas\ShopBundle\Helper\Cart:
+    App\Service\Cart:
         arguments: ["@doctrine.orm.entity_manager","@helper.common"]
 
-#    helper.calendar:
-#        class: Closas\ShopBundle\Helper\Calendar
-#        arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container"]
-
-    Closas\ShopBundle\Helper\Calendar:
+    App\Service\Calendar:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container"]
 
-    Closas\ShopBundle\Helper\Image:
+    App\Service\Image:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@kernel","@helper.imageresizer"]
 
-#    helper.image:
-#        class: Closas\ShopBundle\Helper\Image
-#        arguments: ["@doctrine.orm.entity_manager","@request_stack","@kernel","@helper.imageresizer"]
-
-#    helper.payment:
-#        class: Closas\ShopBundle\Helper\Payment
-#        arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common"]
-
-    Closas\ShopBundle\Helper\Payment:
+    App\Service\Payment:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common"]
 
-#    helper.order:
-#        class: Closas\ShopBundle\Helper\Order
-#        arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container", "@helper.common", "@mailer"]
-
-    Closas\ShopBundle\Helper\Order:
+    App\Service\Order:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container", "@helper.common", "@mailer"]
 
 
-#    closas.locale.listener:
-#        class: Closas\AdminBundle\Listener\LocaleListener
-#        arguments: ["@translator"]
-#        tags:
-#          - { name: kernel.event_subscriber }
-
-    Closas\AdminBundle\Listener\LocalListener:
-        class: Closas\AdminBundle\Listener\LocaleListener
+    App\Listener\LocalListener:
+        class: App\Listener\LocaleListener
         arguments: ["@translator"]
         tags:
           - { name: kernel.event_subscriber }
 
-#    authentication_handler:
-#        class: Closas\UserBundle\Handler\AuthenticationHandler
-#        arguments: ["@service_container","@router"]
-
-    Closas\UserBundle\Handler\AuthenticationHandler:
+    App\Handler\AuthenticationHandler:
         arguments: ["@service_container","@router"]
 
 #    app.routing_loader:

@@ -4,10 +4,6 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "AppBundle\\": "src/AppBundle",
-            "Closas\\AdminBundle\\": "src/Closas/AdminBundle",
-            "Closas\\ShopBundle\\": "src/Closas/ShopBundle",
-            "Closas\\UserBundle\\": "src/Closas/UserBundle",
             "Glifery\\EntityHiddenTypeBundle\\": "src/Glifery/EntityHiddenTypeBundle",
             "DoctrineExtensions\\Query\\Mysql\\": "src/DoctrineExtensions/Query/Mysql",
             "App\\": "src/"
@@ -15,11 +11,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\ClosasAdminBundle\\": "tests/ClosasAdminBundle",
-            "Tests\\ClosasShopBundle\\": "tests/ClosasShopBundle",
-            "Tests\\ClosasUserBundle\\": "tests/ClosasUserBundle",
-            "Tests\\AppBundle\\": "tests/AppBundle",
-            "Tests\\AcmeTestBundle\\": "tests/AcmeTestBundle",
             "App\\Tests\\": "tests/"
         }
     },
