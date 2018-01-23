@@ -16,6 +16,7 @@ use Closas\ShopBundle\Entity\Map\QuoteProductAdditional;
 use Closas\ShopBundle\Helper\Calendar As HelperCalendar;
 use Closas\ShopBundle\Helper\Common As HelperCommon;
 use Closas\ShopBundle\Helper\Cart As HelperCart;
+use Closas\ShopBundle\Helper\Product As HelperProduct;
 
 /**
  * @Route("/cart")
@@ -181,7 +182,7 @@ class CartController extends Controller {
      * @Route("/remove/{id}/", defaults={"id" = ""}, name="remove_cart")
      * @Route("/remove/{id}/{additional_id}", defaults={"additional_id" = ""}, name="remove_cart")
      */
-    public function removeAction($id = "", $additional_id = "") {
+    public function removeAction($id = "", $additional_id = "", HelperProduct $helperProduct, HelperCommon $helperCommon) {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
             return $this->render('ClosasShopBundle/Cart/empty.html.twig');
@@ -191,9 +192,9 @@ class CartController extends Controller {
         $quote = $reposQuote->findOneBy(array('id' => $quote_id));
         $em = $this->getDoctrine()->getManager();
         if ($id != '') {
-            $product = $this->get('helper.product')->getProduct($id);
+            $product = $helperProduct->getProduct($id);
             if ($additional_id) {
-                $additional = $this->get('helper.product')->getProduct($additional_id);
+                $additional = $helperProduct->getProduct($additional_id);
                 $reposQuoteProductAdditional = $this->getDoctrine()->getRepository('ClosasShopBundle:Map\QuoteProductAdditional');
                 $quoteProductAdditional = $reposQuoteProductAdditional->findOneBy(
                         array(
@@ -250,7 +251,7 @@ class CartController extends Controller {
                 $em->flush();
             }
         }
-        $basket = $this->get('helper.common')->setBasket();
+        $basket = $helperCommon->setBasket();
         $this->container->get('session')->set('basket_items', $basket->getBasketItems());
         $this->container->get('session')->set('price_subtotal', $basket->getSubtotal());
         return $this->redirectToRoute('index_cart');
