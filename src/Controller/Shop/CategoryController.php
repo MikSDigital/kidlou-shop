@@ -11,6 +11,8 @@ use App\Service\Navigation As ServiceNavigation;
 use App\Service\Product As ServiceProduct;
 use App\Service\Common As ServiceCommon;
 use App\Service\Order As ServiceOrder;
+use App\Entity\Quote;
+use App\Entity\Map\QuoteProductAdditional;
 
 /**
  * @Route("/category")
@@ -69,7 +71,6 @@ class CategoryController extends Controller {
     private function getDetail($id, $arr_route_name, $request, $serviceProduct, $serviceOrder) {
         $product = $serviceProduct->getProduct($id);
         $children = $serviceProduct->getChildrenByParent($id);
-
         $arr_additionals_select = array();
         if (!is_null($request->query->get('additionals'))) {
             $arr_additionals_select = explode(',', $request->query->get('additionals'));
@@ -80,7 +81,7 @@ class CategoryController extends Controller {
             if ($quote_id) {
 
                 $quote = $this->getDoctrine()->getRepository(Quote::class)->findOneBy(array('id' => $quote_id));
-                $additionals = $this->getDoctrine()->getRepository(Map\QuoteProductAdditional::class)->findBy(array(
+                $additionals = $this->getDoctrine()->getRepository(QuoteProductAdditional::class)->findBy(array(
                     'quote' => $quote,
                     'parent' => $product->getId()
                         )

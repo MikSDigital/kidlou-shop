@@ -9,29 +9,29 @@ security:
                 providers: [db_admin_username, db_admin_email]
         db_admin_username:
             entity:
-                class: ClosasAdminBundle:User
+                class: App\Entity\AdminUser
                 property: username
         db_admin_email:
             entity:
-                class: ClosasAdminBundle:User
+                class: App\Entity\AdminUser
                 property: email
         frontend_provider:
             chain:
                 providers: [db_user_username, db_user_email]
         db_user_username:
             entity:
-                class: ClosasUserBundle:User
+                class: App\Entity\User
                 property: username
         db_user_email:
             entity:
-                class: ClosasUserBundle:User
+                class: App\Entity\AdminUser
                 property: email
 
 
     encoders:
-        Closas\AdminBundle\Entity\User:
+        App\Entity\AdminUser:
             algorithm: bcrypt
-        Closas\UserBundle\Entity\User:
+        App\Entity\User:
             algorithm: bcrypt
     #    Symfony\Component\Security\Core\User\User: plaintext
 

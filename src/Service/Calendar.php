@@ -14,6 +14,7 @@ use App\Entity\Order;
 use App\Entity\Order\Status;
 use App\Entity\Deliver;
 use App\Entity\Deliver\Standard;
+use App\Entity\Map\QuoteProductAdditional;
 
 class Calendar {
 
@@ -507,7 +508,7 @@ class Calendar {
         $quote_id = $this->container->get('session')->get('quote_id');
         if ($quote_id) {
             $quote = $this->em->getRepository(Quote::class)->findOneById($quote_id);
-            $additionals = $this->em->getRepository(Map\QuoteProductAdditional::class)->findBy(array('quote' => $quote, 'parent' => $product_id));
+            $additionals = $this->em->getRepository(QuoteProductAdditional::class)->findBy(array('quote' => $quote, 'parent' => $product_id));
             $arr_additionals = array();
             foreach ($additionals as $additional) {
                 $arr_additionals[] = $this->em->getRepository(Product::class)->findOneById($additional->getChildren());

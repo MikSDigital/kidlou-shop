@@ -21,7 +21,6 @@ closas_shop:
     requirements:
         _locale: fr|de|en|es
 
-
 #app:
 #    resource: "@AppBundle/Controller/"
 #    type:     annotation
