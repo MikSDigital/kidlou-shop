@@ -8,6 +8,12 @@ use App\Service\Calendar\Day;
 use App\Service\Common;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+use App\Entity\Product;
+use App\Entity\Quote;
+use App\Entity\Order;
+use App\Entity\Order\Status;
+use App\Entity\Deliver;
+use App\Entity\Deliver\Standard;
 
 class Calendar {
 
@@ -309,7 +315,7 @@ class Calendar {
      * @return type deliver_standard
      */
     private function getDeliverStandard() {
-        return $this->em->getRepository(Deliver\Standard::class)->findOneBy([]);
+        return $this->em->getRepository(Standard::class)->findOneBy([]);
     }
 
     /**
@@ -607,7 +613,7 @@ class Calendar {
      * @return type $orders
      */
     private function getCurrentOrders($product_id) {
-        $statutes = $this->em->getRepository(Order\Status::class)->findAll();
+        $statutes = $this->em->getRepository(Status::class)->findAll();
         $arr_status = array();
         foreach ($statutes as $status) {
             if ($status->getName() != 'canceled') {

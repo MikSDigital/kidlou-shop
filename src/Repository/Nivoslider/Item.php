@@ -13,9 +13,9 @@ class Item extends \Doctrine\ORM\EntityRepository {
     public function findAllByArray($lang_short_name, $arr_items_ids) {
 
         $em = $this->getEntityManager();
-        $lang = $em->getRepository('ClosasShopBundle:Language')->findOneBy(array('short_name' => $lang_short_name));
+        $lang = $em->getRepository('App\Entity\Language')->findOneBy(array('short_name' => $lang_short_name));
         $em = $this->getEntityManager();
-        $result = $em->getRepository('ClosasShopBundle:Nivoslider\Item')
+        $result = $em->getRepository('App\Entity\Nivoslider\Item')
                 ->createQueryBuilder('i')
                 ->select('i')
                 ->where('i.lang=:langId')

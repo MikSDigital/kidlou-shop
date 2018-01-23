@@ -18,36 +18,36 @@ class Quote extends \Doctrine\ORM\EntityRepository {
      */
     public function getBasketItems($quote_id, $image_name_product, $image_name_children, $lang) {
         $query = $this->getEntityManager()
-                ->createQuery('SELECT pis.id FROM ClosasShopBundle:Product\Image\Size pis WHERE pis.name=:image_name_product')
+                ->createQuery('SELECT pis.id FROM App\Entity\Product\Image\Size pis WHERE pis.name=:image_name_product')
                 ->setParameter('image_name_product', $image_name_product);
         $product_size = $query->getOneOrNullResult();
         $query = $this->getEntityManager()
                 ->createQuery(
                         'SELECT q.id AS quote_id, DATE_FORMAT(c.date_from,\'%d-%m-%Y\') AS date_from, DATE_FORMAT(c.date_to,\'%d-%m-%Y\') AS date_to, DATE_DIFF(c.date_to, c.date_from) AS count_days, p.url_key, p.id AS parent_id, pd.name AS parent_name, p.sku AS parent_sku, pr.value AS parent_price, pi.name AS parent_imagename, pis.path AS parent_imagepath, qa.children AS children_id,'
-                        . ' (SELECT p_sku.sku FROM ClosasShopBundle:Product p_sku WHERE p_sku.id=qa.children) AS children_sku, '
-                        . ' (SELECT p_url_key.url_key FROM ClosasShopBundle:Product p_url_key WHERE p_url_key.id=qa.children) AS children_url_key, '
-                        . ' (SELECT pd_name.name FROM ClosasShopBundle:Product p_name '
-                        . '         INNER JOIN ClosasShopBundle:Product\Description pd_name WITH p_name.id=pd_name.product '
-                        . '         INNER JOIN ClosasShopBundle:Language l_name WITH pd_name.lang=l_name.id AND l_name.short_name=:short_name'
+                        . ' (SELECT p_sku.sku FROM App\Entity\Product p_sku WHERE p_sku.id=qa.children) AS children_sku, '
+                        . ' (SELECT p_url_key.url_key FROM App\Entity\Product p_url_key WHERE p_url_key.id=qa.children) AS children_url_key, '
+                        . ' (SELECT pd_name.name FROM App\Entity\Product p_name '
+                        . '         INNER JOIN App\Entity\Product\Description pd_name WITH p_name.id=pd_name.product '
+                        . '         INNER JOIN App\Entity\Language l_name WITH pd_name.lang=l_name.id AND l_name.short_name=:short_name'
                         . ' WHERE p_name.id=qa.children) AS children_name, '
-                        . ' (SELECT pi_image.name FROM ClosasShopBundle:Product p_image '
-                        . '         LEFT JOIN ClosasShopBundle:Product\Image pi_image WITH p_image.id=pi_image.product'
-                        . '         INNER JOIN ClosasShopBundle:Product\Image\Size pis_image WITH pi_image.size=pis_image.id AND pis_image.name=:image_name_children AND pi_image.is_default=1'
+                        . ' (SELECT pi_image.name FROM App\Entity\Product p_image '
+                        . '         LEFT JOIN App\Entity\Product\Image pi_image WITH p_image.id=pi_image.product'
+                        . '         INNER JOIN App\Entity\Product\Image\Size pis_image WITH pi_image.size=pis_image.id AND pis_image.name=:image_name_children AND pi_image.is_default=1'
                         . ' WHERE p_image.id=qa.children) AS children_imagename, '
-                        . ' (SELECT pis_path.path FROM ClosasShopBundle:Product p_path '
-                        . '         LEFT JOIN ClosasShopBundle:Product\Image pi_path WITH p_path.id=pi_path.product '
-                        . '         INNER JOIN ClosasShopBundle:Product\Image\Size pis_path WITH pi_path.size=pis_path.id AND pis_path.name=:image_name_children AND pi_path.is_default=1'
+                        . ' (SELECT pis_path.path FROM App\Entity\Product p_path '
+                        . '         LEFT JOIN App\Entity\Product\Image pi_path WITH p_path.id=pi_path.product '
+                        . '         INNER JOIN App\Entity\Product\Image\Size pis_path WITH pi_path.size=pis_path.id AND pis_path.name=:image_name_children AND pi_path.is_default=1'
                         . ' WHERE p_path.id=qa.children) AS children_imagepath, '
-                        . ' (SELECT pr_price.value FROM ClosasShopBundle:Price pr_price WHERE pr_price.product=qa.children) AS children_price'
-                        . ' FROM ClosasShopBundle:Quote q'
-                        . ' INNER JOIN ClosasShopBundle:Calendar c WITH q.id = c.quote AND q.id=:quote_id'
-                        . ' INNER JOIN ClosasShopBundle:Product p WITH c.product = p.id'
-                        . ' INNER JOIN ClosasShopBundle:Product\Description pd WITH p.id = pd.product'
-                        . ' INNER JOIN ClosasShopBundle:Price pr WITH p.id = pr.product'
-                        . ' INNER JOIN ClosasShopBundle:Language l WITH pd.lang = l.id AND l.short_name=:short_name'
-                        . ' LEFT JOIN ClosasShopBundle:Product\Image pi WITH p.id = pi.product AND pi.is_default=1 AND pi.size = :size'
-                        . ' LEFT JOIN ClosasShopBundle:Product\Image\Size pis WITH pi.size = pis.id AND pis.name = :image_name_product'
-                        . ' LEFT JOIN ClosasShopBundle:Map\QuoteProductAdditional qa WITH p.id=qa.parent AND qa.quote=:quote_id'
+                        . ' (SELECT pr_price.value FROM App\Entity\Price pr_price WHERE pr_price.product=qa.children) AS children_price'
+                        . ' FROM App\Entity\Quote q'
+                        . ' INNER JOIN App\Entity\Calendar c WITH q.id = c.quote AND q.id=:quote_id'
+                        . ' INNER JOIN App\Entity\Product p WITH c.product = p.id'
+                        . ' INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product'
+                        . ' INNER JOIN App\Entity\Price pr WITH p.id = pr.product'
+                        . ' INNER JOIN App\Entity\Language l WITH pd.lang = l.id AND l.short_name=:short_name'
+                        . ' LEFT JOIN App\Entity\Product\Image pi WITH p.id = pi.product AND pi.is_default=1 AND pi.size = :size'
+                        . ' LEFT JOIN App\Entity\Product\Image\Size pis WITH pi.size = pis.id AND pis.name = :image_name_product'
+                        . ' LEFT JOIN App\Entity\Map\QuoteProductAdditional qa WITH p.id=qa.parent AND qa.quote=:quote_id'
                         . ' GROUP BY p.sku, c.date_from, children_sku'
                 )
                 ->setParameter('quote_id', $quote_id)

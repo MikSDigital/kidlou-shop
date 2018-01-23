@@ -5,6 +5,8 @@ namespace App\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Product As EntityProduct;
+use App\Entity\Map\ProductAdditional;
 use App\Service\Common;
 
 class Product {
@@ -87,7 +89,7 @@ class Product {
         $offset = ($page * $limit_page) - $limit_page;
 
         $products = $this->em
-                ->getRepository(Product::class)
+                ->getRepository(EntityProduct::class)
                 ->findCategories($arr_category, $offset, $limit_page);
 
         $this->setCountPages($arr_category);
@@ -102,7 +104,7 @@ class Product {
         }
 
         $products = $this->em
-                ->getRepository(Product::class)
+                ->getRepository(EntityProduct::class)
                 ->findCategories($arr_category);
         $this->count_pages = ceil(count($products) / $limit_page);
     }
@@ -125,7 +127,7 @@ class Product {
 
     public function getProduct($url_key) {
         $product = $this->em
-                ->getRepository(Product::class)
+                ->getRepository(EntityProduct::class)
                 ->findOneBy(array('url_key' => $url_key));
 //
 //
@@ -137,7 +139,7 @@ class Product {
         $arr_decrypt = explode('__', $this->getCommon()->decrypt($encryptstr));
         $product_id = trim($arr_decrypt[count($arr_decrypt) - 1]);
         $product = $this->em
-                ->getRepository(Product::class)
+                ->getRepository(EntityProduct::class)
                 ->findOneById($product_id);
 //
         return $this->setCurrentDescriptionByLocale($product);
@@ -166,13 +168,13 @@ class Product {
     public function getChildrenByParent($id) {
         $product = $this->getProduct($id);
         $children = $this->em
-                ->getRepository(Map\ProductAdditional::class)
+                ->getRepository(ProductAdditional::class)
                 ->findByParent($product->getId());
 
         $products = new ArrayCollection();
         foreach ($children as $child) {
             $products[] = $this->em
-                    ->getRepository(Product::class)
+                    ->getRepository(EntityProduct::class)
                     ->findOneById($child->getChildren());
         }
         $children = new ArrayCollection();
@@ -185,13 +187,13 @@ class Product {
 
     public function getChildrenByRealParent($id) {
         $children = $this->em
-                ->getRepository(Map\ProductAdditional::class)
+                ->getRepository(ProductAdditional::class)
                 ->findByParent($id);
 
         $products = new ArrayCollection();
         foreach ($children as $child) {
             $products[] = $this->em
-                    ->getRepository(Product::class)
+                    ->getRepository(EntityProduct::class)
                     ->findOneById($child->getChildren());
         }
 

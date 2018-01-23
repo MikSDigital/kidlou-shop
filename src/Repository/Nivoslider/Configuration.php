@@ -12,7 +12,7 @@ class Configuration extends \Doctrine\ORM\EntityRepository {
 
     public function findFirst() {
         $em = $this->getEntityManager();
-        $result = $em->getRepository('ClosasShopBundle:Nivoslider\Configuration')
+        $result = $em->getRepository('App\Entity\Nivoslider\Configuration')
                 ->createQueryBuilder('e')
                 ->select('e')
                 ->setMaxResults(1)

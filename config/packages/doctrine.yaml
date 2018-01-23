@@ -31,24 +31,6 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
-#            Closas\ShopBundle:
-#                is_bundle: false
-#                type: annotation
-#                dir: '%kernel.project_dir%/src/Closas/ShopBundle/Entity'
-#                prefix: 'Closas\ShopBundle\Entity'
-#                alias: ClosasShopBundle
-#            Closas\AdminBundle:
-#                is_bundle: false
-#                type: annotation
-#                dir: '%kernel.project_dir%/src/Closas/AdminBundle/Entity'
-#                prefix: 'Closas\AdminBundle\Entity'
-#                alias: ClosasAdminBundle
-#            Closas\UserBundle:
-#                is_bundle: false
-#                type: annotation
-#                dir: '%kernel.project_dir%/src/Closas/UserBundle/Entity'
-#                prefix: 'Closas\UserBundle\Entity'
-#                alias: ClosasUserBundle
             App\DoctrineExtensions\Query:
                 is_bundle: false
                 type: annotation

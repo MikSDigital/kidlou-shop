@@ -70,37 +70,10 @@ services:
         tags: ['controller.service_arguments']
 
 
-
-#    AppBundle\Controller\:
-#        resource: '../src/AppBundle/Controller'
-#        public: true
-#        tags: ['controller.service_arguments']
-
-#    Closas\ShopBundle\Controller\:
-#        resource: '../src/Closas/ShopBundle/Controller'
-#        public: true
-#        tags: ['controller.service_arguments']
-
-#    Closas\UserBundle\Controller\:
-#        resource: '../src/Closas/UserBundle/Controller'
-#        public: true
-#        tags: ['controller.service_arguments']
-
-#    Closas\AdminBundle\Controller\:
-#        resource: '../src/Closas/AdminBundle/Controller'
-#        public: true
-#        tags: ['controller.service_arguments']
-
-#    Closas\AdminBundle\Listener\:
-#        resource: '../src/Closas/AdminBundle/Listener    '
-#        public: true
-#        tags: ['controller.service_arguments']
-
     Psr\Log\LoggerInterface: "@logger"
 
 
-
-    Closas\ShopBundle\Helper\ImageResizer:
+    App\Service\ImageResizer:
 #    helper.imageresizer:
 #        class: Closas\ShopBundle\Helper\ImageResizer
 

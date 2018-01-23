@@ -21,8 +21,8 @@ class Order extends \Doctrine\ORM\EntityRepository {
 
         $query = $this->getEntityManager()
                 ->createQuery(
-                        'SELECT sum(oi.price) AS price FROM ClosasShopBundle:Calendar c'
-                        . ' INNER JOIN ClosasShopBundle:Order\Item oi WITH c.id = oi.calendar AND c.order = :order'
+                        'SELECT sum(oi.price) AS price FROM App\Entity\Calendar c'
+                        . ' INNER JOIN App\Entity\Order\Item oi WITH c.id = oi.calendar AND c.order = :order'
                 )
                 ->setParameter('order', $order);
 
@@ -38,8 +38,8 @@ class Order extends \Doctrine\ORM\EntityRepository {
 
         $query = $this->getEntityManager()
                 ->createQuery(
-                        'SELECT oi.sku, oi.name, oi.price, c.date_from, c.date_to, DATE_DIFF(c.date_to, c.date_from) AS count_days FROM ClosasShopBundle:Calendar c'
-                        . ' INNER JOIN ClosasShopBundle:Order\Item oi WITH c.id = oi.calendar AND c.order = :order'
+                        'SELECT oi.sku, oi.name, oi.price, c.date_from, c.date_to, DATE_DIFF(c.date_to, c.date_from) AS count_days FROM App\Entity\Calendar c'
+                        . ' INNER JOIN App\Entity\Order\Item oi WITH c.id = oi.calendar AND c.order = :order'
                 )
                 ->setParameter('order', $order);
 
@@ -56,13 +56,13 @@ class Order extends \Doctrine\ORM\EntityRepository {
     public function getAllOrderDatas() {
         $query = $this->getEntityManager()
                 ->createQuery(
-                'SELECT o.id, o.order_number, l.name AS lang, o.created, os.name AS status, op.caution_cost + op.subtotal_cost + op.shipping_cost AS cost, GROUP_CONCAT(oa.firstname, \' \', oa.lastname, \'|\', oa.address_typ SEPARATOR \',\') AS address_name FROM ClosasShopBundle:Order o'
-                . ' INNER JOIN ClosasShopBundle:Calendar c WITH o.id = c.order'
-                . ' INNER JOIN ClosasShopBundle:Order\Item oi WITH oi.calendar = c.id'
-                . ' INNER JOIN ClosasShopBundle:Order\Address oa WITH o.id = oa.order'
-                . ' INNER JOIN ClosasShopBundle:Order\Status os WITH os.id = o.status'
-                . ' INNER JOIN ClosasShopBundle:Order\Payment op WITH o.id = op.order'
-                . ' INNER JOIN ClosasShopBundle:Language l WITH o.lang = l.id'
+                'SELECT o.id, o.order_number, l.name AS lang, o.created, os.name AS status, op.caution_cost + op.subtotal_cost + op.shipping_cost AS cost, GROUP_CONCAT(oa.firstname, \' \', oa.lastname, \'|\', oa.address_typ SEPARATOR \',\') AS address_name FROM App\Entity\Order o'
+                . ' INNER JOIN App\Entity\Calendar c WITH o.id = c.order'
+                . ' INNER JOIN App\Entity\Order\Item oi WITH oi.calendar = c.id'
+                . ' INNER JOIN App\Entity\Order\Address oa WITH o.id = oa.order'
+                . ' INNER JOIN App\Entity\Order\Status os WITH os.id = o.status'
+                . ' INNER JOIN App\Entity\Order\Payment op WITH o.id = op.order'
+                . ' INNER JOIN App\Entity\Language l WITH o.lang = l.id'
                 . ' GROUP BY o.id'
         );
 
@@ -82,21 +82,21 @@ class Order extends \Doctrine\ORM\EntityRepository {
                         'SELECT o.id, o.order_number, l.name AS lang, l.short_name AS local_code, o.created, os.name AS status,  op.caution_cost + op.subtotal_cost + op.shipping_cost AS cost, op.subtotal_cost, op.shipping_cost, op.caution_cost, op.cash_cost, op.additional_information, op.payment_name,'
                         . ' (SELECT GROUP_CONCAT(DISTINCT oia_item.parent_product , \'|\', oia_item.children_product, \'|\', DATE_FORMAT(c_item.date_from,\'%d-%m-%Y\'), \'|\', DATE_FORMAT(c_item.date_to,\'%d-%m-%Y\'), \'|\', DATE_DIFF(c_item.date_to, c_item.date_from),\'|\', oi_item.name, \'|\', oi_item.sku, \'|\', oi_item.product_id, \'|\', oi_item.price '
                         . ' ORDER BY c_item.date_from,oi_item.id SEPARATOR \',\')'
-                        . ' FROM ClosasShopBundle:Order o_item'
-                        . ' INNER JOIN ClosasShopBundle:Calendar c_item WITH o_item.id=c_item.order'
-                        . ' INNER JOIN ClosasShopBundle:Order\Item oi_item WITH c_item.id=oi_item.calendar'
-                        . ' LEFT JOIN ClosasShopBundle:Map\OrderItemAdditional oia_item WITH oi_item.id=oia_item.children OR oi_item.id=oia_item.parent'
+                        . ' FROM App\Entity\Order o_item'
+                        . ' INNER JOIN App\Entity\Calendar c_item WITH o_item.id=c_item.order'
+                        . ' INNER JOIN App\Entity\Order\Item oi_item WITH c_item.id=oi_item.calendar'
+                        . ' LEFT JOIN App\Entity\Map\OrderItemAdditional oia_item WITH oi_item.id=oia_item.children OR oi_item.id=oia_item.parent'
                         . ' WHERE o_item.id=o.id) AS item,'
                         . ' GROUP_CONCAT(DISTINCT oa.firstname, \' \', oa.lastname, \'|\', oa.street, \'|\', oa.post_code, \'|\', oa.city, \'|\', oa.country_code, '
                         . ' \'|\', IFNULL(oa.phone,\'NULL\'), \'|\', IFNULL(oa.mobile,\'NULL\'), \'|\', IFNULL(oa.email,\'NULL\'), \'|\', IFNULL(oa.address_typ,\'NULL\')  SEPARATOR \',\') AS address_name '
-                        . ' FROM ClosasShopBundle:Order o'
-                        . ' INNER JOIN ClosasShopBundle:Calendar c WITH o.id = c.order AND o.id = :id'
-                        . ' INNER JOIN ClosasShopBundle:Order\Item oi WITH oi.calendar = c.id'
-                        . ' INNER JOIN ClosasShopBundle:Order\Address oa WITH o.id = oa.order'
-                        . ' INNER JOIN ClosasShopBundle:Order\Status os WITH os.id = o.status'
-                        . ' INNER JOIN ClosasShopBundle:Order\Payment op WITH o.id = op.order'
-                        . ' INNER JOIN ClosasShopBundle:Language l WITH o.lang = l.id'
-                        . ' LEFT JOIN ClosasShopBundle:Map\OrderItemAdditional oia WITH oi.id=oia.parent'
+                        . ' FROM App\Entity\Order o'
+                        . ' INNER JOIN App\Entity\Calendar c WITH o.id = c.order AND o.id = :id'
+                        . ' INNER JOIN App\Entity\Order\Item oi WITH oi.calendar = c.id'
+                        . ' INNER JOIN App\Entity\Order\Address oa WITH o.id = oa.order'
+                        . ' INNER JOIN App\Entity\Order\Status os WITH os.id = o.status'
+                        . ' INNER JOIN App\Entity\Order\Payment op WITH o.id = op.order'
+                        . ' INNER JOIN App\Entity\Language l WITH o.lang = l.id'
+                        . ' LEFT JOIN App\Entity\Map\OrderItemAdditional oia WITH oi.id=oia.parent'
                         . ' GROUP BY o.id'
                 )
                 ->setParameter('id', $id);

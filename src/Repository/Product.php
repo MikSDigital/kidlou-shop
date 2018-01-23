@@ -44,17 +44,17 @@ class Product extends \Doctrine\ORM\EntityRepository {
     public function findShopProducts($name, $lang) {
         $query = $this->getEntityManager()
                 ->createQuery(
-                        "SELECT p.sku, p.url_key, pd.name, IFNULL(pi.name,'placeholder50.jpg') AS image, IFNULL(pis.path,'media/placeholder/') AS path FROM ClosasShopBundle:Product p
-                                INNER JOIN ClosasShopBundle:Product\Description pd WITH p.id = pd.product AND
+                        "SELECT p.sku, p.url_key, pd.name, IFNULL(pi.name,'placeholder50.jpg') AS image, IFNULL(pis.path,'media/placeholder/') AS path FROM App\Entity\Product p
+                                INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product AND
                                 (p.sku LIKE :name
                                 OR pd.name LIKE :name
                                 OR pd.long_text LIKE :name
                                 OR pd.short_text LIKE :name
                                 OR pd.indicies LIKE :name)
-                                INNER JOIN ClosasShopBundle:Product\Typ pt WITH p.typ = pt.id AND pt.name = 'simple'
-                                INNER JOIN ClosasShopBundle:Language l WITH pd.lang = l.id AND l.short_name = :lang
-                                LEFT JOIN ClosasShopBundle:Product\Image pi WITH p.id = pi.product AND pi.is_default = 1 AND pi.size = 1
-                                LEFT JOIN ClosasShopBundle:Product\Image\Size pis WITH pi.size = pis.id
+                                INNER JOIN App\Entity\Product\Typ pt WITH p.typ = pt.id AND pt.name = 'simple'
+                                INNER JOIN App\Entity\Language l WITH pd.lang = l.id AND l.short_name = :lang
+                                LEFT JOIN App\Entity\Product\Image pi WITH p.id = pi.product AND pi.is_default = 1 AND pi.size = 1
+                                LEFT JOIN App\Entity\Product\Image\Size pis WITH pi.size = pis.id
                                 GROUP BY p.sku"
                 )
                 ->setParameter('name', '%' . $name . '%')

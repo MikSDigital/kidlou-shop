@@ -17,6 +17,7 @@ use App\Service\Payment\Typ\Post;
 use App\Service\Payment\Typ\Paypal;
 use App\Entity\User;
 use App\Entity\User\Personal;
+use App\Entity\Calendar As EntityCalendar;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -722,7 +723,7 @@ class Order {
     }
 
     public function getOrderData($product) {
-        return $this->getEm()->getRepository(Calendar::class)->getReservedDates($product
+        return $this->getEm()->getRepository(EntityCalendar::class)->getReservedDates($product
                         , $this->getMonthCurrent(), $this->getYearCurrent()
                         , $this->getMonthBefore(), $this->getYearBefore()
                         , $this->getMonthNext(), $this->getYearNext());

@@ -4,8 +4,6 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Glifery\\EntityHiddenTypeBundle\\": "src/Glifery/EntityHiddenTypeBundle",
-            "DoctrineExtensions\\Query\\Mysql\\": "src/DoctrineExtensions/Query/Mysql",
             "App\\": "src/"
         }
     },

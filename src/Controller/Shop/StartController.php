@@ -21,7 +21,7 @@ class StartController extends Controller {
      */
     public function indexAction(ServiceCommon $serviceCommon, ServiceProduct $serviceProduct, ServiceContent $serviceContent) {
         $slide = $serviceCommon->getNivoSliderItem();
-        $reposNivoslider = $this->getDoctrine()->getRepository(Nivoslider\Configuration::class);
+        $reposNivoslider = $this->getDoctrine()->getRepository(\App\Entity\Nivoslider\Configuration::class);
         $config = $reposNivoslider->findFirst();
         $carousel = $serviceCommon->setCategoryCarousel('category');
         $carouselcatproducts = $carousel->getMainCategories();

@@ -5,6 +5,9 @@ namespace App\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Language;
+use App\Entity\Content As EntityContent;
+use App\Entity\Category;
 use App\Service\Common;
 
 class Content {
@@ -58,7 +61,7 @@ class Content {
 
         $lang = $this->em->getRepository(Language::class)->findOneBy(array('short_name' => $this->request->getLocale()));
         return $this->em
-                        ->getRepository(Content::class)
+                        ->getRepository(EntityContent::class)
                         ->findByGroupUrlKey($url_key, $lang);
     }
 
@@ -73,7 +76,7 @@ class Content {
         $arr_content = array();
         if ($category->getStatus()) {
             $contents = $this->em
-                    ->getRepository(Content::class)
+                    ->getRepository(EntityContent::class)
                     ->findByCategory($category, $lang);
             if (count($contents) > 0) {
                 $arr_content['content'] = $contents;
@@ -100,7 +103,7 @@ class Content {
         foreach ($categories as $category) {
             if ($category->getStatus()) {
                 $contents = $this->em
-                        ->getRepository(Content::class)
+                        ->getRepository(EntityContent::class)
                         ->findByCategory($category, $lang);
                 if (count($contents) > 0) {
                     $arr_content['content'][] = $contents;
@@ -134,7 +137,7 @@ class Content {
         foreach ($arr_category as $key => $category) {
             if ($category->getStatus()) {
                 $contents = $this->em
-                        ->getRepository(Content::class)
+                        ->getRepository(EntityContent::class)
                         ->findByCategory($category, $lang);
                 if (count($contents) > 0) {
                     $isNull = FALSE;
@@ -163,7 +166,7 @@ class Content {
     public function getBlogViewContent($url_key) {
         $lang = $this->em->getRepository(Language::class)->findOneBy(array('short_name' => $this->request->getLocale()));
         $content = $this->em
-                ->getRepository(Content::class)
+                ->getRepository(EntityContent::class)
                 ->findByGroupUrlKey($url_key, $lang);
 
         return $content;

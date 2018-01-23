@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\Navigation As ServiceNavigation;
 use App\Service\Product As ServiceProduct;
 use App\Service\Common As ServiceCommon;
-use App\Service\Order As HelperOrder;
+use App\Service\Order As ServiceOrder;
 
 /**
  * @Route("/category")
@@ -35,7 +35,7 @@ class CategoryController extends Controller {
      * @Route("/{url_key1}/{url_key2}/{url_key3}/{url_key4}/{url_key5}/{url_key6}/{url_key7}/", defaults={"url_key7" = ""}, name="category_product7")
      *
      */
-    public function viewAction($url_key1 = "", $url_key2 = "", $url_key3 = "", $url_key4 = "", $url_key5 = "", $url_key6 = "", $url_key7 = "", Request $request, ServiceNavigation $serviceNavigation, ServiceProduct $serviceProduct, ServiceCommon $serviceCommon, HelperOrder $helperOrder) {
+    public function viewAction($url_key1 = "", $url_key2 = "", $url_key3 = "", $url_key4 = "", $url_key5 = "", $url_key6 = "", $url_key7 = "", Request $request, ServiceNavigation $serviceNavigation, ServiceProduct $serviceProduct, ServiceCommon $serviceCommon, ServiceOrder $serviceOrder) {
         $sitepage = 1;
         $typ = 'product';
         $object = $serviceNavigation->getNavigation($typ, $url_key1, $url_key2, $url_key3, $url_key4, $url_key5, $url_key6, $url_key7);
@@ -46,7 +46,7 @@ class CategoryController extends Controller {
         if (!is_array($object)) {
             // product detail
             $arr_route_name = $serviceNavigation->getRouteName($url_key1, $url_key2, $url_key3, $url_key4, $url_key5, $url_key6, $url_key7);
-            return $this->getDetail($object, $arr_route_name, $request, $serviceProduct, $helperOrder);
+            return $this->getDetail($object, $arr_route_name, $request, $serviceProduct, $serviceOrder);
         } else {
             // categories list
             $products = $serviceProduct->getProducts($object);
@@ -66,7 +66,7 @@ class CategoryController extends Controller {
      * @param type $arr_route_name
      * @return type string
      */
-    private function getDetail($id, $arr_route_name, $request, $serviceProduct, $helperOrder) {
+    private function getDetail($id, $arr_route_name, $request, $serviceProduct, $serviceOrder) {
         $product = $serviceProduct->getProduct($id);
         $children = $serviceProduct->getChildrenByParent($id);
 
@@ -92,8 +92,7 @@ class CategoryController extends Controller {
         }
 
         // get order
-        $calendarorders = $helperOrder->getOrderData($product);
-
+        $calendarorders = $serviceOrder->getOrderData($product);
 
         return $this->render('ClosasShopBundle/Category/detail.html.twig', array(
                     'id' => $id,

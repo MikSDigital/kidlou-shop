@@ -13,9 +13,9 @@ class Calendar extends \Doctrine\ORM\EntityRepository {
     public function getBasketsByQuote($quote) {
         $query = $this->getEntityManager()
                 ->createQuery(
-                        'SELECT p.id AS parent, qpa.children, c.id AS calendar_id FROM ClosasShopBundle:Calendar c'
-                        . ' LEFT JOIN ClosasShopBundle:Map\QuoteProductAdditional qpa WITH qpa.quote = :quote'
-                        . ' INNER JOIN ClosasShopBundle:Product p WITH p.id = c.product AND c.quote = :quote'
+                        'SELECT p.id AS parent, qpa.children, c.id AS calendar_id FROM App\Entity\Calendar c'
+                        . ' LEFT JOIN App\Entity\Map\QuoteProductAdditional qpa WITH qpa.quote = :quote'
+                        . ' INNER JOIN App\Entity\Product p WITH p.id = c.product AND c.quote = :quote'
                 )
                 ->setParameter('quote', $quote);
 
@@ -45,10 +45,10 @@ class Calendar extends \Doctrine\ORM\EntityRepository {
         $datumNext = $yearNext . '-' . $monthNext . '-' . '%';
         $query = $this->getEntityManager()
                 ->createQuery(
-                        'SELECT c.date_from AS date_from FROM ClosasShopBundle:Calendar c'
-                        . ' INNER JOIN ClosasShopBundle:Order o WITH o.id = c.order AND c.date_from LIKE :datum OR c.date_from LIKE :datumBefore OR c.date_from LIKE :datumNext'
-                        . ' INNER JOIN ClosasShopBundle:Order\Item oi WITH oi.calendar = c.id AND oi.sku = :sku'
-                        . ' INNER JOIN ClosasShopBundle:Order\Status os WITH os.id = o.status AND os.id IN (:status)'
+                        'SELECT c.date_from AS date_from FROM App\Entity\Calendar c'
+                        . ' INNER JOIN App\Entity\Order o WITH o.id = c.order AND c.date_from LIKE :datum OR c.date_from LIKE :datumBefore OR c.date_from LIKE :datumNext'
+                        . ' INNER JOIN App\Entity\Order\Item oi WITH oi.calendar = c.id AND oi.sku = :sku'
+                        . ' INNER JOIN App\Entity\Order\Status os WITH os.id = o.status AND os.id IN (:status)'
                 )
                 ->setParameter('datum', $datum)
                 ->setParameter('datumBefore', $datumBefore)

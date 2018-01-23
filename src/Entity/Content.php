@@ -69,7 +69,7 @@ class Content {
     private $categories;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="contents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\AdminUser", inversedBy="contents")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;

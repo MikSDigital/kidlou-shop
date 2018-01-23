@@ -58,7 +58,7 @@ class Category extends \Doctrine\ORM\EntityRepository {
         $parent_id = $this->getCategory();
         $query = $this->getEntityManager()
                 ->createQuery(
-                        'SELECT c FROM ClosasShopBundle:Category c '
+                        'SELECT c FROM App\Entity\Category c '
                         . 'WHERE c.parent_id = :parent_id '
                         . 'ORDER BY c.order ASC'
                 )
