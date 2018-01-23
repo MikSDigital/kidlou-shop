@@ -9,7 +9,7 @@ use App\Entity\Product;
 /**
  * @ORM\Entity
  * @ORM\Table(name="price")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Price")
+ * @ORM\Entity(repositoryClass="App\Repository\Price")
  */
 class Price {
 

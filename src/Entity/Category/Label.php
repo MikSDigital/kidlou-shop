@@ -10,7 +10,7 @@ use App\Entity\Language;
 /**
  * @ORM\Entity
  * @ORM\Table(name="category_label")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Category\Label")
+ * @ORM\Entity(repositoryClass="App\Repository\Category\Label")
  */
 class Label {
 

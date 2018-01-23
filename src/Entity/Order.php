@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="order_")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Order")
+ * @ORM\Entity(repositoryClass="App\Repository\Order")
  */
 class Order {
 

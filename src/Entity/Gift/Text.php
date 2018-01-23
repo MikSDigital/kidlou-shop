@@ -11,7 +11,7 @@ use App\Entity\Language;
 /**
  * @ORM\Entity
  * @ORM\Table(name="gift_text")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Gift\Text")
+ * @ORM\Entity(repositoryClass="App\Repository\Gift\Text")
  */
 class Text {
 

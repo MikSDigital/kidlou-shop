@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="order_address")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Order\Address")
+ * @ORM\Entity(repositoryClass="App\Repository\Order\Address")
  */
 class Address {
 

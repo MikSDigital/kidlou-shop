@@ -10,7 +10,7 @@ use App\Entity\Language;
 /**
  * @ORM\Entity
  * @ORM\Table(name="user_personal")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\User\Personal")
+ * @ORM\Entity(repositoryClass="App\Repository\User\Personal")
  */
 class Personal {
 

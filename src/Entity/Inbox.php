@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="inbox")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Inbox")
+ * @ORM\Entity(repositoryClass="App\Repository\Inbox")
  */
 class Inbox {
 

@@ -9,7 +9,7 @@ use App\Entity\Language;
 /**
  * @ORM\Entity
  * @ORM\Table(name="nivoslider_configuration")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Nivoslider\Configuration")
+ * @ORM\Entity(repositoryClass="App\Repository\Nivoslider\Configuration")
  */
 class Configuration {
 

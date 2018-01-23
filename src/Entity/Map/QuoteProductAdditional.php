@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="quote_product_map_additional")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Map\QuoteProductAdditional")
+ * @ORM\Entity(repositoryClass="App\Repository\Map\QuoteProductAdditional")
  */
 class QuoteProductAdditional {
 

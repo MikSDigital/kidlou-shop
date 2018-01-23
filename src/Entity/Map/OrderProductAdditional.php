@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="order_product_map_additional")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Map\OrderProductAdditional")
+ * @ORM\Entity(repositoryClass="App\Repository\Map\OrderProductAdditional")
  */
 class OrderProductAdditional {
 

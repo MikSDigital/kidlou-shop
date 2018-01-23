@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="deliver")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Deliver")
+ * @ORM\Entity(repositoryClass="App\Repository\Deliver")
  */
 class Deliver {
 

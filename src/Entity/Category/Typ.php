@@ -9,7 +9,7 @@ use App\Entity\Category;
 /**
  * @ORM\Entity
  * @ORM\Table(name="category_typ")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Category\Typ")
+ * @ORM\Entity(repositoryClass="App\Repository\Category\Typ")
  */
 class Typ {
 

@@ -12,7 +12,7 @@ use App\Entity\Quote;
 /**
  * @ORM\Entity
  * @ORM\Table(name="gift_coupon")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Gift\Coupon")
+ * @ORM\Entity(repositoryClass="App\Repository\Gift\Coupon")
  */
 class Coupon {
 

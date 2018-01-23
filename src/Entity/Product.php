@@ -12,7 +12,7 @@ use App\Entity\Product\Description;
 /**
  * @ORM\Entity
  * @ORM\Table(name="product")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Product")
+ * @ORM\Entity(repositoryClass="App\Repository\Product")
  */
 class Product {
 

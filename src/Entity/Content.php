@@ -11,7 +11,7 @@ use App\Entity\Category;
 /**
  * @ORM\Entity
  * @ORM\Table(name="content")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Content")
+ * @ORM\Entity(repositoryClass="App\Repository\Content")
  */
 class Content {
 

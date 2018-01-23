@@ -9,7 +9,7 @@ use App\Entity\Category\Label;
 /**
  * @ORM\Entity
  * @ORM\Table(name="category")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Category")
+ * @ORM\Entity(repositoryClass="App\Repository\Category")
  */
 class Category {
 

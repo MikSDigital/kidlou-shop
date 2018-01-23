@@ -10,7 +10,7 @@ use App\Entity\Product;
 /**
  * @ORM\Entity
  * @ORM\Table(name="product_description")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Product\Description")
+ * @ORM\Entity(repositoryClass="App\Repository\Product\Description")
  */
 class Description {
 

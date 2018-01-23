@@ -14,12 +14,12 @@
 #    requirements:
 #        _locale: fr|de|en|es
 
-#closas_shop:
-#    resource: ../../src/Closas/ShopBundle/Controller/
-#    type:     annotation
-#    prefix:   /{_locale}/
-#    requirements:
-#        _locale: fr|de|en|es
+closas_shop:
+    resource: ../../src/Controller/Shop/
+    type:     annotation
+    prefix:   /{_locale}/
+    requirements:
+        _locale: fr|de|en|es
 
 
 #app:
@@ -28,14 +28,14 @@
 #    prefix:   /
 
 # redirecting the root
-root:
-    path: /
-    requirements:
-            _locale: fr|de|en|es
-    defaults:
-        _controller: App\Controller\Shop\StartController::indexAction
+#homepage:
+#    path: /fr/
+#    requirements:
+#            _locale: fr|de|en|es
+#    defaults:
+#        _controller: App\Controller\Shop\StartController::indexAction
         #path: /fr/
-        prefix:   /{_locale}/
-        permanent: true
+#        prefix:   /{_locale}/
+#        permanent: true
 
 

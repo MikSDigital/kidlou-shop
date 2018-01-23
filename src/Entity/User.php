@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="user_user")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\User")
+ * @ORM\Entity(repositoryClass="App\Repository\User")
  */
 class User implements AdvancedUserInterface, \Serializable {
 

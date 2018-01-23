@@ -9,7 +9,7 @@ use App\Entity\Mail\Send;
 /**
  * @ORM\Entity
  * @ORM\Table(name="mail")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Mail")
+ * @ORM\Entity(repositoryClass="App\Repository\Mail")
  */
 class Mail {
 

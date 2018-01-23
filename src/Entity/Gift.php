@@ -12,7 +12,7 @@ use App\Entity\Gift\Coupon;
 /**
  * @ORM\Entity
  * @ORM\Table(name="gift")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Gift")
+ * @ORM\Entity(repositoryClass="App\Repository\Gift")
  */
 class Gift {
 

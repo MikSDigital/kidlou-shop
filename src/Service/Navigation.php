@@ -5,6 +5,8 @@ namespace App\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+use App\Entity\Category;
+use App\Entity\Product;
 
 class Navigation {
 

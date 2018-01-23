@@ -8,7 +8,7 @@ use App\Entity\Mail;
 /**
  * @ORM\Entity
  * @ORM\Table(name="mail_send")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\Mail\Send")
+ * @ORM\Entity(repositoryClass="App\Repository\Mail\Send")
  */
 class Send {
 
