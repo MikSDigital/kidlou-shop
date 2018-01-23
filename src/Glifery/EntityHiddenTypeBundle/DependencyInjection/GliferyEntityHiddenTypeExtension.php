@@ -1,6 +1,6 @@
 <?php
 
-namespace Glifery\EntityHiddenTypeBundle\DependencyInjection;
+namespace App\Glifery\EntityHiddenTypeBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

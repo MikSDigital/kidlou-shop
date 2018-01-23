@@ -591,7 +591,7 @@ class Order {
      */
     public function getInstitutPaymentAsArray($name) {
         return $this->getEm()
-                        ->getRepository('Payment\\' . $name::class)
+                        ->getRepository('Payment\\' . $name . '::class')
                         ->createQueryBuilder('p')
                         ->select('p')
                         ->getQuery()

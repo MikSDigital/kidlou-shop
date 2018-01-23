@@ -69,7 +69,7 @@ class Payment {
         $language = $this->getEm()->getRepository(Language::class)->findOneBy(array('short_name' => $locale));
         // payments
         foreach ($payments as $payment) {
-            $paymentTyp = $this->getEm()->getRepository('Payment\\' . $payment->getName()::class)
+            $paymentTyp = $this->getEm()->getRepository('Payment\\' . $payment->getName() . '::class')
                     ->findOneBy(array('payment' => $payment));
             $name = strtolower($payment->getName());
             $label = $this->getEm()->getRepository(Payment\Lang\Label::class)

@@ -1,6 +1,6 @@
 <?php
 
-namespace Glifery\EntityHiddenTypeBundle\DependencyInjection;
+namespace App\Glifery\EntityHiddenTypeBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

@@ -260,7 +260,7 @@ class Image {
      */
     public function getImageByEntity($entity, $id) {
         if ($id) {
-            $_entity = $this->em->getRepository($entity::class)->findOneBy(array('id' => $id));
+            $_entity = $this->em->getRepository($entity . '::class')->findOneBy(array('id' => $id));
             if (is_null($_entity->getImage())) {
                 $this->fileimage = new Fileimage();
                 $this->is_new = true;

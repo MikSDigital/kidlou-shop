@@ -1,10 +1,10 @@
 <?php
 
-namespace Glifery\EntityHiddenTypeBundle\Form\Type;
+namespace App\Glifery\EntityHiddenTypeBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
-use Glifery\EntityHiddenTypeBundle\Form\DataTransformer\ObjectToIdTransformer;
+use App\Glifery\EntityHiddenTypeBundle\Form\DataTransformer\ObjectToIdTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

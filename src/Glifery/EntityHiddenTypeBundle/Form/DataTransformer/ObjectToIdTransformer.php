@@ -1,6 +1,6 @@
 <?php
 
-namespace Glifery\EntityHiddenTypeBundle\Form\DataTransformer;
+namespace App\Glifery\EntityHiddenTypeBundle\Form\DataTransformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;

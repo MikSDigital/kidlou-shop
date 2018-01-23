@@ -1,6 +1,6 @@
 <?php
 
-namespace Glifery\EntityHiddenTypeBundle;
+namespace App\Glifery\EntityHiddenTypeBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

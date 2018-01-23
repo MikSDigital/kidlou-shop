@@ -1,5 +1,5 @@
 parameters:
-    glifery.entity_hidden_type.entity_form_type.class: Glifery\EntityHiddenTypeBundle\Form\Type\EntityHiddenType
+    glifery.entity_hidden_type.entity_form_type.class: App\Glifery\EntityHiddenTypeBundle\Form\Type\EntityHiddenType
 
 services:
     glifery.entity_hidden_type.entity_form_type:

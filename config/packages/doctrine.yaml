@@ -20,9 +20,9 @@ doctrine:
         auto_mapping: true
         dql:
             string_functions:
-                GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
-                IFNULL: DoctrineExtensions\Query\Mysql\IfNull
-                DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
+                GROUP_CONCAT: App\DoctrineExtensions\Query\Mysql\GroupConcat
+                IFNULL: App\DoctrineExtensions\Query\Mysql\IfNull
+                DATE_FORMAT: App\DoctrineExtensions\Query\Mysql\DateFormat
 
         mappings:
             App:
@@ -31,29 +31,29 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
-            Closas\ShopBundle:
-                is_bundle: false
-                type: annotation
-                dir: '%kernel.project_dir%/src/Closas/ShopBundle/Entity'
-                prefix: 'Closas\ShopBundle\Entity'
-                alias: ClosasShopBundle
-            Closas\AdminBundle:
-                is_bundle: false
-                type: annotation
-                dir: '%kernel.project_dir%/src/Closas/AdminBundle/Entity'
-                prefix: 'Closas\AdminBundle\Entity'
-                alias: ClosasAdminBundle
-            Closas\UserBundle:
-                is_bundle: false
-                type: annotation
-                dir: '%kernel.project_dir%/src/Closas/UserBundle/Entity'
-                prefix: 'Closas\UserBundle\Entity'
-                alias: ClosasUserBundle
-            DoctrineExtensions\Query:
+#            Closas\ShopBundle:
+#                is_bundle: false
+#                type: annotation
+#                dir: '%kernel.project_dir%/src/Closas/ShopBundle/Entity'
+#                prefix: 'Closas\ShopBundle\Entity'
+#                alias: ClosasShopBundle
+#            Closas\AdminBundle:
+#                is_bundle: false
+#                type: annotation
+#                dir: '%kernel.project_dir%/src/Closas/AdminBundle/Entity'
+#                prefix: 'Closas\AdminBundle\Entity'
+#                alias: ClosasAdminBundle
+#            Closas\UserBundle:
+#                is_bundle: false
+#                type: annotation
+#                dir: '%kernel.project_dir%/src/Closas/UserBundle/Entity'
+#                prefix: 'Closas\UserBundle\Entity'
+#                alias: ClosasUserBundle
+            App\DoctrineExtensions\Query:
                 is_bundle: false
                 type: annotation
                 dir: '%kernel.project_dir%/src/DoctrineExtensions/Query/Mysql'
-                prefix: 'DoctrineExtensions\Query\Mysql'
+                prefix: 'App\DoctrineExtensions\Query\Mysql'
                 alias: DoctrineExtensions
 
 

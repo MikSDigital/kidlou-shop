@@ -203,7 +203,7 @@ class Common {
      * @return language $language
      */
     public function getLanguage() {
-        return $this->em->getRepository(Language::class)
+        return $this->em->getRepository(\App\Entity\Language::class)
                         ->findOneBy(array('short_name' => $this->getRequest()->getLocale()));
     }
 
@@ -212,7 +212,7 @@ class Common {
      * @return array
      */
     public function getLanguageAsArray() {
-        $langs = $this->em->getRepository(Language::class)->findAll();
+        $langs = $this->em->getRepository(\App\Entity\Language::class)->findAll();
         $arr_lang = array();
         foreach ($langs as $lang) {
             $arr_lang[$lang->getId()] = $lang->getName();
@@ -225,7 +225,7 @@ class Common {
      * @return $langid
      */
     public function getLanguageId($shortname) {
-        $langs = $this->em->getRepository(Language::class)->findAll();
+        $langs = $this->em->getRepository(\App\Entity\Language::class)->findAll();
         $langid = 0;
         foreach ($langs as $lang) {
             if ($lang->getShortName() == $shortname) {
@@ -279,7 +279,7 @@ class Common {
      */
     public function getAdditional($additionalid) {
         return $this->em
-                        ->getRepository(Product::class)
+                        ->getRepository(\App\Entity\Product::class)
                         ->findOneById($additionalid);
     }
 
@@ -291,7 +291,7 @@ class Common {
      */
     public function getAdditionalEncrypt($additionalid) {
         $product = $this->em
-                ->getRepository(Product::class)
+                ->getRepository(\App\Entity\Product::class)
                 ->findOneById($additionalid);
         return $this->encrypt($product);
     }
@@ -373,7 +373,7 @@ class Common {
      * set zone
      */
     private function setZone() {
-        $zones = $this->em->getRepository(Zone::class)->findAll();
+        $zones = $this->em->getRepository(\App\Entity\Zone::class)->findAll();
         foreach ($zones as $zone) {
             $this->zone = $zone;
         }
@@ -391,7 +391,7 @@ class Common {
      * set caution
      */
     private function setCaution() {
-        $cautions = $this->em->getRepository(Caution::class)->findAll();
+        $cautions = $this->em->getRepository(\App\Entity\Caution::class)->findAll();
         foreach ($cautions as $caution) {
             $this->caution = $caution;
         }
@@ -409,7 +409,7 @@ class Common {
      * set shipping
      */
     private function setShippings() {
-        $this->shippings = $this->em->getRepository(Shipping::class)->findBy(array(), array('price_limit' => 'ASC'));
+        $this->shippings = $this->em->getRepository(\App\Entity\Shipping::class)->findBy(array(), array('price_limit' => 'ASC'));
     }
 
     /**
@@ -444,7 +444,7 @@ class Common {
      */
     public function getGeodataPlzCity() {
         $plzname = $this->request->get('term');
-        $reposPostalcode = $this->em->getRepository(Postalcode::class);
+        $reposPostalcode = $this->em->getRepository(\App\Entity\Postalcode::class);
         $postalcodes = $reposPostalcode->findAllPlzName($plzname);
         $arr_res = array();
         foreach ($postalcodes as $key => $postalcode) {
@@ -461,7 +461,7 @@ class Common {
     public function getSearchData($helperNavigation) {
         $name = $this->getRequest()->get('term');
         $lang = $this->getRequest()->getLocale();
-        $products = $this->em->getRepository(Product::class)->findShopProducts($name, $lang);
+        $products = $this->em->getRepository(\App\Entity\Product::class)->findShopProducts($name, $lang);
         $arr_res = array();
         foreach ($products as $key => $product) {
             $arr_res[$key]["value"] = $product['sku'];
@@ -498,16 +498,16 @@ class Common {
         $this->navlabelcollection = array();
         if (!$isFrontend) {
             $this->navcollection = $this->em
-                    ->getRepository(Category::class)
+                    ->getRepository(\App\Entity\Category::class)
                     ->findAll();
         } else {
             $this->navcollection = $this->em
-                    ->getRepository(Category::class)
+                    ->getRepository(\App\Entity\Category::class)
                     ->findBy(array('status' => 1), array('level' => 'ASC', 'order' => 'ASC'));
         }
-        $lang = $this->em->getRepository(Language::class)->findOneBy(array('short_name' => $this->request->getLocale()));
+        $lang = $this->em->getRepository(\App\Entity\Language::class)->findOneBy(array('short_name' => $this->request->getLocale()));
         $this->navlabelcollection = $this->em
-                ->getRepository(Category\Label::class)
+                ->getRepository(\App\Entity\Category\Label::class)
                 ->findBy(array('lang' => $lang));
 
         foreach ($this->navcollection as $category) {
@@ -596,7 +596,7 @@ class Common {
     private function createUrlPath($category, $root = 'root') {
         if ($category && $category->getUrlKey() != $root) {
             $urlStr = $category->getUrlKey();
-            $category = $this->em->getRepository(Category::class)->findOneById($category->getParentId());
+            $category = $this->em->getRepository(\App\Entity\Category::class)->findOneById($category->getParentId());
             if ($this->createUrlPath($category, $root) != '') {
                 $slash = '/';
             } else {
@@ -613,17 +613,17 @@ class Common {
      * @return array
      */
     public function getNivoSliderItem() {
-        $slideLists = $this->em->getRepository(Nivoslider::class)->findBy(array('status' => TRUE));
+        $slideLists = $this->em->getRepository(\App\Entity\Nivoslider::class)->findBy(array('status' => TRUE));
         $arr_slider_ids = array();
         foreach ($slideLists as $slide) {
             $arr_slider_ids[] = $slide->getId();
         }
         $slide = $this->em
-                ->getRepository(Nivoslider\Item::class)
+                ->getRepository(\App\Entity\Nivoslider\Item::class)
                 ->findAllByArray($this->request->getLocale(), $arr_slider_ids);
 
         $nivoConfig = $this->em
-                ->getRepository(Nivoslider\Configuration::class)
+                ->getRepository(\App\Entity\Nivoslider\Configuration::class)
                 ->findFirst();
 
         $array2 = array();
@@ -711,14 +711,14 @@ class Common {
         }
 
         foreach ($arr_main_category as $main_catid => $category) {
-            $this->arr_cat['maincategories'][$main_catid] = $this->em->getRepository(Category::class)->findOneById($main_catid);
+            $this->arr_cat['maincategories'][$main_catid] = $this->em->getRepository(\App\Entity\Category::class)->findOneById($main_catid);
         }
 
 
 // create categories
         foreach ($arr_group_cats as $main_catid => $arr_category) {
             foreach ($arr_category as $categoryid) {
-                $this->arr_cat['categories'][$main_catid][] = $this->em->getRepository(Category::class)->findOneById($categoryid);
+                $this->arr_cat['categories'][$main_catid][] = $this->em->getRepository(\App\Entity\Category::class)->findOneById($categoryid);
             }
         }
         return $this;
@@ -742,11 +742,11 @@ class Common {
      */
     public function getNavigation2($arr_wrap = '') {
         $this->navcollection = $this->em
-                ->getRepository(Category::class)
+                ->getRepository(\App\Entity\Category::class)
                 ->findAll();
 
         $this->navlabelcollection = $this->em
-                ->getRepository(Category\Label::class)
+                ->getRepository(\App\Entity\Category\Label::class)
                 ->findAll();
         $str = '<ul>';
         foreach ($this->navcollection as $category) {
@@ -791,7 +791,7 @@ class Common {
     }
 
     public function getCategoryTyp($optionval = '') {
-        $catTyps = $this->em->getRepository(Category\Typ::class)
+        $catTyps = $this->em->getRepository(\App\Entity\Category\Typ::class)
                 ->findAll();
         $html = '<select class = "select-category-typ form-control">';
         foreach ($catTyps as $key => $catTyp) {
@@ -828,7 +828,7 @@ class Common {
      * @return type collection $languages
      */
     public function getLanguages() {
-        return $this->em->getRepository(Language::class)
+        return $this->em->getRepository(\App\Entity\Language::class)
                         ->findAll();
     }
 
@@ -867,8 +867,8 @@ class Common {
             return FALSE;
         }
 
-        $quote = $this->em->getRepository(Quote::class)->findOneById($quote_id);
-        $basketsByQuote = $this->em->getRepository(Calendar::class)->getBasketsByQuote($quote);
+        $quote = $this->em->getRepository(\App\Entity\Quote::class)->findOneById($quote_id);
+        $basketsByQuote = $this->em->getRepository(\App\Entity\Calendar::class)->getBasketsByQuote($quote);
         $arr_basket = array();
         foreach ($basketsByQuote as $basket) {
             //$arr_basket[$basket['parent']][$basket['calendar_id']]['typ_id'] = $basket['typ_id'];
@@ -879,11 +879,11 @@ class Common {
         $obj_basket = array();
         foreach ($arr_basket as $product_id => $baskets) {
             foreach ($baskets as $calendar_id => $basket) {
-                $obj_basket[$product_id]['product'] = $this->em->getRepository(Product::class)->findOneById($product_id);
-                $obj_basket[$product_id]['calendar'][] = $this->em->getRepository(Calendar::class)->findOneById($calendar_id);
+                $obj_basket[$product_id]['product'] = $this->em->getRepository(\App\Entity\Product::class)->findOneById($product_id);
+                $obj_basket[$product_id]['calendar'][] = $this->em->getRepository(\App\Entity\Calendar::class)->findOneById($calendar_id);
                 if (isset($basket['children'])) {
                     foreach ($basket['children'] as $children) {
-                        $obj_basket[$product_id]['children'][$children] = $this->em->getRepository(Product::class)->findOneById($children);
+                        $obj_basket[$product_id]['children'][$children] = $this->em->getRepository(\App\Entity\Product::class)->findOneById($children);
                     }
                 }
             }
@@ -1030,8 +1030,8 @@ class Common {
             $quote_id = 0;
         }
 
-        $quote = $this->em->getRepository(Quote::class)->findOneById($quote_id);
-        $objBasket = $this->em->getRepository(Calendar::class)->getCountByBasket($quote);
+        $quote = $this->em->getRepository(\App\Entity\Quote::class)->findOneById($quote_id);
+        $objBasket = $this->em->getRepository(\App\Entity\Calendar::class)->getCountByBasket($quote);
         return count($objBasket);
     }
 
@@ -1099,7 +1099,7 @@ class Common {
      * @param string $html
      */
     public function sendCommonEmailMessage($subject, $text, $to_email) {
-        $mail = $this->em->getRepository(Mail::class)->findOneBy(array('status' => TRUE, 'type' => 'common'));
+        $mail = $this->em->getRepository(\App\Entity\Mail::class)->findOneBy(array('status' => TRUE, 'type' => 'common'));
         $arr_bcc_mails = '';
         if ($mail->getBccEmail() != '') {
             $arr_bcc_mails = explode(', ', $mail->getBccEmail());

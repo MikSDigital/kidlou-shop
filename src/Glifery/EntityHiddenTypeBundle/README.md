@@ -24,7 +24,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Glifery\EntityHiddenTypeBundle\GliferyEntityHiddenTypeBundle(),
+        new App\Glifery\EntityHiddenTypeBundle\GliferyEntityHiddenTypeBundle(),
         // ...
     );
 }

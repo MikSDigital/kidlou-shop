@@ -35,7 +35,6 @@ services:
         exclude: '../src/{Entity,Migrations,Tests}'
 
 
-
 #    AppBundle\:
 #        resource: '../src/AppBundle/*'
         # you can exclude directories or files
@@ -69,6 +68,7 @@ services:
         resource: '../src/Controller'
         public: true
         tags: ['controller.service_arguments']
+
 
 
 #    AppBundle\Controller\:

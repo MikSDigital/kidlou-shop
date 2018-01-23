@@ -26,9 +26,10 @@ use App\Entity\Inbox;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\DomCrawler\Crawler;
-use PhpImap\Mailbox as ImapMailbox;
-use PhpImap\IncomingMail;
-use PhpImap\IncomingMailAttachment;
+
+//use PhpImap\Mailbox as ImapMailbox;
+//use PhpImap\IncomingMail;
+//use PhpImap\IncomingMailAttachment;
 
 /**
  * @Route("/mail")
@@ -345,7 +346,7 @@ class MailController extends Controller {
         if (!$fs->exists($path)) {
             $fs->mkdir($path, 0755);
         }
-        return new ImapMailbox('{imap.mail.hostpoint.ch:993/imap/ssl}INBOX', 'miguel@closas.ch', 'anne+noe+lio+$#', $path);
+        //return new ImapMailbox('{imap.mail.hostpoint.ch:993/imap/ssl}INBOX', 'miguel@closas.ch', 'anne+noe+lio+$#', $path);
     }
 
 }
