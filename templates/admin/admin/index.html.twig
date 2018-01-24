@@ -1,0 +1,46 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pagetitle %}{{ 'Admin Area' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Products' | trans }}</div><a href="{{ path('admin_product_list') }}"><i class="fa fa-product-hunt" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'CMS' | trans }}</div><a href="{{ path('admin_cms_index') }}"><i class="fa fa-file-text" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Backend Users' | trans }}</div><a href="{{ path('admin_user_list') }}"><i class="fa fa-address-card" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Sliders' | trans }}</div><a href="{{ path('admin_slider_index') }}"><i class="fa fa-sliders" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Payments' | trans }}</div><a href="{{ path('admin_payment_index') }}"><i class="fa fa-credit-card" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Orders' | trans }}</div><a href="{{ path('admin_order_list') }}"><i class="fa fa-reorder" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Mail' | trans }}</div><a href="{{ path('admin_mail_index') }}"><i class="fa fa-inbox" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Zone' | trans }}</div><a href="{{ path('admin_zone_index') }}"><i class="fa fa-google-plus-official" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Import' | trans }}</div><a href="{{ path('admin_upload_list') }}"><i class="fa fa-arrow-down" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Deliver' | trans }}</div><a href="{{ path('admin_deliver_index') }}"><i class="fa fa fa-car" aria-hidden="true"></i></a></div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-info-box"><div class="titel">{{ 'Gift' | trans }}</div><a href="{{ path('admin_gift_list') }}"><i class="fa fa fa-gift" aria-hidden="true"></i></a></div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

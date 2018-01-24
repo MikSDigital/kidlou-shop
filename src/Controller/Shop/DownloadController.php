@@ -20,7 +20,7 @@ class DownloadController extends Controller {
             $product = $this->get('helper.product')->getProduct($id);
             foreach ($product->getDescriptions() as $description) {
                 if ($description->getLang() == $this->get('helper.common')->getLanguage()) {
-                    $_absoluteFilename = $this->get('kernel')->getRootDir() . "/../web/media/import/images/" . $product->getSku() . "/" . $description->getAccessoires() . '.pdf';
+                    $_absoluteFilename = $this->get('kernel')->getRootDir() . "/../public/media/import/images/" . $product->getSku() . "/" . $description->getAccessoires() . '.pdf';
                 }
             }
         }
@@ -30,7 +30,7 @@ class DownloadController extends Controller {
             foreach ($product->getDescriptions() as $description) {
                 if (!is_null($description->getLang())) {
                     if ($description->getLang()->getShortName() == $lang) {
-                        $_absoluteFilename = $this->get('kernel')->getRootDir() . "/../web/media/import/images/" . $product->getSku() . "/" . $description->getAccessoires() . '.pdf';
+                        $_absoluteFilename = $this->get('kernel')->getRootDir() . "/../public/media/import/images/" . $product->getSku() . "/" . $description->getAccessoires() . '.pdf';
                     }
                 }
             }

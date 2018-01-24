@@ -211,7 +211,7 @@
             <div class="col-md-12">
                 <div class="checkout-title"><h1>{{ '4 Review your order' | trans }}</h1></div>
                 <table id="shopping-cart-table" class="data-table cart-table">
-                    {% include 'ClosasShopBundle/Checkout/Cart/body.html.twig' %}
+                    {% include 'shop/checkout/cart/body.html.twig' %}
                     {% set shipping_cost = common.getShippingCost() %}
                     {% set caution_cost = common.getCautionCost() %}
                     {% set price_total = app.session.get('price_subtotal') %}

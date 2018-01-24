@@ -27,7 +27,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Glifery\EntityHiddenTypeBundle\Form\Type\EntityHiddenType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use App\Service\Payment As HelperPayment;
+use App\Service\Payment As ServicePayment;
 
 class UserController extends Controller {
 
@@ -82,7 +82,7 @@ class UserController extends Controller {
     public function newAction($id = null, Request $request) {
 
         if ($id != null) {
-            $reposUser = $this->getDoctrine()->getRepository('ClosasUserBundle:User');
+            $reposUser = $this->getDoctrine()->getRepository(User::class);
             $user = $reposUser->findOneById($id);
         } else {
             $user = new User();
@@ -129,7 +129,7 @@ class UserController extends Controller {
             return $this->redirectToRoute('personal');
         }
 
-        return $this->render('ClosasUserBundle:User:new.html.twig', array(
+        return $this->render('user/user/new.html.twig', array(
                     'form' => $form->createView(),
         ));
     }
@@ -153,7 +153,7 @@ class UserController extends Controller {
      */
     public function personalesAction(Request $request) {
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $user = $this->getDoctrine()->getRepository('ClosasUserBundle:User')->findOneById($user->getId());
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneById($user->getId());
         return array('personals' => $user->getPersonals());
     }
 
@@ -165,7 +165,7 @@ class UserController extends Controller {
     public function personalAction($id = null, Request $request) {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         if ($id != null) {
-            $personal = $this->getDoctrine()->getRepository('ClosasUserBundle:User\Personal')->findOneById($id);
+            $personal = $this->getDoctrine()->getRepository(Personal::class)->findOneById($id);
         } else {
             $personal = new Personal();
         }
@@ -206,9 +206,9 @@ class UserController extends Controller {
                     'data' => $this->getDoctrine()->getRepository(Language::class)->findOneById($this->get('helper.common')->getLanguageId($request->getLocale())),
                 ))
                 ->add('user', EntityHiddenType::class, array(
-                    'class' => 'ClosasUserBundle:User',
+                    'class' => User::class,
                     'property' => 'id', // Mapped property name (default is 'id')
-                    'data' => $this->getDoctrine()->getRepository('ClosasUserBundle:User')->findOneById($user->getId()), // Field value by default
+                    'data' => $this->getDoctrine()->getRepository(User::class)->findOneById($user->getId()), // Field value by default
                 ))
                 ->add('standard', ChoiceType::class, array(
                     'choices' => array($this->get('translator')->trans('yes') => TRUE, $this->get('translator')->trans('no') => FALSE),
@@ -226,7 +226,7 @@ class UserController extends Controller {
                 $em->persist($personal);
                 $em->flush();
                 if ($personal->getStandard()) {
-                    $_personals = $this->getDoctrine()->getRepository('ClosasUserBundle:User\Personal')->findAll();
+                    $_personals = $this->getDoctrine()->getRepository(Personal::class)->findAll();
                     foreach ($_personals as $_personal) {
                         if ($_personal->getId() != $personal->getId()) {
                             $_personal->setStandard(FALSE);
@@ -250,13 +250,13 @@ class UserController extends Controller {
     }
 
     /**
-     * @Template("ClosasUserBundle/User/cart.html.twig")
+     * @Template()
      * @Route("/checkout/cart/", name="user_checkout_cart")
      */
-    public function cartAction(Request $request, HelperPayment $helperPayment) {
+    public function cartAction(Request $request, ServicePayment $servicePayment) {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
+            return $this->render('shop/cart/empty.html.twig');
         }
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $_personal = '';
@@ -273,7 +273,7 @@ class UserController extends Controller {
                 break;
             }
         }
-        $payments = $helperPayment->getPayments();
+        $payments = $servicePayment->getPayments();
         return array(
             'payments' => $payments,
             'personal' => $_personal,

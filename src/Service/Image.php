@@ -212,14 +212,14 @@ class Image {
      * @return string
      */
     private function getWebDir() {
-        return $this->kernel->getRootDir() . '/../web/';
+        return $this->kernel->getRootDir() . '/../public/';
     }
 
     /**
      * @return string
      */
     private function getWebTmpDir() {
-        return $this->kernel->getRootDir() . '/../web/tmp/';
+        return $this->kernel->getRootDir() . '/../public/tmp/';
     }
 
     /**

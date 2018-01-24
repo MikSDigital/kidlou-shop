@@ -203,7 +203,7 @@ class PaymentController extends Controller {
             $em->flush();
             return $this->redirectToRoute('admin_payment_detail_lang', array('id' => $id, 'lang' => $lang));
         }
-        return $this->render('ClosasAdminBundle:Payment:detail.html.twig', array(
+        return $this->render('admin/payment/detail.html.twig', array(
                     'formStatus' => $formStatus->createView(),
                     'formTyp' => $formTyp->createView(),
                     'formLabel' => $formLabel->createView()
@@ -581,7 +581,7 @@ class PaymentController extends Controller {
                 $image = $this->getDoctrine()->getRepository(Image::class)->findOneBy(array('name' => $name));
 // remove File from filesystem
                 foreach ($image->getSizes() as $size) {
-                    $filename = $this->get("kernel")->getRootDir() . '/../web/' . $size->getPath() . $image->getName();
+                    $filename = $this->get("kernel")->getRootDir() . '/../public/' . $size->getPath() . $image->getName();
                     if (is_file($filename)) {
                         unlink($filename);
                     }

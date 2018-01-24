@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'Personales' | trans }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pagetitle %}{{ 'Personales' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info">
+
+        <div class="ym-grid linearize-level-1">
+            <div class="col-md-4">
+                <div class="info-box">
+                    <div class="titel">{{ 'Add Personal' | trans }}</div>
+                    <a href="{{ path('personal') }}">
+                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                    </a>
+                    <div style="padding-bottom: 20px;">&nbsp;</div>
+                </div>
+            </div>
+            {% for personal in personals %}
+                <div class="col-md-4">
+                    <div class="info-box"><div class="titel">{{ personal.street }}</div>
+                        <a href="{{ path('edit_personal', {'id' : personal.id}) }}">
+                            <i class="fa fa-address-card" aria-hidden="true"></i>
+                        </a>
+                        <div style="padding-bottom: 20px;">
+                            {% if personal.standard == TRUE %}
+                                {{ 'default' | trans }}
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

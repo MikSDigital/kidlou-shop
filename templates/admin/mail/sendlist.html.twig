@@ -1,0 +1,32 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Admin Mail' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="col-md-12" style="padding-right: 0;"><button class="btn btn-default admin-element-right admin-element-bottom" onclick="location.href = '{{ path("admin_mail_detail_new") }}';" >{{ 'New Item' | trans }}</button></div>
+        <table class="table table-hover table-bordered table-admin">
+            <thead>
+                <tr class="edit">
+                    <td>{{ 'Id' | trans }}</a></td>
+                    <td class="a-left">{{ 'To email' | trans }}</a></td>
+                    <td class="a-left">{{ 'Subject' | trans }}</a></td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for send in sends %}
+                    <tr class="edit">
+                        <td><a href="{{ path('admin_mail_send_detail' , {'id': send.id} )}}">{{ send.id }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_mail_send_detail' , {'id': send.id} )}}">{{ send.subject }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_mail_send_detail' , {'id': send.id} )}}">{{ send.toEmail }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

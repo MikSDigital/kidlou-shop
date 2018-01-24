@@ -1,0 +1,45 @@
+{% extends 'admin/base.html.twig' %}
+{% form_theme formStatus 'bootstrap_3_layout.html.twig' %}
+{% form_theme formTyp 'bootstrap_3_layout.html.twig' %}
+{% block title %}{{ 'Payment' | trans }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Payment' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            <div class="container">
+                <div class="row">
+                    <div class='col-md-3'></div>
+                    <div class="col-md-6">
+                        <div class="login-box well">
+                            {{ form_start(formStatus) }}
+                            {{ form_widget(formStatus) }}
+                            {{ form_end(formStatus) }}
+                        </div>
+                        <div class="login-box well">
+                            {{ form_start(formTyp) }}
+                            {{ form_widget(formTyp) }}
+                            {{ form_end(formTyp) }}
+                        </div>
+                        <div class="login-box well">
+                            {{ form_start(formLabel) }}
+                            {{ form_widget(formLabel) }}
+                            {{ form_end(formLabel) }}
+                        </div>
+
+
+                    </div>
+                    <div class='col-md-3'></div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/common.js') }}"></script>
+{% endblock %}

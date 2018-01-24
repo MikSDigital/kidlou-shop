@@ -1,0 +1,47 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Order List {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pagetitle %}{{ 'Order List' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <table class="table table-hover table-bordered table-admin">
+            <tbody>
+                <tr>
+                    <th>{{ 'Bestellungsnummer' | trans }}</th>
+                    <th>{{ 'Sprache' | trans }}</th>
+                    <th>{{ 'Preis' | trans }}</th>
+                    <th>{{ 'Datum' | trans }}</th>
+                    <th>{{ 'Rechnung' | trans }}</th>
+                    <th>{{ 'Versand' | trans }}</th>
+                    <th>{{ 'Status' | trans }}</th>
+                </tr>
+                {% for order in orders %}
+                    <tr class="edit">
+                        {% set addresses = order.address_name|split(',') %}
+                        <td><a href="{{ path('admin_order_detail', {id: order.id}) }}">{{ order.order_number }}</a></td>
+                        <td><a href="{{ path('admin_order_detail', {id: order.id}) }}">{{ order.lang }}</a></td>
+                        <td><a href="{{ path('admin_order_detail', {id: order.id}) }}">{{ order.cost | number_format(2) }}</a></td>
+                        <td><a href="{{ path('admin_order_detail', {id: order.id}) }}">{{ order.created | date('Y-m-d H:i:s') }}</a></td>
+                        {% set isBilling = 0 %}
+                        {% set isShipping = 0 %}
+                        {% for address in addresses %}
+                            {% set addr = address|split('|') %}
+                            {% if addr[1] == 'billing' and isBilling == 0 and isShipping == 0 %}
+                                {% set isBilling = 1 %}
+                                <td><a href="{{ path('admin_order_detail', {id: order.id}) }}">{{ addr[0] }}</a></td>
+                            {% endif %}
+                            {% if addr[1] == 'shipping' and isBilling == 1 and isShipping == 0 %}
+                                {% set isShipping = 1 %}
+                                <td><a href="{{ path('admin_order_detail', {id: order.id}) }}">{{ addr[0] }}</a></td>
+                            {% endif %}
+                        {% endfor %}
+                        <td><a href="{{ path('admin_order_detail', {id: order.id}) }}">{{ order.status }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

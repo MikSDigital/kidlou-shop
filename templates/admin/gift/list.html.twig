@@ -1,0 +1,26 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Gift' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="col-md-12" style="padding-right: 0;"><button class="btn btn-default admin-element-right admin-element-bottom" onclick="location.href = '{{ path("admin_gift_new") }}';" >{{ 'New Coupons' | trans }}</button></div>
+        <table class="table table-hover table-bordered table-admin">
+            <tbody>
+                {% for gift in gifts %}
+                    <tr class="edit">
+                        <td><a href="{{ path('admin_gift_detail' , {'id': gift.id} )}}">{{ gift.id }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_gift_detail' , {'id': gift.id} )}}">{{ gift.name }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_gift_detail' , {'id': gift.id} )}}">{{ gift.dateFrom | date('d-m-Y') }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_gift_detail' , {'id': gift.id} )}}">{{ gift.dateTo | date('d-m-Y') }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

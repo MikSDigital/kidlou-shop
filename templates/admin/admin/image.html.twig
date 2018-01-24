@@ -1,0 +1,29 @@
+<div class="row productimages">
+    {% set imagedefault = 0 %}
+    {% set countimagedefault = 0 %}
+    {% for image in images if image.isdefault and image.size.name == 'image80' and countimagedefault == 0 %}
+        {% set imagedefault = 1 %}
+        {% set countimagedefault = 1 %}
+        {% for description in product.descriptions if description.lang is not null and description.lang.shortName == lang and image.product.id == description.product.id %}
+            <div class="col-md-2 col-image"><img src="/{{ image.size.path }}{{ image.name }}" title="{{ description.name }}" class="img-responsive"/></div>
+            <div class="col-md-2"><input type="radio" data-image-id="{{ image.id }}" name="product[update][image][default][]" class="image-default" checked='checked' /></div>
+            <div class="col-md-3">{{ image.originalName }}</div>
+            <div class="col-md-4">
+                <input type="file" data-image-id="{{ image.id }}" class="image" name="product[update][image][{{ image.id }}]">
+            </div>
+            <div class="col-md-1"><input class="image-remove admin-element-right" data-image-remove="{{ image.id }}" type="checkbox" name="product[remove][image][{{ image.id }}]" /></div>
+            {% endfor %}
+        {% endfor %}
+        {% if imagedefault == 0 %}
+            {% for image in images if image.isdefault == 0 and image.size.name == 'image80' %}
+                {% for description in product.descriptions if description.lang is not null and description.lang.shortName == lang and image.product.id == description.product.id %}
+                <div class="col-md-2 col-image"><img src="/{{ image.size.path }}{{ image.name }}" title="{{ description.name }}" class="img-responsive"/></div>
+                <div class="col-md-2"><input type="radio" data-image-id="{{ image.id }}" name="product[update][image][default][]" class="image-default" /></div>
+                <div class="col-md-3">{{ image.originalName }}</div>
+                <div class="col-md-4"><input type="file" data-image-id="{{ image.id }}" class="image" name="product[update][image][{{ image.id }}]" ></div>
+                <div class="col-md-1"><input type="checkbox" class="image-remove admin-element-right" data-image-remove="{{ image.id }}" name="product[remove][image][{{ image.id }}]" /></div>
+                {% endfor %}
+            {% endfor %}
+
+    {% endif %}
+</div>

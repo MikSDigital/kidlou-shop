@@ -341,7 +341,7 @@ class MailController extends Controller {
     }
 
     private function _getMailbox() {
-        $path = $this->get('kernel')->getRootDir() . '/../web/media/mail/inbox/';
+        $path = $this->get('kernel')->getRootDir() . '/../public/media/mail/inbox/';
         $fs = new Filesystem();
         if (!$fs->exists($path)) {
             $fs->mkdir($path, 0755);

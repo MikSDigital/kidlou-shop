@@ -1,0 +1,80 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'CMS Area' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            <div class="col-md-2 admin-navigation-root" data-catid="1" data-level="0">
+                <ul class="admin-navigation sortable"
+                    data-url-add-new-site="{{ path('admin_add_new_site') }}"
+                    data-url-order-menu="{{ path('admin_order_menu') }}"
+                    data-url-edit-site="{{ path('admin_edit_site') }}"
+                    data-url-delete-site="{{ path('admin_delete_site') }}">
+
+                    {% set hasSubmenu = 0 %}
+                    {% set arr_navi = [] %}
+                    {% for key,data in navigation %}
+                        {% set arr_navi = arr_navi|merge({ (loop.index0) : key }) %}
+                    {% endfor %}
+                    {% set level = 1 %}
+                    {% for key,data in navigation %}
+                        {% if data.level > level %}
+                            <ul class="sortable">
+                            {% endif %}
+                            {% if data.level < level %}
+                                </li></ul>
+                            {% endif %}
+                            {% if arr_navi[data.index + 1] is defined %}
+                                {% if navigation[arr_navi[data.index + 1]].level > data.level %}
+                                    {% set hasSubmenu = 1 %}
+                                <li data-level="{{ data.level }}" data-catid="{{ data.catid }}" data-cattyp="{{ data.cattyp }}"><span class="ausklappen {% if data.status == 0 %}admin-navi-status{% endif %}" data-url="{{ path('admin_cms_detail', {'id': data.catid }) }}">{{ data.name }}</span>
+                                {% endif %}
+                            {% endif %}
+                            {% if hasSubmenu == 0 %}
+                            <li data-level="{{ data.level }}" data-catid="{{ data.catid }}" {% if data.status == 0 %}class="admin-navi-status"{% endif %} data-cattyp="{{ data.cattyp }}"><a href="{{ path('admin_cms_detail', {'id': data.catid }) }}" >{{ data.name }}</a></li>
+                            {% endif %}
+                            {% set hasSubmenu = 0 %}
+                            {% set level = data.level %}
+                        {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-10 cms-body">
+                <div class="cms-content">
+                    <div class="admin-info-box">
+                        <div class="titel">{{ 'CMS' | trans }}</div>
+                        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                    </div>
+                </div>
+                <div class="select-category-typ">
+                    <div class="select-category-text">{{ 'Category Choice :' | trans }}</div>
+                    {{ common.categoryTyp | raw }}
+                    <div class="select-category-continue">
+                        <button class="btn btn-default button-category-continue" type="submit">{{ 'Continue' | trans }}</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/common.js') }}"></script>
+    <script src="{{ asset('js/admin/cms.js') }}"></script>
+    <script src="{{ asset('js/admin/jquery.contextMenu.js') }}"></script>
+    <script src="{{ asset('js/admin/jquery.ui.position.js') }}"></script>
+    <script src="{{ asset('js/admin/jquery-ui.js') }}"></script>
+{% endblock %}
+
+
+{% block bodyoverlay %}
+    <div id="bodyoverlay">
+        <div id="bodyoverlay-box"></div>
+    </div>
+{% endblock %}

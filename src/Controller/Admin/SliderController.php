@@ -114,7 +114,7 @@ class SliderController extends Controller {
             return $this->redirectToRoute('admin_slider_index_typ', array('typ' => 'nivo'));
         }
 
-        return $this->render('ClosasAdminBundle:Slider:confnivo.html.twig', array(
+        return $this->render('admin/slider/confnivo.html.twig', array(
                     'form' => $form->createView(),
         ));
     }
@@ -274,7 +274,7 @@ class SliderController extends Controller {
         }
 
 
-        return $this->render('ClosasAdminBundle:Slider:itemnivo.html.twig', array(
+        return $this->render('admin/slider/itemnivo.html.twig', array(
                     'form' => $form->createView(),
         ));
     }

@@ -23,7 +23,7 @@ class CategoryController extends Controller {
      * @Route("/", name="category_product_main")
      */
     public function indexAction() {
-        return $this->forward("ClosasShopBundle:Category:view", array('url_key1' => 'category'));
+        return $this->forward("App\Controller\Shop\CategoryController::view", array('url_key1' => 'category'));
     }
 
     /**

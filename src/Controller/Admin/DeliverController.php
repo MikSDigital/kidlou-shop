@@ -91,7 +91,7 @@ class DeliverController extends Controller {
             return $this->redirectToRoute('admin_deliver_standard_index');
         }
 
-        return $this->render('ClosasAdminBundle:Deliver\Standard:index.html.twig', array(
+        return $this->render('admin/deliver/standard/index.html.twig', array(
                     'form' => $form->createView(),
         ));
     }
@@ -100,7 +100,7 @@ class DeliverController extends Controller {
      * @Route("/exception/index/", name="admin_deliver_exception_index")
      */
     public function exceptionindexAction() {
-        return $this->render('ClosasAdminBundle:Deliver\Exception:index.html.twig');
+        return $this->render('admin/deliver/exception/index.html.twig');
     }
 
     /**

@@ -141,7 +141,7 @@ class GiftController extends Controller {
             return $this->redirectToRoute('admin_gift_detail', array('id' => $gift->getId()));
         }
 
-        return $this->render('ClosasAdminBundle:Gift:new.html.twig', array(
+        return $this->render('admin/gift/new.html.twig', array(
                     'form' => $form->createView(),
         ));
     }

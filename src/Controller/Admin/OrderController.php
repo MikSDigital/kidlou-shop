@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Payment;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Service\Order As HelperOrder;
+use App\Service\Order As ServiceOrder;
 
 /**
  * @Route("/order")
@@ -29,7 +29,7 @@ use App\Service\Order As HelperOrder;
 class OrderController extends Controller {
 
     /**
-     * @Template("ClosasAdminBundle/Order/list.html.twig")
+     * @Template()
      * @Route("/list", name="admin_order_list")
      */
     public function listAction() {
@@ -40,13 +40,13 @@ class OrderController extends Controller {
     }
 
     /**
-     * @Template("ClosasAdminBundle/Order/detail.html.twig")
+     * @Template()
      * @Route("/detail/{id}/", name="admin_order_detail")
      * @Route("/detail/{id}/{success}/{message}/", name="admin_order_detail_message")
      */
-    public function detailAction($id = null, $success = false, $message = false, Request $request, HelperOrder $helperOrder) {
+    public function detailAction($id = null, $success = false, $message = false, Request $request, ServiceOrder $serviceOrder) {
         $arr_order = array();
-        $arr_order = $helperOrder->getOrderDataById($id);
+        $arr_order = $serviceOrder->getOrderDataById($id);
         if ($message) {
             if ($success) {
                 $message = $this->get('translator')->trans('Email is send successfull');
@@ -65,9 +65,9 @@ class OrderController extends Controller {
     /**
      * @Route("/sendmail/{id}/", name="admin_send_mail")
      */
-    public function sendMail($id = null, HelperOrder $helperOrder, \Swift_Mailer $mailer) {
+    public function sendMail($id = null, ServiceOrder $serviceOrder, \Swift_Mailer $mailer) {
         $order = $this->getDoctrine()->getRepository(Quote::class)->findOneById($id);
-        $result = $helperOrder->sendEmailMessage($order, $mailer);
+        $result = $serviceOrder->sendEmailMessage($order, $mailer);
         return $this->redirect($this->generateUrl('admin_order_detail_message', array('id' => $order->getId(), 'success' => $result, 'message' => true)));
     }
 

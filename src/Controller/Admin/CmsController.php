@@ -18,8 +18,9 @@ use App\Entity\Content;
 use App\Entity\Content\Group;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
-use App\Service\Image As HelperImage;
+use App\Service\Image As ServiceImage;
 use App\Service\Common As ServiceCommon;
+use App\Entity\AdminUser;
 
 /**
  * @Route("/cms")
@@ -112,7 +113,7 @@ class CmsController extends Controller {
                 $reposCatImage = $this->getDoctrine()->getRepository(Image::class);
                 $reposCatImageSize = $this->getDoctrine()->getRepository(Image\Size::class);
                 foreach ($reposCatImageSize->findAll() as $key => $size) {
-                    $_targetDir = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath();
+                    $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();
                     $fileName = md5(uniqid()) . '.' . $fileExtension;
                     $_targetFile = $_targetDir . $fileName;
                     if ($key == 0) {
@@ -138,7 +139,7 @@ class CmsController extends Controller {
                 // resize file
                 foreach ($reposCatImageSize->findAll() as $key => $size) {
                     $catImage = $reposCatImage->findOneBy(array('category' => $cat, 'size' => $size));
-                    $_targetDir = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath();
+                    $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();
                     $_targetFile = $_targetDir . $catImage->getName();
                     $arr_file_name = explode('.', $catImage->getName());
                     $this->get('helper.imageresizer')->resizeImage($_targetFile, $_targetDir, $arr_file_name[0], $height = $size->getHeight());
@@ -152,7 +153,7 @@ class CmsController extends Controller {
         $em->persist($catTyp);
         $em->flush();
 
-        $response = $this->forward('ClosasAdminBundle:Cms:detail', array(
+        $response = $this->forward('App\Controller\Admin\CmsController::detail', array(
             'id' => $id,
         ));
 
@@ -170,7 +171,7 @@ class CmsController extends Controller {
             $image = $reposImage->findOneBy(array($field => $obj, 'size' => $size));
             if ($image) {
                 $fs = new Filesystem();
-                $fileName = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath() . $image->getName();
+                $fileName = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath() . $image->getName();
                 if ($fs->exists($fileName)) {
                     $fs->remove($fileName);
                 }
@@ -212,7 +213,7 @@ class CmsController extends Controller {
      * @Template()
      * @Route("/savecontent/", name="admin_save_content")
      */
-    public function saveContentAction(Request $request, HelperImage $helperImage, ServiceCommon $serviceCommon) {
+    public function saveContentAction(Request $request, ServiceImage $serviceImage, ServiceCommon $serviceCommon) {
         $catid = $request->request->get('catid');
         $reposCategory = $this->getDoctrine()->getRepository(Category::class);
         $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
@@ -232,7 +233,7 @@ class CmsController extends Controller {
             $reposContent = $this->getDoctrine()->getRepository(Content::class);
             $content = $reposContent->findOneBy(array('id' => $id));
             if (isset($arr_file[$id])) {
-                $image = $helperImage->setRequestByParams('image', $id, 'image');
+                $image = $serviceImage->setRequestByParams('image', $id, 'image');
             }
             if (!$content) {
                 $newContent = true;
@@ -273,7 +274,7 @@ class CmsController extends Controller {
                         $funcname .= ucfirst($name);
                     }
                     if ($field == 'user') {
-                        $reposUser = $this->getDoctrine()->getRepository('ClosasAdminBundle:User');
+                        $reposUser = $this->getDoctrine()->getRepository(AdminUser::class);
                         $value = $reposUser->findOneById($value);
                         // bei long text body herauscrawlern
                     } else if ($field == 'long_text') {
@@ -353,7 +354,7 @@ class CmsController extends Controller {
         foreach ($contents as $content) {
             foreach ($content->getImages() as $image) {
                 foreach ($image->getSizes() as $size) {
-                    $filename = $this->get("kernel")->getRootDir() . '/../web/' . $size->getPath() . $image->getName();
+                    $filename = $this->get("kernel")->getRootDir() . '/../public/' . $size->getPath() . $image->getName();
                     if (is_file($filename)) {
                         unlink($filename);
                     }
@@ -388,7 +389,7 @@ class CmsController extends Controller {
         foreach ($contents as $content) {
             foreach ($content->getImages() as $image) {
                 foreach ($image->getSizes() as $size) {
-                    $filename = $this->get("kernel")->getRootDir() . '/../web/' . $size->getPath() . $image->getName();
+                    $filename = $this->get("kernel")->getRootDir() . '/../public/' . $size->getPath() . $image->getName();
                     if (is_file($filename)) {
                         unlink($filename);
                     }
@@ -599,7 +600,7 @@ class CmsController extends Controller {
         }
         foreach ($category->getContents() as $content) {
             if ($content->getLang()->getId() == $lang->getId()) {
-                $html .= $this->renderView('ClosasAdminBundle:Cms:content.html.twig', array(
+                $html .= $this->renderView('admin/cms/content.html.twig', array(
                     'uniqid' => $content->getId(),
                     'cat' => $category,
                     'lang' => $lang->getShortName(),
@@ -620,7 +621,7 @@ class CmsController extends Controller {
             $arr_tinymceid[] = '#content-' . $uniqid;
         }
 
-        $html .= $this->renderView('ClosasAdminBundle:Cms:jstinymce.html.twig', array(
+        $html .= $this->renderView('admin/cms/jstinymce.html.twig', array(
             'tinymceids' => implode(',', $arr_tinymceid)
                 )
         );
@@ -633,7 +634,7 @@ class CmsController extends Controller {
         }
 
 
-        $html = $this->renderView('ClosasAdminBundle:Cms:head.html.twig', array(
+        $html = $this->renderView('admin/cms/head.html.twig', array(
             'lang' => $lang->getShortName(),
             'cat' => $category,
             'content' => $html,
@@ -644,7 +645,7 @@ class CmsController extends Controller {
     }
 
     private function addContent($uniqid, $category, $lang) {
-        $html = $this->renderView('ClosasAdminBundle:Cms:content.html.twig', array(
+        $html = $this->renderView('admin/cms/content.html.twig', array(
             'uniqid' => $uniqid,
             'cat' => $category,
             'lang' => $lang->getShortName(),

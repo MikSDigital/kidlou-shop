@@ -1,0 +1,74 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Admin Mail' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="email-response-box-new">
+                    <form method="post" id="email-response" action="{{ path('admin_in_box_response') }}">
+                        <div class="form-group">
+                            <label for="to_address">{{ 'To' | trans }}</label>
+                            <input class="form-control" name="mail[to_address]" value="" style="margin-bottom:10px;"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">{{ 'Subject' | trans }}</label>
+                            <input class="form-control" name="mail[subject]" value="" style="margin-bottom:10px;"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="body">{{ 'Text' | trans }}</label>
+                            <textarea  class="form-control" name="mail[body]" rows="10" style="">
+                            </textarea>
+                        </div>
+                        <button class="btn btn-default new-message-send" style="margin-right:20px; margin-top: 20px;">{{ 'Senden' | trans }}</button>
+                        <button class="btn btn-default new-message-cancel" style="margin-right:20px; margin-top: 20px;">{{ 'Cancel' | trans }}</button>
+                        <input type="hidden" name="mail[parent_id]" value="0" />
+                        <input type="hidden" name="mail[email_id]" value="0" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="email-list">
+                    <form method="post" id="delete-in-box" action="{{ path('admin_in_box_delete') }}">
+                        <div class="col-md-12" style="padding-right: 0;">
+                            <button class="btn btn-default admin-element-right admin-element-bottom delete-emails-button" data-delete-message="{{ 'Wollen Sie wircklich das/die Mail(s) löschen ?' }}">{{ 'Delete Emails' | trans }}</button>
+                            <button class="btn btn-default admin-element-right admin-element-bottom new-emails-button" style="margin-right:10px;">{{ 'Neue Email' | trans }}</button>
+                        </div>
+                        <table class="table table-hover table-bordered table-admin">
+                            <thead>
+                                <tr class="edit">
+                                    <td class="a-left"><strong>{{ 'From name' | trans }}</strong></a></td>
+                                    <td class="a-left"><strong>{{ 'Subject' | trans }}</strong></a></td>
+                                    <td class="a-left"><strong>{{ 'Date' | trans }}</strong></a></td>
+                                    <td class="a-left"><strong>{{ 'Delete' | trans }}</strong></a></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for inbox in inboxs %}
+                                    <tr class="edit">
+                                        <td class="a-left"><a href="{{ path('admin_in_box' , {'id': inbox.id} )}}">{{ inbox.fromName }}</a></td>
+                                        <td class="a-left"><a href="{{ path('admin_in_box' , {'id': inbox.id} )}}">{{ inbox.subject }}</a></td>
+                                        <td class="a-left"><a href="{{ path('admin_in_box' , {'id': inbox.id} )}}">{{ inbox.date | date_modify("+2 hour") | date('Y-m-d H:i:s') }}</a></td>
+                                        <td><input type="checkbox" class="inbox-delete" name="inboxdelete[]" value="{{ inbox.id }}" /></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/common.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Shipping costs' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="col-md-12" style="padding-right: 0px; margin-bottom: 10px;">
+            <button class="btn btn-green box-right" onclick="window.location.href = '{{ path('admin_payment_shipping_new') }}'" type="submit">{{ 'Add new price' | trans }}</button>
+        </div>
+        <table class="table table-hover table-bordered table-admin">
+            <tbody>
+                <tr class="edit">
+                    <td class="a-left">{{ 'Pricelimit' | trans }}</a></td>
+                    <td class="a-left">{{ 'Price' | trans }}</a></td>
+                </tr>
+                {% for shipping in shippings %}
+                    <tr class="edit">
+                        <td class="a-left"><a href="{{ path('admin_payment_shipping' , {'id': shipping.id} )}}">{{ shipping.priceLimit }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_payment_shipping' , {'id': shipping.id} )}}">{{ shipping.price }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

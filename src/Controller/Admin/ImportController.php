@@ -13,6 +13,7 @@ use App\Entity\Product\Image\Size;
 use App\Entity\Product\Description;
 use App\Entity\Price;
 use App\Entity\Map\ProductAdditional;
+use App\Entity\Upload;
 use App\Service\Common As ServiceCommon;
 
 class ImportController extends Controller {
@@ -36,12 +37,12 @@ class ImportController extends Controller {
         ini_set('max_execution_time', 600);
         ini_set('memory_limit', '128 M');
         if ($id != NULL) {
-            $upload = $this->getDoctrine()->getRepository('ClosasAdminBundle:Upload')->findOneById($id);
+            $upload = $this->getDoctrine()->getRepository(Upload::class)->findOneById($id);
             $this->_importCsv = $upload->getProducts();
         }
         $this->setDesignation();
 
-        $_importFile = $this->get('kernel')->getRootDir() . '/../web/media/import/csv/' . $this->_importCsv;
+        $_importFile = $this->get('kernel')->getRootDir() . '/../public/media/import/csv/' . $this->_importCsv;
         if (($handle = fopen($_importFile, "r")) !== FALSE) {
             //$mem_usage = memory_get_usage(true);
             // delete all files in images
@@ -138,7 +139,7 @@ class ImportController extends Controller {
         $images = $this->getDoctrine()->getRepository(Product\Image::class)->findAll();
 
         foreach ($images as $image) {
-            $filename = $this->get('kernel')->getRootDir() . '/../web/' . $image->getSize()->getPath() . $image->getName();
+            $filename = $this->get('kernel')->getRootDir() . '/../public/' . $image->getSize()->getPath() . $image->getName();
             if (is_file($filename)) {
                 unlink($filename);
             }
@@ -250,7 +251,7 @@ class ImportController extends Controller {
 
     protected function setImages($serviceCommon) {
 
-        $_dir = $this->get('kernel')->getRootDir() . '/../web/media/import/images/' . $this->_getSku() . '/';
+        $_dir = $this->get('kernel')->getRootDir() . '/../public/media/import/images/' . $this->_getSku() . '/';
         if (!is_dir($_dir)) {
             return;
         }
@@ -268,7 +269,7 @@ class ImportController extends Controller {
                         mime_content_type($_file_source) == image_type_to_mime_type(IMAGETYPE_GIF)) {
 
                     foreach ($sizes as $size) {
-                        $_targetDir = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath();
+                        $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();
                         $this->saveImage($size, $serviceCommon);
                         $this->get('helper.imageresizer')->resizeImage($this->getOriginalFileSource(), $_targetDir, $this->getTargetName(), $height = $size->getHeight());
                     }
@@ -288,7 +289,7 @@ class ImportController extends Controller {
         $reposSize = $this->getDoctrine()->getRepository(Product\Image\Size::class);
         $sizes = $reposSize->findAll();
         foreach ($sizes as $size) {
-            $_targetDir = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath();
+            $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();
             if (is_dir($_targetDir)) {
                 if ($handle = opendir($_targetDir)) {
                     while (false !== ($file = readdir($handle))) {

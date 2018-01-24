@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Entity\User;
+use App\Entity\AdminUser;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -28,7 +28,7 @@ class UserController extends Controller {
      * @Route("/list", name="admin_user_list")
      */
     public function listAction() {
-        $reposUser = $this->getDoctrine()->getRepository('ClosasAdminBundle:User');
+        $reposUser = $this->getDoctrine()->getRepository(AdminUser::class);
         $users = $reposUser->findAll();
 
         return array(
@@ -44,7 +44,7 @@ class UserController extends Controller {
     public function newAction($id = null, Request $request) {
 
         if ($id != null) {
-            $reposUser = $this->getDoctrine()->getRepository('ClosasAdminBundle:User');
+            $reposUser = $this->getDoctrine()->getRepository(AdminUser::class);
             $user = $reposUser->findOneById($id);
         } else {
             $user = new User();
@@ -87,7 +87,7 @@ class UserController extends Controller {
             return $this->redirectToRoute('admin_user_list');
         }
 
-        return $this->render('ClosasAdminBundle:User:new.html.twig', array(
+        return $this->render('admin/user/new.html.twig', array(
                     'form' => $form->createView(),
         ));
     }

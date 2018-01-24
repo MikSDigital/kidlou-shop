@@ -1,0 +1,29 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block pagetitle %}{{ 'Nivo-Slider items' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="col-md-12" style="padding-right: 0;"><button class="btn btn-default admin-element-right admin-element-bottom" onclick="location.href = '{{ path("admin_slider_item_nivo") }}';" >{{ 'New Item' | trans }}</button></div>
+        <table class="table table-hover table-bordered table-admin">
+            <tbody>
+                {% for nivoslider in nivosliders %}
+                    {% for item in nivoslider.items %}
+                        {% if item.lang.shortName == 'fr' %}
+                            <tr class="edit">
+                                <td><a href="{{ path('admin_slider_item_nivo_list_lang' , {'id': nivoslider.id}) }}">{{ nivoslider.id }}</a></td>
+                                <td class="a-left"><a href="{{ path('admin_slider_item_nivo_list_lang' , {'id': nivoslider.id}) }}">{{ item.title }}</a></td>
+                                <td class="a-left"><a href="{{ path('admin_slider_item_nivo_list_lang' , {'id': nivoslider.id}) }}">{{ item.title2 }}</a></td>
+                                <td class="a-left"><a href="{{ path('admin_slider_item_nivo_list_lang' , {'id': nivoslider.id}) }}">{{ item.link }}</a></td>
+                                <td><a href="{{ path('admin_slider_item_nivo_status' , {'id': nivoslider.id}) }}">{% if nivoslider.status %} {{ 'active' | trans }}{% else %}{{ 'inactive' | trans }}{% endif %}</a></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

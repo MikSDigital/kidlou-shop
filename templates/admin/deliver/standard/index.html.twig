@@ -1,0 +1,28 @@
+{% extends 'admin/base.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% block title %}{{ 'Register' | trans }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Deliver standard' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            <div class="container">
+                <div class="row">
+                    <div class='col-md-3'></div>
+                    <div class="col-md-6">
+                        <div class="login-box well">
+                            {{ form_start(form) }}
+                            {{ form_widget(form) }}
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                    <div class='col-md-3'></div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

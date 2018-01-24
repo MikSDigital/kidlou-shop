@@ -1,0 +1,27 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} Admin Area {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Admin user' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="col-md-12" style="padding-right: 0;"><button class="btn btn-default admin-element-right admin-element-bottom" onclick="location.href = '{{ path("admin_user_new") }}';" >{{ 'New User' | trans }}</button></div>
+        <table class="table table-hover table-bordered table-admin">
+            <tbody>
+                {% for user in users %}
+                    <tr class="edit">
+                        <td><a href="{{ path('admin_user_detail' , {'id': user.id} )}}">{{ user.id }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_user_detail' , {'id': user.id} )}}">{{ user.firstName }} {{ user.lastName }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_user_detail' , {'id': user.id} )}}">{{ user.username }}</a></td>
+                        <td class="a-left"><a href="{{ path('admin_user_detail' , {'id': user.id} )}}">{{ user.email }}</a></td>
+                        <td><a href="{{ path('admin_user_detail' , {'id': user.id} )}}">{% if user.isActive %} {{ 'active' | trans }}{% else %}{{ 'inactive' | trans }}{% endif %}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

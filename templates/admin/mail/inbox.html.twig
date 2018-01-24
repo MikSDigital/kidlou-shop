@@ -1,0 +1,66 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ 'Mail' | trans }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="/css/jquery.contextMenu.css" rel="stylesheet" />
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+{% block pagetitle %}{{ 'Mail' | trans }}{% endblock %}
+{% block body %}
+    <section class="box info admin">
+        <div class="ym-grid linearize-level-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class=""><i class="fa fa-envelope-o" aria-hidden="true"></i> {{ inbox.fromName }}</div>
+                        <div class="">{{ 'An' | trans }} {{ inbox.fromAddress }}</div>
+                    </div>
+                    <div class="col-md-9">
+                        <button class="btn btn-default admin-element-right admin-element-bottom resp-emails-antworten" style="margin-right:20px;">{{ 'Antworten' | trans }}</button>
+                        <!-- <button class="btn btn-default admin-element-right admin-element-bottom resp-emails-antworten-alle" style="margin-right:10px;">{{ 'Alle Antworten' | trans }}</button> -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="email-response-box">
+                            <form method="post" id="email-response" action="{{ path('admin_in_box_response') }}">
+                                <input class="form-control" name="mail[subject]" value="Re: {{ inbox.subject }}" style="margin-bottom:10px;"/>
+                                <textarea  class="form-control" name="mail[body]" rows="10" style="">
+
+
+
+From : {{ inbox.fromAddress }} {{ inbox.fromName }}
+Date : {{ inbox.date | date("Y-m-d H:i:s") }}
+                                    {% if inbox.textHtml is not empty %}
+                                        {{ inbox.textHtml | raw }}
+                                    {% else %}
+                                        {{ inbox.textPlain }}
+                                    {% endif %}
+                                </textarea>
+                                <button class="btn btn-default message-send" style="margin-right:20px; margin-top: 20px;">{{ 'Senden' | trans }}</button>
+                                <button class="btn btn-default message-cancel" style="margin-right:20px; margin-top: 20px;">{{ 'Cancel' | trans }}</button>
+                                <input type="hidden" name="mail[to_address]" value="{{ inbox.toAddress }}" />
+                                <input type="hidden" name="mail[parent_id]" value="{{ inbox.emailId }}" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row email-text-box">
+                    <div class="col-md-12">
+                        <strong>{{ 'Subject' | trans }}:</strong> {{ inbox.subject }}
+                        <br /><br />
+                        <strong>{{ 'Text' | trans }}:</strong>
+                        {% if inbox.textHtml is not empty %}
+                            {{ inbox.textHtml | raw | nl2br }}
+                        {% else %}
+                            {{ inbox.textPlain | nl2br }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/admin/common.js') }}"></script>
+{% endblock %}

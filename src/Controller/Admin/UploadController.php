@@ -58,7 +58,7 @@ class UploadController extends Controller {
      * @Route("/list", name="admin_upload_list")
      */
     public function listAction() {
-        $uploads = $this->getDoctrine()->getRepository('ClosasAdminBundle:Upload')->findAll();
+        $uploads = $this->getDoctrine()->getRepository(Upload::class)->findAll();
         return array(
             'uploads' => $uploads
         );
@@ -70,8 +70,8 @@ class UploadController extends Controller {
     public function deleteAction($id, Request $request) {
         $fs = new Filesystem();
         $em = $this->getDoctrine()->getManager();
-        $upload = $this->getDoctrine()->getRepository('ClosasAdminBundle:Upload')->findOneById($id);
-        $fs->remove($this->get('kernel')->getRootDir() . '/../web/media/import/csv/' . $upload->getProducts());
+        $upload = $this->getDoctrine()->getRepository(Upload::class)->findOneById($id);
+        $fs->remove($this->get('kernel')->getRootDir() . '/../public/media/import/csv/' . $upload->getProducts());
         $em->remove($upload);
         $em->flush();
         return $this->redirect($this->generateUrl('admin_upload_list'));

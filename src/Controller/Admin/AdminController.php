@@ -22,7 +22,7 @@ use App\Service\Common As ServiceCommon;
 class AdminController extends Controller {
 
     /**
-     * @Template("ClosasAdminBundle/Admin/index.html.twig")
+     * @Template()
      * @Route("/", name="admin_index")
      */
     public function indexAction() {
@@ -30,7 +30,7 @@ class AdminController extends Controller {
     }
 
     /**
-     * @Template("ClosasAdminBundle/Admin/login.html.twig")
+     * @Template()
      * @Route("/login/", name="admin_login")
      */
     public function loginAction() {
@@ -334,7 +334,7 @@ class AdminController extends Controller {
         $images = $this->saveUploadImage($files, $product, '', $serviceCommon);
 
 
-        $html = $this->renderView('ClosasAdminBundle:Admin:image.html.twig', array(
+        $html = $this->renderView('admin/admin/image.html.twig', array(
             'images' => $images,
             'product' => $product,
             'lang' => $lang,
@@ -361,7 +361,7 @@ class AdminController extends Controller {
         $images = $reposImage->findBy(array('product' => $product, 'original_name' => $image->getOriginalName()));
         foreach ($images as $image) {
             $fs = new Filesystem();
-            $fs->remove($this->get('kernel')->getRootDir() . '/../web/' . $image->getSize()->getPath() . $image->getName());
+            $fs->remove($this->get('kernel')->getRootDir() . '/../public/' . $image->getSize()->getPath() . $image->getName());
             $em->remove($image);
             $em->flush();
         }
@@ -450,7 +450,7 @@ class AdminController extends Controller {
             }
 
 
-            $html .= $this->renderView('ClosasAdminBundle:Admin:children.html.twig', array(
+            $html .= $this->renderView('admin/admin/children.html.twig', array(
                 'lang' => $lang,
                 'images' => $images,
                 'descriptions' => $entityDescriptions,
@@ -479,7 +479,7 @@ class AdminController extends Controller {
         $images = $reposImage->findBy(array('product' => $children));
         foreach ($images as $image) {
             $fs = new Filesystem();
-            $fs->remove($this->get('kernel')->getRootDir() . '/../web/' . $image->getSize()->getPath() . $image->getName());
+            $fs->remove($this->get('kernel')->getRootDir() . '/../public/' . $image->getSize()->getPath() . $image->getName());
             $em->remove($image);
             $em->flush();
         }
@@ -558,14 +558,14 @@ class AdminController extends Controller {
             $productImages = $reposProductImage->findBy(array('original_name' => $productImage->getOriginalName()));
             foreach ($productImages as $productImage) {
                 $fs = new Filesystem();
-                $fs->remove($this->get('kernel')->getRootDir() . '/../web/' . $productImage->getSize()->getPath() . $productImage->getName());
+                $fs->remove($this->get('kernel')->getRootDir() . '/../public/' . $productImage->getSize()->getPath() . $productImage->getName());
             }
             $productImage = $reposProductImage->findOneById($image_id);
             $priorOriginalName = $productImage->getOriginalName();
             $arr_files = array();
             $arr_files[] = $file;
             $images = $this->saveUploadImage($arr_files, $product, $priorOriginalName);
-            $arr_html[$image_id] = $this->renderView('ClosasAdminBundle:Admin:image.html.twig', array(
+            $arr_html[$image_id] = $this->renderView('admin/admin/image.html.twig', array(
                 'images' => $images,
                 'product' => $product,
                 'lang' => $lang,
@@ -624,7 +624,7 @@ class AdminController extends Controller {
                     $images = $reposImage->findBy(array('product' => $children));
                     foreach ($images as $image) {
                         $fs = new Filesystem();
-                        $fs->remove($this->get('kernel')->getRootDir() . '/../web/' . $image->getSize()->getPath() . $image->getName());
+                        $fs->remove($this->get('kernel')->getRootDir() . '/../public/' . $image->getSize()->getPath() . $image->getName());
                         $em->remove($image);
                         $em->flush();
                     }
@@ -636,7 +636,7 @@ class AdminController extends Controller {
                 }
             }
 
-            $html .= $this->renderView('ClosasAdminBundle:Admin:children.html.twig', array(
+            $html .= $this->renderView('admin/admin/children.html.twig', array(
                 'lang' => $lang,
                 'images' => $images,
                 'descriptions' => $entityDescriptions,
@@ -663,13 +663,13 @@ class AdminController extends Controller {
             foreach ($product->getDescriptions() as $description) {
                 if ($description->getLang()->getShortName() != NULL && $description->getLang()->getShortName() == $lang) {
                     $filename = 'PDF_' . $product->getSku();
-                    $path = $this->get('kernel')->getRootDir() . "/../web/media/import/images/" . $product->getSku() . "/";
+                    $path = $this->get('kernel')->getRootDir() . "/../public/media/import/images/" . $product->getSku() . "/";
                     $description->setAccessoires($filename);
                     $em->persist($description);
                     $em->flush();
                     $filename = 'PDF_' . $product->getSku() . '.' . $file->getClientOriginalExtension();
                     $file->move($path, $filename);
-                    $html = $this->renderView('ClosasAdminBundle:Admin:pdfaccessoires.html.twig', array(
+                    $html = $this->renderView('admin/admin/pdfaccessoires.html.twig', array(
                         'lang' => $lang,
                         'product' => $product
                             )
@@ -700,7 +700,7 @@ class AdminController extends Controller {
             $reposSize = $this->getDoctrine()->getRepository(Product\Image\Size::class);
             $sizes = $reposSize->findAll();
             foreach ($sizes as $key => $size) {
-                $_targetDir = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath();
+                $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();
                 $name = $serviceCommon->getImageName($product->getSku(), $org_filename, $size->getName());
                 $filename = $name . '.' . $file->getClientOriginalExtension();
                 $target_file = $_targetDir . $filename;
@@ -714,7 +714,7 @@ class AdminController extends Controller {
             }
 
             foreach ($sizes as $key => $size) {
-                $_targetDir = $this->get('kernel')->getRootDir() . '/../web/' . $size->getPath();
+                $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();
                 $name = $serviceCommon->getImageName($product->getSku(), $org_filename, $size->getName());
                 $filename = $name . '.' . $file->getClientOriginalExtension();
                 $target_file = $_targetDir . $filename;
