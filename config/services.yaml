@@ -6,8 +6,9 @@ imports:
 
 parameters:
     locale: fr
-    upload_directory: '%kernel.root_dir%/../web/media/dynamisch'
-    products_directory: '%kernel.root_dir%/../web/media/import/csv'
+    languages: [fr, de, en, es]
+    upload_directory: '%kernel.root_dir%/../public/media/dynamisch'
+    products_directory: '%kernel.root_dir%/../public/media/import/csv'
 #    parameter_name: value
 
 services:
@@ -75,7 +76,7 @@ services:
 
     App\Listener\LocalListener:
         class: App\Listener\LocaleListener
-        arguments: ["@translator"]
+        arguments: ["@translator", "%locale%", "%languages%"]
         tags:
           - { name: kernel.event_subscriber }
 

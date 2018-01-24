@@ -8,6 +8,7 @@ framework:
     session:
         handler_id: ~
 
+    #default_locale:  "%locale%"
     #esi: ~
     fragments: ~
     php_errors:

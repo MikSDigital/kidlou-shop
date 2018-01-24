@@ -11,12 +11,14 @@ class LocaleListener implements EventSubscriberInterface {
 
     private $translator;
 
-    public function __construct(TranslatorInterface $translator) {
+    public function __construct(TranslatorInterface $translator, $locale = "fr", $languages = array('fr', 'de', 'en', 'es')) {
         $this->translator = $translator;
     }
 
     public function onKernelRequest(GetResponseEvent $event) {
         $request = $event->getRequest();
+//        echo $request->getPathInfo();
+//        exit;
         if (!$request->hasPreviousSession()) {
             return;
         }

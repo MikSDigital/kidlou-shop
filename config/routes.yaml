@@ -1,7 +1,3 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-
 closas_admin:
     resource: ../../src/Controller/Admin/
     type:     annotation
@@ -20,21 +16,3 @@ closas_shop:
     prefix:   /{_locale}/
     requirements:
         _locale: fr|de|en|es
-
-#app:
-#    resource: "@AppBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-
-# redirecting the root
-#homepage:
-#    path: /fr/
-#    requirements:
-#            _locale: fr|de|en|es
-#    defaults:
-#        _controller: App\Controller\Shop\StartController::indexAction
-        #path: /fr/
-#        prefix:   /{_locale}/
-#        permanent: true
-
-
