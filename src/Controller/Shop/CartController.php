@@ -24,13 +24,13 @@ use App\Service\Product As ServiceProduct;
 class CartController extends Controller {
 
     /**
-     * @Template("ClosasShopBundle/Cart/index.html.twig")
+     * @Template()
      * @Route("/index/", name="index_cart")
      */
     public function indexAction(Request $request) {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
+            return $this->render('shop/cart/empty.html.twig');
         }
         $basket_items = $this->container->get('session')->get('basket_items');
 //        $basket = $this->get('helper.common')->setBasket();
@@ -81,7 +81,7 @@ class CartController extends Controller {
 
         // check ob product im warenkorb liegen
         if ($this->getProductIsInBasket($product, $dates, $serviceCalendar)) {
-            $html = $this->renderView('ClosasShopBundle/Cart/productinbasket.html.twig'
+            $html = $this->renderView('shop/cart/productinbasket.html.twig'
                     , array(
                 'date_from' => $dates->date_from,
                 'date_to' => $dates->date_to,
@@ -163,7 +163,7 @@ class CartController extends Controller {
         $this->container->get('session')->set('basket_items', $basket->getBasketItems());
         $this->container->get('session')->set('price_subtotal', $basket->getSubtotal());
 
-        $html = $this->renderView('ClosasShopBundle/Cart/add.html.twig'
+        $html = $this->renderView('shop/cart/add.html.twig'
                 , array(
             'date_from' => $dates->date_from,
             'date_to' => $dates->date_to,
@@ -185,7 +185,7 @@ class CartController extends Controller {
     public function removeAction($id = "", $additional_id = "", ServiceProduct $serviceProduct, ServiceCommon $serviceCommon) {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
+            return $this->render('shop/cart/empty.html.twig');
         }
 
         $reposQuote = $this->getDoctrine()->getRepository(Quote::class);

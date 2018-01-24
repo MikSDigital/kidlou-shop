@@ -27,7 +27,7 @@ class CategoryController extends Controller {
     }
 
     /**
-     * @Template("ClosasShopBundle/Category/view.html.twig")
+     * @Template()
      * @Route("/{url_key1}/", defaults={"url_key1" = ""}, name="category_product")
      * @Route("/{url_key1}/{url_key2}/", defaults={"url_key2" = ""}, name="category_product2")
      * @Route("/{url_key1}/{url_key2}/{url_key3}/", defaults={"url_key3" = ""}, name="category_product3")
@@ -95,7 +95,7 @@ class CategoryController extends Controller {
         // get order
         $calendarorders = $serviceOrder->getOrderData($product);
 
-        return $this->render('ClosasShopBundle/Category/detail.html.twig', array(
+        return $this->render('shop/category/detail.html.twig', array(
                     'id' => $id,
                     'product' => $product,
                     'arr_route_name' => $arr_route_name,

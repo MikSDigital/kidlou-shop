@@ -374,7 +374,7 @@ class Calendar {
     public function getHtmlCalendar($product_id = '') {
         $this->setCheckCalendar($product_id);
         $engine = $this->container->get('templating');
-        return $engine->render('ClosasShopBundle/Calendar/index.html.twig'
+        return $engine->render('shop/calendar/index.html.twig'
                         , array(
                     'calendar' => $this,
                     'product_id' => $product_id,
@@ -393,7 +393,7 @@ class Calendar {
      */
     public function getHtmlInputFromTo($product_id = '') {
         $engine = $this->container->get('templating');
-        return $engine->render('ClosasShopBundle/Calendar/fromto.html.twig'
+        return $engine->render('shop/calendar/fromto.html.twig'
                         , array(
                     'product_id' => $product_id,
                     'input_from' => $this->getDateFromInput($product_id),
@@ -456,7 +456,7 @@ class Calendar {
             }
         }
 
-        return $engine->render('ClosasShopBundle/Calendar/result.html.twig'
+        return $engine->render('shop/calendar/result.html.twig'
                         , array(
                     'product' => $product,
                     'additionals' => $arr_additionals,

@@ -18,13 +18,13 @@ use App\Service\Navigation As ServiceNavigation;
 class CommonController extends Controller {
 
     /**
-     * @Template("ClosasShopBundle/Common/zone.html.twig")
+     * @Template()
      * @Route("/zone/", name="zone_area")
      */
     public function zoneAction() {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
+            return $this->render('shop/cart/empty.html.twig');
         }
         return array();
     }
@@ -35,7 +35,7 @@ class CommonController extends Controller {
     public function geodataAction(Request $request, ServiceCommon $serviceCommon) {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
+            return $this->render('shop/cart/empty.html.twig');
         }
         return $serviceCommon->getGeodataPlzCity();
     }
@@ -77,7 +77,7 @@ class CommonController extends Controller {
         $total_price = $serviceCommon->getShippingCost() + $serviceCommon->getCautionCost() + $cash_cost + $this->container->get('session')->get('price_subtotal');
         $txt_total_price = $serviceCommon->getCurrencyCode() . ' ' . number_format($total_price, 2);
         if ($cash_cost) {
-            $html_cash_cost = $this->renderView('ClosasShopBundle/Common/paymentCash.html.twig');
+            $html_cash_cost = $this->renderView('shop/common/paymentCash.html.twig');
             return new JsonResponse(array('html_cash_cost' => $html_cash_cost, 'txt_total_price' => $txt_total_price));
         } else {
             return new JsonResponse(array('html_cash_cost' => '', 'txt_total_price' => $txt_total_price));

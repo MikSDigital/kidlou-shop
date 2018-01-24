@@ -16,7 +16,7 @@ use App\Service\Navigation As ServiceNavigation;
 class StartController extends Controller {
 
     /**
-     * @Template("ClosasShopBundle/Start/index.html.twig")
+     * @Template()
      * @Route("/", name="index_page")
      */
     public function indexAction(ServiceCommon $serviceCommon, ServiceProduct $serviceProduct, ServiceContent $serviceContent) {
@@ -26,12 +26,12 @@ class StartController extends Controller {
         $carousel = $serviceCommon->setCategoryCarousel('category');
         $carouselcatproducts = $carousel->getMainCategories();
         $htmlproducts = $this->getCarouselProductHtml($carousel, $serviceProduct);
-        $carouselhtml = $this->renderView('ClosasShopBundle/Start/Catslider/slider.html.twig', array('categories' => $carouselcatproducts, 'products' => $htmlproducts));
+        $carouselhtml = $this->renderView('shop/start/catslider/slider.html.twig', array('categories' => $carouselcatproducts, 'products' => $htmlproducts));
         // zweiter Argument ist für inner
         $carousel = $serviceCommon->setCategoryCarousel('blog', FALSE);
         $carouselblogs = $carousel->getMainCategories();
         $htmlblogs = $this->getCarouselBlogHtml($carousel, $serviceContent);
-        $carouselbloghtml = $this->renderView('ClosasShopBundle/Start/Blog/slider.html.twig', array('categories' => $carouselblogs, 'blogs' => $htmlblogs));
+        $carouselbloghtml = $this->renderView('shop/start/blog/slider.html.twig', array('categories' => $carouselblogs, 'blogs' => $htmlblogs));
 
         return array(
             'config' => $config,
@@ -53,7 +53,7 @@ class StartController extends Controller {
         $catsliders = $carousel->getCategories();
         foreach ($catsliders as $maincatid => $catslider) {
             $products = $serviceProduct->getProducts($catslider);
-            $htmlproducts .= $this->renderView('ClosasShopBundle/Start/Catslider/product.html.twig', array('catid' => $maincatid, 'products' => $products));
+            $htmlproducts .= $this->renderView('shop/start/catslider/product.html.twig', array('catid' => $maincatid, 'products' => $products));
         }
         return $htmlproducts;
     }
@@ -67,7 +67,7 @@ class StartController extends Controller {
         $catsliders = $carousel->getCategories();
         foreach ($catsliders as $maincatid => $catslider) {
             $contents = $serviceContent->getCarouselContents($catslider, 'BLOG');
-            $htmlcontents .= $this->renderView('ClosasShopBundle/Start/Blog/index.html.twig', array('catid' => $maincatid, 'contents' => $contents));
+            $htmlcontents .= $this->renderView('shop/start/blog/index.html.twig', array('catid' => $maincatid, 'contents' => $contents));
         }
         return $htmlcontents;
     }

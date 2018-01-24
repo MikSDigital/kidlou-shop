@@ -2,17 +2,17 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-#closas_admin:
-#    resource: ../../src/Closas/AdminBundle/Controller/
-#    type:     annotation
-#    prefix:   /admin/
+closas_admin:
+    resource: ../../src/Controller/Admin/
+    type:     annotation
+    prefix:   /admin/
 
-#closas_user:
-#    resource: ../../src/Closas/UserBundle/Controller/
-#    type:     annotation
-#    prefix:   /{_locale}/user/
-#    requirements:
-#        _locale: fr|de|en|es
+closas_user:
+    resource: ../../src/Controller/User/
+    type:     annotation
+    prefix:   /{_locale}/user/
+    requirements:
+        _locale: fr|de|en|es
 
 closas_shop:
     resource: ../../src/Controller/Shop/

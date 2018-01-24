@@ -22,7 +22,7 @@ use App\Service\Order As HelperOrder;
 class CheckoutController extends Controller {
 
     /**
-     * @Template("ClosasShopBundle/Checkout/cart.html.twig")
+     * @Template()
      * @Route("/cart/", name="checkout_cart")
      */
     public function cartAction(Request $request, HelperPayment $helperPayment) {
@@ -30,7 +30,7 @@ class CheckoutController extends Controller {
         $payments = $helperPayment->getPayments();
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle/Cart/empty.html.twig');
+            return $this->render('shop/cart/empty.html.twig');
         }
         // if session login failed ist unter handler authentification handler
         if ($this->container->get('session')->get('login_failed')) {
@@ -58,24 +58,24 @@ class CheckoutController extends Controller {
         //first save order
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
-            return $this->render('ClosasShopBundle/Cart:empty.html.twig');
+            return $this->render('shop/cart/empty.html.twig');
         }
         //first save order
         try {
             $isHelperOrder = $helperOrder->save();
         } catch (UniqueConstraintViolationException $ex) {
-            return $this->render('ClosasShopBundle/Checkout/duplicate.html.twig', array(
+            return $this->render('shop/checkout/duplicate.html.twig', array(
                         'zoneplz' => $request->request->get('shipping')['post_code'],
                         'zonecity' => $request->request->get('shipping')['city'])
             );
         } catch (Exception $ex) {
-            return $this->render('ClosasShopBundle/Checkout/failed.html.twig');
+            return $this->render('shop/checkout/failed.html.twig');
         }
 
         // redirect to payment institut
         $url = '';
         if ($isHelperOrder == FALSE) {
-            return $this->render('ClosasShopBundle/Checkout/failed.html.twig');
+            return $this->render('shop/checkout/failed.html.twig');
         }
         $order = $helperOrder->getCurrentOrder();
         // Daten verarbeitung
@@ -83,7 +83,7 @@ class CheckoutController extends Controller {
         // check which paymenttyp
         if ($helperOrder->getPaymentName() == 'Post') {
             $post = $helperOrder->setPost()->getPost();
-            return $this->render('ClosasShopBundle/Checkout/postForm.html.twig', array(
+            return $this->render('shop/checkout/postForm.html.twig', array(
                         'fields' => $post->getFormFieldsValues(),
                         'url' => $post->getPaymentTyp()->getFormularUrl()));
         } else if ($helperOrder->getPaymentName() == 'Paypal') {
@@ -95,13 +95,13 @@ class CheckoutController extends Controller {
                     $paypal = $helperOrder->setPaypal('getExpressCheckoutDetails')->sendHttpPost();
                     $helperOrder->setAdditionalInformation($paypal->getExpressCheckoutResult());
                     $this->removeSessions($helperOrder);
-                    return $this->render('ClosasShopBundle/Checkout/paypalSuccess.html.twig', array('order' => $order));
+                    return $this->render('shop/checkout/paypalSuccess.html.twig', array('order' => $order));
                 } else {
                     // set status canceled
                     $helperOrder->setOrderStatus('canceled');
                     $helperOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
                     $this->removeSessions($helperOrder);
-                    return $this->render('ClosasShopBundle/Checkout/paypalFailed.html.twig', array('paypalmessage' => $paypal->getExpressCheckoutResult()['L_LONGMESSAGE0']));
+                    return $this->render('shop/checkout/paypalFailed.html.twig', array('paypalmessage' => $paypal->getExpressCheckoutResult()['L_LONGMESSAGE0']));
                 }
             } else {
                 $paypal = $helperOrder->setPaypal('setExpressCheckout')->getPaypal()->sendHttpPost();
@@ -112,7 +112,7 @@ class CheckoutController extends Controller {
                     $helperOrder->setOrderStatus('canceled');
                     $helperOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
                     $this->removeSessions($helperOrder);
-                    return $this->render('ClosasShopBundle/Checkout/paypalFailed.html.twig', array('paypalmessage' => urldecode($paypal->getExpressCheckoutResult()['L_LONGMESSAGE0'])));
+                    return $this->render('shop/checkout/paypalFailed.html.twig', array('paypalmessage' => urldecode($paypal->getExpressCheckoutResult()['L_LONGMESSAGE0'])));
                 }
             }
         } else if ($helperOrder->getPaymentName() == 'Bank') {
@@ -135,7 +135,7 @@ class CheckoutController extends Controller {
     }
 
     /**
-     * @Template("ClosasShopBundle/Checkout/bankSuccess.html.twig")
+     * @Template("shop/checkout/bankSuccess.html.twig")
      * @Route("/bank/success", name="checkout_order_bank_success")
      */
     public function bankSuccessAction(Request $request, HelperOrder $helperOrder, \Swift_Mailer $mailer) {
@@ -175,9 +175,9 @@ class CheckoutController extends Controller {
         $helperOrder->setAdditionalInformation($post->getParamsForHashCodeOut());
         $this->removeSessions($helperOrder);
         if ($status) {
-            return $this->render('ClosasShopBundle/Checkout/postSuccess.html.twig', array('order' => $order));
+            return $this->render('shop/checkout/postSuccess.html.twig', array('order' => $order));
         } else {
-            return $this->render('ClosasShopBundle/Checkout/postCancel.html.twig', array('order' => $order));
+            return $this->render('shop/checkout/postCancel.html.twig', array('order' => $order));
         }
     }
 
@@ -240,15 +240,15 @@ class CheckoutController extends Controller {
                 // set additional information
                 $paypal = $helperOrder->setPaypal('getExpressCheckoutDetails')->sendHttpPost();
                 $helperOrder->setAdditionalInformation($paypal->getExpressCheckoutResult());
-                return $this->render('ClosasShopBundle/Checkout/paypalSuccess.html.twig', array('order' => $order));
+                return $this->render('shop/checkout/paypalSuccess.html.twig', array('order' => $order));
             } else {
                 // set status canceled
                 $helperOrder->setOrderStatus('canceled');
                 $helperOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-                return $this->render('ClosasShopBundle/Checkout/paypalFailed.html.twig', array('paypalmessage' => $paypal->getExpressCheckoutResult()['L_LONGMESSAGE0']));
+                return $this->render('shop/checkout/paypalFailed.html.twig', array('paypalmessage' => $paypal->getExpressCheckoutResult()['L_LONGMESSAGE0']));
             }
         }
-        return $this->render('ClosasShopBundle/Checkout/paypalCancel.html.twig', array('order' => $order));
+        return $this->render('shop/checkout/paypalCancel.html.twig', array('order' => $order));
     }
 
     /**

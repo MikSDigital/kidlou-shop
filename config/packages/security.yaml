@@ -24,7 +24,7 @@ security:
                 property: username
         db_user_email:
             entity:
-                class: App\Entity\AdminUser
+                class: App\Entity\User
                 property: email
 
 
