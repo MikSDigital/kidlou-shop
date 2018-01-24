@@ -6,15 +6,14 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use App\Service\Language;
 
 class LocaleListener implements EventSubscriberInterface {
 
-    private $translator;
-    private $locale;
+    private $language;
 
-    public function __construct(TranslatorInterface $translator, $locale = 'fr', $languages = array('fr', 'de', 'en', 'es')) {
-        $this->translator = $translator;
-        $this->locale = $locale;
+    public function __construct(TranslatorInterface $translator, Language $language) {
+        $this->language = $language;
     }
 
     //https://gist.github.com/kunicmarko20/02a42c76f638322d58b1def7d2e770d7

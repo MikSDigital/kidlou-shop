@@ -73,12 +73,17 @@ services:
     App\Service\Order:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container", "@helper.common", "@mailer"]
 
+    App\Service\Language:
+        arguments: ["%locale%", "%languages%"]
+
 
     App\Listener\LocalListener:
         class: App\Listener\LocaleListener
-        arguments: ["@translator", "%locale%", "%languages%"]
+        arguments: ["@translator", "@service.language"]
         tags:
           - { name: kernel.event_subscriber }
+
+
 
     App\Handler\AuthenticationHandler:
         arguments: ["@service_container","@router"]

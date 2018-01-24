@@ -9,6 +9,7 @@ services:
     helper.image: '@App\Service\Image'
     helper.order: '@App\Service\Order'
     helper.payment: '@App\Service\Payment'
+    service.language: '@App\Service\Language'
     #closas.locale.listener: '@App\Listener\LocalListener'
     authentication_handler: '@App\Handler\AuthenticationHandler'
 
