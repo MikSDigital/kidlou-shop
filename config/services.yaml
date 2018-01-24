@@ -9,6 +9,7 @@ parameters:
     languages: [fr, de, en, es]
     upload_directory: '%kernel.root_dir%/../public/media/dynamisch'
     products_directory: '%kernel.root_dir%/../public/media/import/csv'
+    admin_path_name: admin
 #    parameter_name: value
 
 services:
@@ -73,8 +74,8 @@ services:
     App\Service\Order:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container", "@helper.common", "@mailer"]
 
-    App\Service\Language:
-        arguments: ["%locale%", "%languages%"]
+    App\Service\Parameter:
+        arguments: ["%locale%", "%languages%", "%admin_path_name%"]
 
 
     App\Listener\LocalListener:

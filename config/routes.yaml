@@ -1,7 +1,7 @@
 closas_admin:
     resource: ../../src/Controller/Admin/
     type:     annotation
-    prefix:   /admin/
+    prefix:   /%admin_path_name%/
 
 closas_user:
     resource: ../../src/Controller/User/
