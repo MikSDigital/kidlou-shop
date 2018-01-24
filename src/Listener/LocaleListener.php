@@ -10,11 +10,14 @@ use Symfony\Component\Translation\TranslatorInterface;
 class LocaleListener implements EventSubscriberInterface {
 
     private $translator;
+    private $locale;
 
-    public function __construct(TranslatorInterface $translator, $locale = "fr", $languages = array('fr', 'de', 'en', 'es')) {
+    public function __construct(TranslatorInterface $translator, $locale = 'fr', $languages = array('fr', 'de', 'en', 'es')) {
         $this->translator = $translator;
+        $this->locale = $locale;
     }
 
+    //https://gist.github.com/kunicmarko20/02a42c76f638322d58b1def7d2e770d7
     public function onKernelRequest(GetResponseEvent $event) {
         $request = $event->getRequest();
 //        echo $request->getPathInfo();
