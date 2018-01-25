@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Quote;
 use App\Entity\Calendar;
 use App\Entity\Map\QuoteProductAdditional;
+use App\Entity\Product;
 use App\Service\Calendar As ServiceCalendar;
 use App\Service\Common As ServiceCommon;
 use App\Service\Cart As ServiceCart;
@@ -61,7 +62,6 @@ class CartController extends Controller {
 //            $this->container->get('session')->set('quote_id', $quote_id);
             $quote = $this->getDoctrine()->getRepository(Quote::class)->findOneBy(array('id' => $quote_id));
         }
-
         $product = $serviceCart->getProduct($id);
         $dates = $request->request->get('dates');
         $dates = json_decode($dates);
@@ -69,7 +69,6 @@ class CartController extends Controller {
         $date_to = new \DateTime($serviceCalendar->getConvertDate($dates->date_to));
         $interval = $date_from->diff($date_to);
         $count_days = $interval->format('%a');
-
         $additionals = $request->request->get('additionals');
         $additionals = json_decode($additionals);
         $arr_additionals = array();
@@ -119,7 +118,7 @@ class CartController extends Controller {
         }
 
         // remove all from parent
-        $quoteProductAdditionals = $this->getDoctrine()->getRepository(Map\QuoteProductAdditional::class)->findBy(
+        $quoteProductAdditionals = $this->getDoctrine()->getRepository(QuoteProductAdditional::class)->findBy(
                 array(
                     'parent' => $product->getId(),
                     'quote' => $quote
@@ -134,7 +133,7 @@ class CartController extends Controller {
         // This part is with by additional products
         // remove old additional
 
-        $reposQuoteProductAdditional = $this->getDoctrine()->getRepository(Map\QuoteProductAdditional::class);
+        $reposQuoteProductAdditional = $this->getDoctrine()->getRepository(QuoteProductAdditional::class);
         foreach ($arr_additionals as $additional) {
             $quoteProductAdditional = $reposQuoteProductAdditional->findOneBy(
                     array(
@@ -193,7 +192,7 @@ class CartController extends Controller {
             $product = $serviceProduct->getProduct($id);
             if ($additional_id) {
                 $additional = $serviceProduct->getProduct($additional_id);
-                $reposQuoteProductAdditional = $this->getDoctrine()->getRepository(Map\QuoteProductAdditional::class);
+                $reposQuoteProductAdditional = $this->getDoctrine()->getRepository(QuoteProductAdditional::class);
                 $quoteProductAdditional = $reposQuoteProductAdditional->findOneBy(
                         array(
                             'parent' => $product->getId(),
@@ -204,7 +203,7 @@ class CartController extends Controller {
                 $em->remove($quoteProductAdditional);
                 $em->flush();
             } else {
-                $reposQuoteProductAdditional = $this->getDoctrine()->getRepository(Map\QuoteProductAdditional::class);
+                $reposQuoteProductAdditional = $this->getDoctrine()->getRepository(QuoteProductAdditional::class);
                 $quoteProductAdditionals = $reposQuoteProductAdditional->findBy(
                         array(
                             'parent' => $product->getId(),
@@ -235,7 +234,7 @@ class CartController extends Controller {
                         'quote' => $quote
             ));
             foreach ($quoteCalendars as $quoteCalendar) {
-                $reposQuoteProductAdditional = $this->getDoctrine()->getRepository(Map\QuoteProductAdditional::class);
+                $reposQuoteProductAdditional = $this->getDoctrine()->getRepository(QuoteProductAdditional::class);
                 $quoteProductAdditionals = $reposQuoteProductAdditional->findBy(
                         array(
                             'parent' => $quoteCalendar->getProduct()->getId(),
