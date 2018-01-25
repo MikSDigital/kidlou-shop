@@ -76,4 +76,26 @@ class Product extends \Doctrine\ORM\EntityRepository {
                         ->getResult();
     }
 
+    /**
+     *
+     * @param type $url_key
+     * @param type $lang
+     * @return type products
+     */
+    public function getParentChildrenProducts($url_key, $lang) {
+
+        $query = $this->getEntityManager()
+                ->createQuery(
+                        "SELECT p.id AS product_id, pma.id AS children_id
+                                FROM App\Entity\Product p
+                                    INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent AND p.url_key = :url_key
+                                    INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product_id
+                                    INNER JOIN App\Entity\Language lang WITH p.lang_id = lang.id AND lang.short_name = :lang
+                        "
+                )
+                ->setParameter('url_key', $url_key)
+                ->setParameter('lang', $lang);
+        return $query->getResult();
+    }
+
 }

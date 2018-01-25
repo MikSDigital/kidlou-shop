@@ -68,7 +68,7 @@ class CategoryController extends Controller {
      * @param type $arr_route_name
      * @return type string
      */
-    private function getDetail($id, $arr_route_name, $request, $serviceProduct, $serviceOrder) {
+    private function getDetail($id, $arr_route_name, $request, ServiceProduct $serviceProduct, ServiceOrder $serviceOrder) {
         $product = $serviceProduct->getProduct($id);
         $children = $serviceProduct->getChildrenByParent($id);
         $arr_additionals_select = array();
