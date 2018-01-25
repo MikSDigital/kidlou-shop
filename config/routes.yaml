@@ -13,6 +13,8 @@ closas_user:
 closas_shop:
     resource: ../../src/Controller/Shop/
     type:     annotation
+#    defaults: {_locale: fr}
     prefix:   /{_locale}/
     requirements:
         _locale: fr|de|en|es
+    defaults: {_locale: fr}

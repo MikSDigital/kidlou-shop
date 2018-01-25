@@ -7,14 +7,9 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 use App\Service\Parameter;
 
 class LocaleListener implements EventSubscriberInterface {
-//    /**
-//     * @var urlMatcher \Symfony\Component\Routing\Matcher\UrlMatcher;
-//     */
-//    private $urlMatcher;
 
     /**
      *
@@ -49,6 +44,7 @@ class LocaleListener implements EventSubscriberInterface {
     public function onKernelRequest(GetResponseEvent $event) {
         $request = $event->getRequest();
         // wenn nicht lang und admin
+
         $this->newUrl = $request->getPathInfo();
         $this->oldUrl = $request->headers->get('referer');
         // check if admin
@@ -56,24 +52,25 @@ class LocaleListener implements EventSubscriberInterface {
             return;
         }
         $locale = $this->checkLanguage();
-        if ($locale === null)
+        if ($locale === null) {
             return;
+        }
+        // check is is web_profile
+        if ($this->getIsWebProfile()) {
+            return;
+        }
+
         $request->setLocale($locale);
         $this->translator->setLocale($locale);
         $pathLocale = "/" . $locale . $this->newUrl;
+
         //We have to catch the ResourceNotFoundException
         try {
-            //Try to match the path with the local prefix
-            //$this->urlMatcher->match($pathLocale);
             $event->setResponse(new RedirectResponse($pathLocale));
         } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
 
         } catch (\Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
 
-        }
-
-        if (!$request->hasPreviousSession()) {
-            return;
         }
     }
 
@@ -95,11 +92,18 @@ class LocaleListener implements EventSubscriberInterface {
     }
 
     private function getIsAdmin() {
-        $pos = strpos($this->newUrl, '/' . $this->parameter->getAdminPathName() . '/');
-        if ($pos !== false) {
-            if ($pos == 0) {
-                return TRUE;
-            }
+        if (0 === strpos($this->newUrl, '/' . $this->parameter->getAdminPathName() . '/')) {
+            return TRUE;
+        }
+        if (0 === strpos($this->oldUrl, '/' . $this->parameter->getAdminPathName() . '/')) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    private function getIsWebProfile() {
+        if (0 === strpos($this->newUrl, "/_wdt") || 0 === strpos($this->newUrl, "/_profiler")) {
+            return TRUE;
         }
         return FALSE;
     }

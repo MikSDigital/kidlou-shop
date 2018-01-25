@@ -90,13 +90,13 @@ class StartController extends Controller {
         if ($url_key1 == 'blog' && $url_key2 == '') {
             $categories = $serviceNavigation->getNavigation($typ, $url_key1, $url_key2, $url_key3, $url_key4, $url_key5, $url_key6, $url_key7, $url_key8);
             if (!$categories) {
-                throw $this->createNotFoundException('The category does not exist');
+                throw $this->createNotFoundException('The content does not exist');
             }
             $allcontents = $serviceContent->getAllContents($categories);
         } else if ($url_key1 == 'blog' && $url_key2 != '' && $url_key3 == '') {
             $categories = $serviceNavigation->getNavigation($typ, $url_key1, $url_key2, $url_key3, $url_key4, $url_key5, $url_key6, $url_key7, $url_key8);
             if (!$categories) {
-                throw $this->createNotFoundException('The category does not exist');
+                throw $this->createNotFoundException('The content does not exist');
             }
             $contents = $serviceContent->getContents($categories);
         } else if ($url_key1 == 'blog' && $url_key2 != '' && $url_key3 != '') {
@@ -104,7 +104,7 @@ class StartController extends Controller {
         } else {
             $categories = $serviceNavigation->getNavigation($typ, $url_key1, $url_key2, $url_key3, $url_key4, $url_key5, $url_key6, $url_key7, $url_key8);
             if (!$categories) {
-                throw $this->createNotFoundException('The category does not exist');
+                throw $this->createNotFoundException('The content does not exist');
             }
             $contents = $serviceContent->getContents($categories);
         }
