@@ -128,7 +128,7 @@ class StartController extends Controller {
 
 
         $em = $this->getDoctrine()->getManager();
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+        $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $parentcategory = $reposCategory->findOneBy(
                 array('url_key' => 'root', 'level' => 0)
         );

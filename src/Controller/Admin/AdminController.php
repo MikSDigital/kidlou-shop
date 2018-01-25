@@ -11,15 +11,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
-use App\Entity\Product;
-use App\Entity\Product\Typ;
-use App\Entity\Product\Description;
-use App\Entity\Product\Image;
-use App\Entity\Product\Image\Size;
-use App\Entity\Category;
-use App\Entity\Price;
-use App\Entity\Map\ProductAdditional;
-use App\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\Common As ServiceCommon;
 use App\Service\Product As ServiceProduct;
@@ -67,10 +58,10 @@ class AdminController extends Controller {
      * @Route("/new", name="admin_product_new")
      */
     public function newAction(ServiceCommon $serviceCommon) {
-        $reposProductTyp = $this->getDoctrine()->getRepository(Typ::class);
+        $reposProductTyp = $this->getDoctrine()->getRepository(\App\Entity\Product\Typ::class);
         $productTyps = $reposProductTyp->findAll();
         $navigation = $serviceCommon->getNavigation('category');
-        $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
+        $reposLanguage = $this->getDoctrine()->getRepository(\App\Entity\Language::class);
         $languages = $reposLanguage->findAll();
 
         return array(
@@ -89,7 +80,7 @@ class AdminController extends Controller {
         $requests = $request->request->get('product');
 
         $product = $productRepos->findOneBy(array('sku' => $requests['sku']));
-        $reposProductTyp = $this->getDoctrine()->getRepository(Typ::class);
+        $reposProductTyp = $this->getDoctrine()->getRepository(\App\Entity\Product\Typ::class);
         $productTyp = $reposProductTyp->findOneBy(array('short_name' => $requests['typ']));
         $em = $this->getDoctrine()->getManager();
         $status = false;
@@ -105,7 +96,7 @@ class AdminController extends Controller {
             $em->flush();
 
             // add to category
-            $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+            $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
             $arr_category = explode(',', $requests['category']);
             foreach ($arr_category as $categoryid) {
                 $category = $reposCategory->findOneById($categoryid);
@@ -122,7 +113,7 @@ class AdminController extends Controller {
             $em->flush();
 
             // product description
-            $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
+            $reposLanguage = $this->getDoctrine()->getRepository(\App\Entity\Language::class);
             $languages = $reposLanguage->findAll();
             foreach ($languages as $language) {
                 $productDescription = new Description();
@@ -145,7 +136,7 @@ class AdminController extends Controller {
      * @Route("/list", name="admin_product_list")
      */
     public function listAction() {
-        $reposProductTyp = $this->getDoctrine()->getRepository(Typ::class);
+        $reposProductTyp = $this->getDoctrine()->getRepository(\App\Entity\Product\Typ::class);
         $productTyp = $reposProductTyp->findOneBy(array('short_name' => 'SIP'));
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
         $products = $reposProduct->findBy(array('typ' => $productTyp));
@@ -165,7 +156,7 @@ class AdminController extends Controller {
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
         $product = $reposProduct->findOneById($id);
         $children = $serviceProduct->getChildrenByRealParent($id);
-        $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
+        $reposLanguage = $this->getDoctrine()->getRepository(\App\Entity\Language::class);
         $languages = $reposLanguage->findAll();
         $navigation = $serviceCommon->getNavigation('category');
 
@@ -213,7 +204,7 @@ class AdminController extends Controller {
             $em->flush();
         }
 
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+        $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $arr_category = explode(',', $category_ids);
         foreach ($arr_category as $categoryid) {
             $category = $reposCategory->findOneById($categoryid);
@@ -236,7 +227,7 @@ class AdminController extends Controller {
         $lang = $request->request->get('lang');
 
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
-        $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
+        $reposLanguage = $this->getDoctrine()->getRepository(\App\Entity\Language::class);
 
         $product = $reposProduct->findOneById($product_id);
         $language = $reposLanguage->findOneBy(array('short_name' => $lang));
@@ -305,7 +296,7 @@ class AdminController extends Controller {
         $product_id = $request->request->get('product_id');
         $lang = $request->request->get('lang');
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
-        $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
+        $reposLanguage = $this->getDoctrine()->getRepository(\App\Entity\Language::class);
 
         $product = $reposProduct->findOneById($product_id);
         $language = $reposLanguage->findOneBy(array('short_name' => $lang));
@@ -361,7 +352,7 @@ class AdminController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
         $product = $reposProduct->findOneById($product_id);
-        $reposImage = $this->getDoctrine()->getRepository(Image::class);
+        $reposImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
         $image = $reposImage->findOneBy(array('id' => $image_id, 'product' => $product));
 
         $images = $reposImage->findBy(array('product' => $product, 'original_name' => $image->getOriginalName()));
@@ -387,7 +378,7 @@ class AdminController extends Controller {
         $prices = $request->request->get('price');
 
         $additionaldescriptions = $request->request->get('sendadditionaldescription');
-        $reposLang = $this->getDoctrine()->getRepository(Language::class);
+        $reposLang = $this->getDoctrine()->getRepository(\App\Entity\Language::class);
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
         $em = $this->getDoctrine()->getManager();
         $error = array();
@@ -405,7 +396,7 @@ class AdminController extends Controller {
         }
         foreach ($skus as $sku) {
             $children = new Product();
-            $reposTyp = $this->getDoctrine()->getRepository(Typ::class);
+            $reposTyp = $this->getDoctrine()->getRepository(\App\Entity\Product\Typ::class);
             $typ = $reposTyp->findOneBy(array('short_name' => 'ADD'));
             $children->setCategory(NULL);
             $children->setTyp($typ);
@@ -481,7 +472,7 @@ class AdminController extends Controller {
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
         $children = $reposProduct->findOneById($children_id);
 
-        $reposImage = $this->getDoctrine()->getRepository(Image::class);
+        $reposImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
         $images = $reposImage->findBy(array('product' => $children));
         foreach ($images as $image) {
             $fs = new Filesystem();
@@ -490,21 +481,21 @@ class AdminController extends Controller {
             $em->flush();
         }
 
-        $reposDescription = $this->getDoctrine()->getRepository(Description::class);
+        $reposDescription = $this->getDoctrine()->getRepository(\App\Entity\Product\Description::class);
         $descriptions = $reposDescription->findBy(array('product' => $children));
         foreach ($descriptions as $description) {
             $em->remove($description);
             $em->flush();
         }
 
-        $reposPrice = $this->getDoctrine()->getRepository(Price::class);
+        $reposPrice = $this->getDoctrine()->getRepository(\App\Entity\Price::class);
         $prices = $reposPrice->findBy(array('product' => $children));
         foreach ($prices as $price) {
             $em->remove($price);
             $em->flush();
         }
 
-        $reposProductAdditional = $this->getDoctrine()->getRepository(ProductAdditional::class);
+        $reposProductAdditional = $this->getDoctrine()->getRepository(\App\Entity\Map\ProductAdditional::class);
         $productAdditional = $reposProductAdditional->findOneBy(array('parent' => $product_id, 'children' => $children_id));
         $em->remove($productAdditional);
         $em->flush();
@@ -527,7 +518,7 @@ class AdminController extends Controller {
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
         $product = $reposProduct->findOneById($product_id);
 
-        $reposProductImage = $this->getDoctrine()->getRepository(Image::class);
+        $reposProductImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
         $productImages = $reposProductImage->findBy(array('product' => $product, 'is_default' => 1));
         foreach ($productImages as $productImage) {
             $productImage->setIsDefault(false);
@@ -559,7 +550,7 @@ class AdminController extends Controller {
         $arr_html = array();
         foreach ($files as $image_id => $file) {
             $arr_image_id[] = $image_id;
-            $reposProductImage = $this->getDoctrine()->getRepository(Image::class);
+            $reposProductImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
             $productImage = $reposProductImage->findOneById($image_id);
             $productImages = $reposProductImage->findBy(array('original_name' => $productImage->getOriginalName()));
             foreach ($productImages as $productImage) {
@@ -594,7 +585,7 @@ class AdminController extends Controller {
         $productprices = $request->request->get('productprice');
 
         $html = '';
-        $reposProductDescription = $this->getDoctrine()->getRepository(Description::class);
+        $reposProductDescription = $this->getDoctrine()->getRepository(\App\Entity\Product\Description::class);
         foreach ($productdescriptions as $child_id => $arr_productdescription) {
             $reposProduct = $this->getDoctrine()->getRepository(Product::class);
             $children = $reposProduct->findOneBy(array('id' => $child_id));
@@ -614,7 +605,7 @@ class AdminController extends Controller {
 
             $entityPrices = new ArrayCollection();
             foreach ($productprices[$child_id] as $product_price_id => $productprice) {
-                $price = $this->getDoctrine()->getRepository(Price::class)->findOneById($product_price_id);
+                $price = $this->getDoctrine()->getRepository(\App\Entity\Price::class)->findOneById($product_price_id);
                 $price->setValue($productprice);
                 $em->persist($price);
                 $em->flush();
@@ -626,7 +617,7 @@ class AdminController extends Controller {
 
             if (isset($files[$child_id])) {
                 if ($children->getImages()) {
-                    $reposImage = $this->getDoctrine()->getRepository(Image::class);
+                    $reposImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
                     $images = $reposImage->findBy(array('product' => $children));
                     foreach ($images as $image) {
                         $fs = new Filesystem();
@@ -703,7 +694,7 @@ class AdminController extends Controller {
                 $newNodes++;
             }
 
-            $reposSize = $this->getDoctrine()->getRepository(Size::class);
+            $reposSize = $this->getDoctrine()->getRepository(\App\Entity\Product\Image\Size::class);
             $sizes = $reposSize->findAll();
             foreach ($sizes as $key => $size) {
                 $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();

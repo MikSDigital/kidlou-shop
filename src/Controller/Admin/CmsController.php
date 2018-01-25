@@ -12,10 +12,12 @@ use Symfony\Component\DomCrawler\Crawler;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Entity\Category;
 use App\Entity\Category\Label;
+use App\Entity\Category\Typ;
 use App\Entity\Image;
 use App\Entity\Image\Size;
 use App\Entity\Content;
 use App\Entity\Content\Group;
+use App\Entity\Language;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
 use App\Service\Image As ServiceImage;
@@ -52,7 +54,7 @@ class CmsController extends Controller {
         }
         $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
         $lang = $reposLanguage->findOneBy(array('short_name' => $lang));
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+        $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $category = $reposCategory->findOneById($id);
 
         // get label name
@@ -85,7 +87,7 @@ class CmsController extends Controller {
 
         $delete_image = $request->request->get('delete_image');
 
-        $reposCatLabel = $this->getDoctrine()->getRepository(Category\Label::class);
+        $reposCatLabel = $this->getDoctrine()->getRepository(Label::class);
         $em = $this->getDoctrine()->getManager();
         foreach ($labels as $labelid => $name) {
             $catLabel = $reposCatLabel->findOneById($labelid);
@@ -94,10 +96,10 @@ class CmsController extends Controller {
             $em->flush();
         }
 
-        $reposCatTyp = $this->getDoctrine()->getRepository(Category\Typ::class);
+        $reposCatTyp = $this->getDoctrine()->getRepository(Typ::class);
         $catTyp = $reposCatTyp->findOneById($cat_typ_id);
 
-        $reposCat = $this->getDoctrine()->getRepository(Category::class);
+        $reposCat = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $cat = $reposCat->findOneById($id);
 
         if ($delete_image) {
@@ -112,7 +114,7 @@ class CmsController extends Controller {
                 $fileClientOriginalName = $file->getClientOriginalName();
                 $fileClientMimeType = $file->getClientMimeType();
                 $reposCatImage = $this->getDoctrine()->getRepository(Image::class);
-                $reposCatImageSize = $this->getDoctrine()->getRepository(Image\Size::class);
+                $reposCatImageSize = $this->getDoctrine()->getRepository(Size::class);
                 foreach ($reposCatImageSize->findAll() as $key => $size) {
                     $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();
                     $fileName = md5(uniqid()) . '.' . $fileExtension;
@@ -167,7 +169,7 @@ class CmsController extends Controller {
      */
     private function deleteImagesFile($field, $obj) {
         $reposImage = $this->getDoctrine()->getRepository(Image::class);
-        $reposImageSize = $this->getDoctrine()->getRepository(Image\Size::class);
+        $reposImageSize = $this->getDoctrine()->getRepository(Size::class);
         foreach ($reposImageSize->findAll() as $size) {
             $image = $reposImage->findOneBy(array($field => $obj, 'size' => $size));
             if ($image) {
@@ -187,7 +189,7 @@ class CmsController extends Controller {
     private function deleteImagesDb($field, $obj) {
         $em = $this->getDoctrine()->getManager();
         $reposImage = $this->getDoctrine()->getRepository(Image::class);
-        $reposImageSize = $this->getDoctrine()->getRepository(Image\Size::class);
+        $reposImageSize = $this->getDoctrine()->getRepository(Size::class);
         foreach ($reposImageSize->findAll() as $size) {
             $image = $reposImage->findOneBy(array($field => $obj, 'size' => $size));
             if ($image) {
@@ -203,7 +205,7 @@ class CmsController extends Controller {
      */
     public function addNewContentAction($id = '', $lang = '') {
 
-        $reposCat = $this->getDoctrine()->getRepository(Category::class);
+        $reposCat = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $category = $reposCat->findOneById($id);
         $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
         $lang = $reposLanguage->findOneBy(array('short_name' => $lang));
@@ -216,7 +218,7 @@ class CmsController extends Controller {
      */
     public function saveContentAction(Request $request, ServiceImage $serviceImage, ServiceCommon $serviceCommon) {
         $catid = $request->request->get('catid');
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+        $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
         $category = $reposCategory->findOneById($catid);
         $arr_content = $request->request->get('content');
@@ -349,7 +351,7 @@ class CmsController extends Controller {
         $content = $this->getDoctrine()->getRepository(Content::class)->findOneBy(array('id' => $id));
 
         $group = $content->getGroup();
-        $contentGroup = $this->getDoctrine()->getRepository(Content\Group::class)->findOneBy(array('id' => $group->getId()));
+        $contentGroup = $this->getDoctrine()->getRepository(Group::class)->findOneBy(array('id' => $group->getId()));
         $contents = $this->getDoctrine()->getRepository(Content::class)->findBy(array('group' => $content->getGroup()));
         $em = $this->getDoctrine()->getManager();
         foreach ($contents as $content) {
@@ -368,7 +370,7 @@ class CmsController extends Controller {
         $em->remove($contentGroup);
         $em->flush();
 
-        $category = $this->getDoctrine()->getRepository(Category::class)->findOneById($catid);
+        $category = $this->getDoctrine()->getRepository(\App\Entity\Category::class)->findOneById($catid);
         $lang = $this->getDoctrine()->getRepository(Language::class)->findOneBy(array('short_name' => $langid));
 
         return new JsonResponse(array('html' => $this->getContent($category, $lang)));
@@ -384,7 +386,7 @@ class CmsController extends Controller {
         $langid = $request->request->get('langid');
         $content = $this->getDoctrine()->getRepository(Content::class)->findOneBy(array('id' => $id));
         $group = $content->getGroup();
-        $contentGroup = $this->getDoctrine()->getRepository(Content\Group::class)->findOneBy(array('id' => $group->getId()));
+        $contentGroup = $this->getDoctrine()->getRepository(Group::class)->findOneBy(array('id' => $group->getId()));
         $contents = $this->getDoctrine()->getRepository(Content::class)->findBy(array('group' => $content->getGroup()));
         $em = $this->getDoctrine()->getManager();
         foreach ($contents as $content) {
@@ -400,7 +402,7 @@ class CmsController extends Controller {
             }
         }
 
-        $category = $this->getDoctrine()->getRepository(Category::class)->findOneById($catid);
+        $category = $this->getDoctrine()->getRepository(\App\Entity\Category::class)->findOneById($catid);
         $lang = $this->getDoctrine()->getRepository(Language::class)->findOneBy(array('short_name' => $langid));
 
         return new JsonResponse(array('html' => $this->getContent($category, $lang)));
@@ -416,7 +418,7 @@ class CmsController extends Controller {
         $parent_cattyp = $request->request->get('parent_cattyp');
         $new_catname = $request->request->get('new_catname');
 
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+        $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $url_key = strtolower($new_catname);
         $category = $reposCategory->findOneBy(array('url_key' => $url_key, 'parent_id' => $parent_catid));
         if ($category) {
@@ -435,7 +437,7 @@ class CmsController extends Controller {
             $order = $category->getOrder() + 10;
         }
 
-        $reposCatTyp = $this->getDoctrine()->getRepository(Category\Typ::class);
+        $reposCatTyp = $this->getDoctrine()->getRepository(Typ::class);
         $catTyp = $reposCatTyp->findOneById($parent_cattyp);
 
         $em = $this->getDoctrine()->getManager();
@@ -478,7 +480,7 @@ class CmsController extends Controller {
      */
     public function orderMenuAction(Request $request) {
         $catids = $request->request->get('catids');
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+        $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $em = $this->getDoctrine()->getManager();
         $countOrder = 10;
         foreach ($catids as $catid) {
@@ -499,7 +501,7 @@ class CmsController extends Controller {
         $catid = $request->request->get('catid');
         $catname = $request->request->get('catname');
         $em = $this->getDoctrine()->getManager();
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+        $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $url_key = strtolower($catname);
         $category = $reposCategory->findOneById($catid);
         $parent_id = $category->getParentId();
@@ -522,7 +524,7 @@ class CmsController extends Controller {
 
         $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
         $languages = $reposLanguage->findAll();
-        $reposCategoryLabel = $this->getDoctrine()->getRepository(Category\Label::class);
+        $reposCategoryLabel = $this->getDoctrine()->getRepository(Label::class);
         foreach ($languages as $language) {
             $categoryLabel = $reposCategoryLabel->findOneBy(array('lang' => $language, 'category' => $category));
             $categoryLabel->setName($catname);
@@ -569,8 +571,8 @@ class CmsController extends Controller {
         }
 
         $em = $this->getDoctrine()->getManager();
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
-        $reposCategoryLabel = $this->getDoctrine()->getRepository(Category\Label::class);
+        $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
+        $reposCategoryLabel = $this->getDoctrine()->getRepository(Label::class);
 
         foreach ($arr_catids as $catid) {
             $category = $reposCategory->findOneById($catid);
@@ -595,9 +597,9 @@ class CmsController extends Controller {
         $arr_tinymceid = array();
         $html = '';
         $id = $category->getId();
-        $category = $this->getDoctrine()->getRepository(Category::class)->getAdminOrderContents($id);
+        $category = $this->getDoctrine()->getRepository(\App\Entity\Category::class)->getAdminOrderContents($id);
         if (is_null($category)) {
-            $category = $this->getDoctrine()->getRepository(Category::class)->findOneById($id);
+            $category = $this->getDoctrine()->getRepository(\App\Entity\Category::class)->findOneById($id);
         }
         foreach ($category->getContents() as $content) {
             if ($content->getLang()->getId() == $lang->getId()) {
@@ -629,7 +631,7 @@ class CmsController extends Controller {
 
         // all url keys
         $arr_url_keys = array();
-        $cats = $this->getDoctrine()->getRepository(Category::class)->findAll();
+        $cats = $this->getDoctrine()->getRepository(\App\Entity\Category::class)->findAll();
         foreach ($cats as $cat) {
             $arr_url_keys[$cat->getid()] = $cat->getUrlKey();
         }
@@ -664,13 +666,13 @@ class CmsController extends Controller {
 
         // prüfe ob bereits diese eine group hat
         $groupid = $content->getGroup()->getId();
-        $group = $this->getDoctrine()->getRepository(Content\Group::class)->findOneById($groupid);
+        $group = $this->getDoctrine()->getRepository(Group::class)->findOneById($groupid);
         if (!is_null($group->getUrlKey())) {
             return;
         }
         // set urlkey cor content if blog
         if ($category->getTyp()->getShortName() == 'BLOG') {
-            $groups = $this->getDoctrine()->getRepository(Content\Group::class)->findAll();
+            $groups = $this->getDoctrine()->getRepository(Group::class)->findAll();
             $isNotFound = FALSE;
             while (!$isNotFound) {
                 $i = 0;
@@ -687,7 +689,7 @@ class CmsController extends Controller {
                 }
             }
             $groupid = $content->getGroup()->getId();
-            $group = $this->getDoctrine()->getRepository(Content\Group::class)->findOneById($groupid);
+            $group = $this->getDoctrine()->getRepository(Group::class)->findOneById($groupid);
             $group->setUrlKey($blog_url_key);
             $em->persist($group);
             $em->flush();

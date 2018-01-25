@@ -175,7 +175,7 @@ class ImportController extends Controller {
             $this->_product->setUrlKey($this->getProductUrlKey());
         }
         // Hier noch die category rausfinden
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+        $reposCategory = $this->getDoctrine()->getRepository(\App\Entity\Category::class);
         $category = $reposCategory->findOneBy(array('url_key' => $this->_getUrlKey(), 'level' => $this->_getCategoryLevel()));
 
         $isCat = false;
