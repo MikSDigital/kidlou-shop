@@ -1062,7 +1062,7 @@ class Common {
             return FALSE;
         }
 
-        $this->arr_basket_items = $this->em->getRepository(Quote::class)->getBasketItems($quote_id, 'image80', 'image80', $this->getRequest()->getLocale());
+        $this->arr_basket_items = $this->em->getRepository(\App\Entity\Quote::class)->getBasketItems($quote_id, 'image80', 'image80', $this->getRequest()->getLocale());
         $price = 0;
         foreach ($this->arr_basket_items as $items) {
             foreach ($items['parent_price'] as $item) {

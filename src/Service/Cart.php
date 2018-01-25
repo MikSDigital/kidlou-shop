@@ -5,6 +5,7 @@ namespace App\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Product;
 
 class Cart {
 

@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Mail;
 use App\Entity\Mail\Send;
 use App\Entity\Inbox;
-use App\Service\Common;
+use App\Service\Common As ServiceCommon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\DomCrawler\Crawler;

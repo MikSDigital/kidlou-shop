@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Payment;
 use App\Entity\Caution;
 use App\Entity\Shipping;
-use App\Service\Image;
+use App\Service\Image As ServiceImage;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
