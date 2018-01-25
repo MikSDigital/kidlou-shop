@@ -15,6 +15,7 @@ use App\Entity\Price;
 use App\Entity\Map\ProductAdditional;
 use App\Entity\Upload;
 use App\Service\Common As ServiceCommon;
+use App\Service\ImageResizer As ServiceImageResizer;
 
 class ImportController extends Controller {
 
@@ -33,7 +34,7 @@ class ImportController extends Controller {
      * @Template()
      * @Route("/import/{id}/{file}/", defaults={"id" = NULL, "file" = FALSE},  name="admin_import")
      */
-    public function importAction($id = NULL, $file = FALSE, ServiceCommon $serviceCommon) {
+    public function importAction($id = NULL, $file = FALSE, ServiceCommon $serviceCommon, ServiceImageResizer $serviceImageResizer) {
         ini_set('max_execution_time', 600);
         ini_set('memory_limit', '128 M');
         if ($id != NULL) {
@@ -74,7 +75,7 @@ class ImportController extends Controller {
                     $this->setProductDescription();
                     if ($this->getLanguageLocale() == 'fr') {
                         if ($file) {
-                            $this->setImages($serviceCommon);
+                            $this->setImages($serviceCommon, $serviceImageResizer);
                         }
                     }
                 }
@@ -249,7 +250,7 @@ class ImportController extends Controller {
         $em->flush();
     }
 
-    protected function setImages($serviceCommon) {
+    protected function setImages($serviceCommon, $serviceImageResizer) {
 
         $_dir = $this->get('kernel')->getRootDir() . '/../public/media/import/images/' . $this->_getSku() . '/';
         if (!is_dir($_dir)) {
@@ -271,7 +272,7 @@ class ImportController extends Controller {
                     foreach ($sizes as $size) {
                         $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();
                         $this->saveImage($size, $serviceCommon);
-                        $this->get('helper.imageresizer')->resizeImage($this->getOriginalFileSource(), $_targetDir, $this->getTargetName(), $height = $size->getHeight());
+                        $serviceImageResizer->resizeImage($this->getOriginalFileSource(), $_targetDir, $this->getTargetName(), $height = $size->getHeight());
                     }
                 }
             }

@@ -33,8 +33,6 @@ class CartController extends Controller {
             return $this->render('shop/cart/empty.html.twig');
         }
         $basket_items = $this->container->get('session')->get('basket_items');
-//        $basket = $this->get('helper.common')->setBasket();
-//        $basket_items = $basket->getBasketItems();
         return array('items' => $basket_items);
     }
 

@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Mail;
 use App\Entity\Mail\Send;
 use App\Entity\Inbox;
+use App\Service\Common;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\DomCrawler\Crawler;
@@ -107,7 +108,7 @@ class MailController extends Controller {
      * @Route("/send/", name="admin_mail_send_detail_new")
      * @Route("/send/{id}/", name="admin_mail_send_detail")
      */
-    public function sendAction($id = null, Request $request) {
+    public function sendAction($id = null, Request $request, ServiceCommon $serviceCommon) {
         if ($id != null) {
             $reposMail = $this->getDoctrine()->getRepository(Mail\Send::class);
             $mail = $reposMail->findOneById($id);
@@ -139,7 +140,7 @@ class MailController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($data);
             $em->flush();
-            $this->get('helper.common')->sendCommonEmailMessage($data->getSubject(), $data->getBody(), $data->getToEmail());
+            $serviceCommon->sendCommonEmailMessage($data->getSubject(), $data->getBody(), $data->getToEmail());
             return $this->redirectToRoute('admin_mail_send_list');
         }
 
@@ -252,9 +253,9 @@ class MailController extends Controller {
      * @Template()
      * @Route("/inboxresponse/", name="admin_in_box_response")
      */
-    public function inboxresponseAction(Request $request) {
+    public function inboxresponseAction(Request $request, ServiceCommon $serviceCommon) {
         $data = $request->request->get('mail');
-        $this->get('helper.common')->sendCommonEmailMessage($data['subject'], $data['body'], $data['to_address']);
+        $serviceCommon->sendCommonEmailMessage($data['subject'], $data['body'], $data['to_address']);
         return $this->redirectToRoute('admin_in_box_list', $data);
     }
 

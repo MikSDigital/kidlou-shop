@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Payment;
 use App\Entity\Caution;
 use App\Entity\Shipping;
+use App\Service\Image;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -141,7 +142,7 @@ class PaymentController extends Controller {
      * @Route("/detail/{id}/", name="admin_payment_detail")
      * @Route("/detail/{id}/{lang}/", defaults={"lang" = "fr"}, name="admin_payment_detail_lang")
      */
-    public function detailAction($id = null, $lang = 'fr', Request $request) {
+    public function detailAction($id = null, $lang = 'fr', Request $request, ServiceImage $serviceImage) {
         if ($id != null) {
             $reposPayment = $this->getDoctrine()->getRepository(Payment::class);
             $payment = $reposPayment->findOneById($id);
@@ -198,7 +199,7 @@ class PaymentController extends Controller {
         if ($formLabel->isSubmitted() && $formLabel->isValid()) {
             $paymentLabel = $formLabel->getData();
             $this->deleteFile($request);
-            $this->saveFile($request, $paymentLabel, $payment);
+            $this->saveFile($request, $paymentLabel, $payment, $serviceImage);
             $em->persist($paymentLabel);
             $em->flush();
             return $this->redirectToRoute('admin_payment_detail_lang', array('id' => $id, 'lang' => $lang));
@@ -269,11 +270,11 @@ class PaymentController extends Controller {
      * @param type $payment
      * @return boolean
      */
-    private function saveFile($request, $paymentLabel, $payment) {
+    private function saveFile($request, $paymentLabel, $payment, $serviceImage) {
         $file = $request->files->get('form')['image'];
         if (isset($file)) {
             $em = $this->getDoctrine()->getManager();
-            $image = $this->get('helper.image')->setRequestByParams('form', 'image');
+            $image = $serviceImage->setRequestByParams('form', 'image');
             $image->getImageByEntity('Payment\Lang\Label', $paymentLabel->getId())->removeImageByEntity()->save(1);
             foreach ($this->getPaymentLabels($payment) as $label) {
                 $label->setImage($image->getImage());

@@ -28,6 +28,7 @@ use Glifery\EntityHiddenTypeBundle\Form\Type\EntityHiddenType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use App\Service\Payment As ServicePayment;
+use App\Service\Common As ServiceCommon;
 
 class UserController extends Controller {
 
@@ -162,7 +163,7 @@ class UserController extends Controller {
      * @Route("/personal/", name="personal")
      * @Route("/personal/{id}/", name="edit_personal")
      */
-    public function personalAction($id = null, Request $request) {
+    public function personalAction($id = null, Request $request, ServiceCommon $serviceCommon) {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         if ($id != null) {
             $personal = $this->getDoctrine()->getRepository(Personal::class)->findOneById($id);
@@ -187,7 +188,7 @@ class UserController extends Controller {
                     'label' => $this->get('translator')->trans('City'),
                     'attr' => array('placeholder' => $this->get('translator')->trans('City'))))
                 ->add('country_code', ChoiceType::class, array(
-                    'choices' => array_flip($this->get('helper.common')->getCountries()), 'preferred_choices' => array('CH', 'FR', 'GB', 'DE')))
+                    'choices' => array_flip($serviceCommon->getCountries()), 'preferred_choices' => array('CH', 'FR', 'GB', 'DE')))
                 ->add('city', TextType::class, array(
                     'label' => $this->get('translator')->trans('City'),
                     'attr' => array('placeholder' => $this->get('translator')->trans('City'))))
@@ -203,7 +204,7 @@ class UserController extends Controller {
                     'choices' => $this->getDoctrine()->getRepository(Language::class)->findAll(),
                     'choice_label' => 'name',
                     'choice_value' => 'id',
-                    'data' => $this->getDoctrine()->getRepository(Language::class)->findOneById($this->get('helper.common')->getLanguageId($request->getLocale())),
+                    'data' => $this->getDoctrine()->getRepository(Language::class)->findOneById($serviceCommon->getLanguageId($request->getLocale())),
                 ))
                 ->add('user', EntityHiddenType::class, array(
                     'class' => User::class,

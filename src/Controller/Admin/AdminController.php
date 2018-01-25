@@ -18,6 +18,8 @@ use App\Entity\Price;
 use App\Entity\Map\ProductAdditional;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\Common As ServiceCommon;
+use App\Service\Product As ServiceProduct;
+use App\Service\ImageResizer As ServiceImageResizer;
 
 class AdminController extends Controller {
 
@@ -155,10 +157,10 @@ class AdminController extends Controller {
      * @Route("/detail/{id}/", name="admin_product_detail")
      * @Route("/detail/{id}/{lang}/", defaults={"lang" = "fr"}, name="admin_product_detail_lang")
      */
-    public function detailAction($id, $lang = 'fr', ServiceCommon $serviceCommon) {
+    public function detailAction($id, $lang = 'fr', ServiceCommon $serviceCommon, ServiceProduct $serviceProduct) {
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
         $product = $reposProduct->findOneById($id);
-        $children = $this->get('helper.product')->getChildrenByRealParent($id);
+        $children = $serviceProduct->getChildrenByRealParent($id);
         $reposLanguage = $this->getDoctrine()->getRepository(Language::class);
         $languages = $reposLanguage->findAll();
         $navigation = $serviceCommon->getNavigation('category');
@@ -323,7 +325,7 @@ class AdminController extends Controller {
      * @Template()
      * @Route("/upload/", name="admin_file_upload")
      */
-    public function upload(Request $request, ServiceCommon $serviceCommon) {
+    public function upload(Request $request, ServiceCommon $serviceCommon, ServiceImageResizer $serviceImageResizer) {
 
         $files = $request->files->get("sendimages");
         $product_id = $request->request->get('product_id');
@@ -331,7 +333,7 @@ class AdminController extends Controller {
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
         $product = $reposProduct->findOneById($product_id);
         $images = new ArrayCollection();
-        $images = $this->saveUploadImage($files, $product, '', $serviceCommon);
+        $images = $this->saveUploadImage($files, $product, '', $serviceCommon, $serviceImageResizer);
 
 
         $html = $this->renderView('admin/admin/image.html.twig', array(
@@ -686,7 +688,7 @@ class AdminController extends Controller {
      * @param product $product
      * @return int
      */
-    protected function saveUploadImage($files, $product, $priorOriginalName = '', $serviceCommon) {
+    protected function saveUploadImage($files, $product, $priorOriginalName = '', $serviceCommon, $serviceImageResizer) {
         $newNodes = 0;
         $images = new ArrayCollection();
         foreach ($files as $file) {
@@ -718,7 +720,7 @@ class AdminController extends Controller {
                 $name = $serviceCommon->getImageName($product->getSku(), $org_filename, $size->getName());
                 $filename = $name . '.' . $file->getClientOriginalExtension();
                 $target_file = $_targetDir . $filename;
-                $this->get('helper.imageresizer')->resizeImage($target_file, $_targetDir, $name, $height = $size->getHeight());
+                $serviceImageResizer->resizeImage($target_file, $_targetDir, $name, $height = $size->getHeight());
                 $reposImage = $this->getDoctrine()->getRepository(Product\Image::class);
                 if ($priorOriginalName != '') {
                     $image = $reposImage->findOneBy(array('product' => $product, 'size' => $size, 'original_name' => $priorOriginalName));

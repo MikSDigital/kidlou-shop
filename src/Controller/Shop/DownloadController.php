@@ -5,6 +5,8 @@ namespace App\Controller\Shop;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\Product As ServiceProduct;
+use App\Service\Common As ServiceCommon;
 
 /**
  * @Route("/download")
@@ -15,11 +17,11 @@ class DownloadController extends Controller {
      * @Route("/productpdf/{id}", name="pdf_product")
      * @Route("/productpdf/{id}/{product_id}/{lang}/", name="pdf_product_admin", defaults={"id" = "0"})
      */
-    public function productPdfAction($id = '0', $product_id = '', $lang = '') {
+    public function productPdfAction($id = '0', $product_id = '', $lang = '', ServiceProduct $serviceProduct, ServiceCommon $serviceCommon) {
         if ($id) {
-            $product = $this->get('helper.product')->getProduct($id);
+            $product = $serviceProduct->getProduct($id);
             foreach ($product->getDescriptions() as $description) {
-                if ($description->getLang() == $this->get('helper.common')->getLanguage()) {
+                if ($description->getLang() == $serviceCommon->getLanguage()) {
                     $_absoluteFilename = $this->get('kernel')->getRootDir() . "/../public/media/import/images/" . $product->getSku() . "/" . $description->getAccessoires() . '.pdf';
                 }
             }

@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
 use App\Service\Image As ServiceImage;
 use App\Service\Common As ServiceCommon;
+use App\Service\ImageResizer As ServiceImageResizer;
 use App\Entity\AdminUser;
 
 /**
@@ -74,7 +75,7 @@ class CmsController extends Controller {
      * @Template()
      * @Route("/savesite/", name="admin_cms_site_save")
      */
-    public function saveSiteAction(Request $request) {
+    public function saveSiteAction(Request $request, ServiceImageResizer $serviceImageResizer) {
         $id = $request->request->get('id');
         $cat_typ_id = $request->request->get('cat_typ_id');
         $is_active = $request->request->get('is_active');
@@ -142,7 +143,7 @@ class CmsController extends Controller {
                     $_targetDir = $this->get('kernel')->getRootDir() . '/../public/' . $size->getPath();
                     $_targetFile = $_targetDir . $catImage->getName();
                     $arr_file_name = explode('.', $catImage->getName());
-                    $this->get('helper.imageresizer')->resizeImage($_targetFile, $_targetDir, $arr_file_name[0], $height = $size->getHeight());
+                    $serviceImageResizer->resizeImage($_targetFile, $_targetDir, $arr_file_name[0], $height = $size->getHeight());
                 }
             }
         }
