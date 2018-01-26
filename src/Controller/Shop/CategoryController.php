@@ -69,6 +69,9 @@ class CategoryController extends Controller {
      * @return type string
      */
     private function getDetail($id, $arr_route_name, $request, ServiceProduct $serviceProduct, ServiceOrder $serviceOrder) {
+//        $test = $this->getDoctrine()->getRepository(\App\Entity\Product::class)->getParentChildrenProducts($id, $request->getLocale(), 'image80');
+//        print_r($test);
+//        exit;
         $product = $serviceProduct->getProduct($id);
         $children = $serviceProduct->getChildrenByParent($id);
         $arr_additionals_select = array();
