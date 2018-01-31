@@ -2,6 +2,9 @@
 
 namespace App\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use App\RepositoryClasses\Product AS ProductClass;
+
 /**
  * Product
  *
@@ -83,14 +86,15 @@ class Product extends \Doctrine\ORM\EntityRepository {
      * @return type products
      */
     public function getParentChildrenProducts($url_key, $lang, $img_name) {
-//                                pd.long_text,
-//
-//                                pd.short_text,
-
+        $arr_data = new ArrayCollection();
         $query = $this->getEntityManager()
                 ->createQuery(
                         "SELECT
                                 p.id AS product_id,
+
+                                p.sku,
+
+                                price.value,
 
                                 pma.children AS children_id,
 
@@ -98,13 +102,16 @@ class Product extends \Doctrine\ORM\EntityRepository {
 
                                 pd.indicies,
 
+                                pd.long_text,
+
+                                pd.short_text,
+
                                 GROUP_CONCAT(size.path, img.original_name SEPARATOR ',') AS product_image,
 
-                                (SELECT GROUP_CONCAT(child_size.path, child_img.original_name SEPARATOR ',') FROM App\Entity\Product\Image child_img
-                                    INNER JOIN App\Entity\Product\Image\Size child_size
-                                    WITH child_img.size = child_size.id
-                                    AND child_size.name = :img_name
-                                    WHERE child_img.product = children_id) AS childern_image
+                                (SELECT GROUP_CONCAT(child_pd.name SEPARATOR ',') FROM App\Entity\Product\Description child_pd
+                                    INNER JOIN App\Entity\Language child_lang
+                                    WITH child_pd.lang = child_lang.id AND child_lang.short_name = :lang
+                                    WHERE child_pd.product = children_id) AS childern_name,
 
                                 (SELECT IFNULL(GROUP_CONCAT(child_size.path, child_img.original_name SEPARATOR ','),'media/placeholder/placeholder80.jpg') FROM App\Entity\Product\Image child_img
                                     INNER JOIN App\Entity\Product\Image\Size child_size
@@ -117,6 +124,7 @@ class Product extends \Doctrine\ORM\EntityRepository {
                                         INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product
                                         INNER JOIN App\Entity\Language lang WITH pd.lang = lang.id AND lang.short_name = :lang
                                         INNER JOIN App\Entity\Product\Image img WITH p.id = img.product
+                                        INNER JOIN App\Entity\Price price WITH p.id = price.product
                                         INNER JOIN App\Entity\Product\Image\Size size WITH img.size = size.id AND size.name = :img_name
                                         GROUP BY pma.children"
                 )
@@ -124,6 +132,10 @@ class Product extends \Doctrine\ORM\EntityRepository {
                 ->setParameter('img_name', $img_name)
                 ->setParameter('lang', $lang);
         return $query->getResult();
+//        $product = new Product($arr_data[0]);
+//        foreach ($arr_data as $data) {
+//
+//        }
     }
 
 }
