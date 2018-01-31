@@ -83,6 +83,10 @@ class Product extends \Doctrine\ORM\EntityRepository {
      * @return type products
      */
     public function getParentChildrenProducts($url_key, $lang, $img_name) {
+//                                pd.long_text,
+//
+//                                pd.short_text,
+
         $query = $this->getEntityManager()
                 ->createQuery(
                         "SELECT
@@ -92,13 +96,15 @@ class Product extends \Doctrine\ORM\EntityRepository {
 
                                 pd.name,
 
-                                pd.long_text,
-
-                                pd.short_text,
-
                                 pd.indicies,
 
                                 GROUP_CONCAT(size.path, img.original_name SEPARATOR ',') AS product_image,
+
+                                (SELECT GROUP_CONCAT(child_size.path, child_img.original_name SEPARATOR ',') FROM App\Entity\Product\Image child_img
+                                    INNER JOIN App\Entity\Product\Image\Size child_size
+                                    WITH child_img.size = child_size.id
+                                    AND child_size.name = :img_name
+                                    WHERE child_img.product = children_id) AS childern_image
 
                                 (SELECT IFNULL(GROUP_CONCAT(child_size.path, child_img.original_name SEPARATOR ','),'media/placeholder/placeholder80.jpg') FROM App\Entity\Product\Image child_img
                                     INNER JOIN App\Entity\Product\Image\Size child_size
