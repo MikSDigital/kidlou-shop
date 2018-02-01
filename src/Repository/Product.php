@@ -85,7 +85,7 @@ class Product extends \Doctrine\ORM\EntityRepository {
      * @param type $lang
      * @return type products
      */
-    public function getParentChildrenProducts($url_key, $lang, $img_name) {
+    public function getParentChildrenProducts($url_key, $lang, $img_product_size, $img_children_size) {
         $arr_data = new ArrayCollection();
         $query = $this->getEntityManager()
                 ->createQuery(
@@ -106,18 +106,23 @@ class Product extends \Doctrine\ORM\EntityRepository {
 
                                 pd.short_text,
 
-                                GROUP_CONCAT(size.path, img.original_name SEPARATOR ',') AS product_image,
+                                GROUP_CONCAT(size.path, '|', IFNULL(img.name,'media/placeholder/placeholder" . $img_product_size . ".jpg'), ',', IFNULL(img.original_name,'media/placeholder/placeholder800.jpg') SEPARATOR ',') AS product_images,
+
+                                (SELECT child_price.value FROM App\Entity\Product child_p
+                                    INNER JOIN App\Entity\Price child_price
+                                    WITH child_p.id = child_price.product
+                                    WHERE child_price.product = children_id) AS children_price,
 
                                 (SELECT GROUP_CONCAT(child_pd.name SEPARATOR ',') FROM App\Entity\Product\Description child_pd
                                     INNER JOIN App\Entity\Language child_lang
                                     WITH child_pd.lang = child_lang.id AND child_lang.short_name = :lang
-                                    WHERE child_pd.product = children_id) AS childern_name,
+                                    WHERE child_pd.product = children_id) AS children_name,
 
-                                (SELECT IFNULL(GROUP_CONCAT(child_size.path, child_img.original_name SEPARATOR ','),'media/placeholder/placeholder80.jpg') FROM App\Entity\Product\Image child_img
+                                (SELECT IFNULL(GROUP_CONCAT(child_size.path, child_img.name SEPARATOR ','),'media/placeholder/placeholder" . $img_children_size . ".jpg') FROM App\Entity\Product\Image child_img
                                     INNER JOIN App\Entity\Product\Image\Size child_size
                                     WITH child_img.size = child_size.id
-                                    AND child_size.name = :img_name
-                                    WHERE child_img.product = children_id) AS childern_image
+                                    AND child_size.name = :img_children_name
+                                    WHERE child_img.product = children_id) AS children_image
 
                                     FROM App\Entity\Product p
                                         INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent AND p.url_key = :url_key
@@ -125,17 +130,22 @@ class Product extends \Doctrine\ORM\EntityRepository {
                                         INNER JOIN App\Entity\Language lang WITH pd.lang = lang.id AND lang.short_name = :lang
                                         INNER JOIN App\Entity\Product\Image img WITH p.id = img.product
                                         INNER JOIN App\Entity\Price price WITH p.id = price.product
-                                        INNER JOIN App\Entity\Product\Image\Size size WITH img.size = size.id AND size.name = :img_name
+                                        INNER JOIN App\Entity\Product\Image\Size size WITH img.size = size.id AND size.name = :img_product_name
                                         GROUP BY pma.children"
                 )
                 ->setParameter('url_key', $url_key)
-                ->setParameter('img_name', $img_name)
+                ->setParameter('img_product_name', 'image' . $img_product_size)
+                ->setParameter('img_children_name', 'image' . $img_children_size)
                 ->setParameter('lang', $lang);
-        return $query->getResult();
-//        $product = new Product($arr_data[0]);
-//        foreach ($arr_data as $data) {
-//
-//        }
+        $arr_data = $query->getResult();
+        print_r($arr_data);
+        exit;
+        $product = new ProductClass($arr_data[0]);
+        $product->addImages($arr_data[0]['product_images']);
+        foreach ($arr_data as $data) {
+            $product->addChildren($data);
+        }
+        return $product;
     }
 
 }
