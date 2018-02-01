@@ -3,6 +3,7 @@
 namespace App\RepositoryClasses\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use App\RepositoryClasses\Image;
 
 class Children {
 
@@ -11,6 +12,12 @@ class Children {
      * @var type array
      */
     private $data = array();
+
+    /**
+     *
+     * @var type array
+     */
+    private $image_items = array();
 
     public function __construct($data) {
         $this->data = $data;
@@ -22,14 +29,6 @@ class Children {
      */
     public function getId() {
         return $this->data['children_id'];
-    }
-
-    /**
-     *
-     * @return type integer
-     */
-    public function getImage() {
-        return $this->data['children_image'];
     }
 
     /**
@@ -46,6 +45,25 @@ class Children {
      */
     public function getPrice() {
         return $this->data['children_price'];
+    }
+
+    /**
+     *
+     * @param type $original_name
+     * @param type $name
+     * @return $this
+     */
+    public function addImages($original_name, $name) {
+        $this->image_items[] = new Image($original_name, $name);
+        return $this;
+    }
+
+    /**
+     *
+     * @return type array
+     */
+    public function getImages() {
+        return $this->image_items;
     }
 
 }

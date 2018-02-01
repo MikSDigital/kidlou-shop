@@ -8,24 +8,47 @@ class Image {
 
     /**
      *
-     * @var type array
+     * @var type string
      */
-    private $data = array();
+    private $original_name;
 
-    public function __construct($data) {
-        $this->data = $data;
+    /**
+     *
+     * @var type string
+     */
+    private $name;
+
+    public function __construct($original_name, $name) {
+        $this->original_name = $original_name;
+        $this->name = $name;
     }
 
     /**
      *
-     * @return type integer
+     * @return type string
      */
     public function getName() {
-        return $this->data['id'];
+        return $this->name;
     }
 
+    /**
+     *
+     * @return type string
+     */
+    public function getOriginalName() {
+        return $this->original_name;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
     public function getIsDefault() {
-        return;
+        $pos = strpos($this->original_name, '-default');
+        if ($pos !== FALSE) {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 }

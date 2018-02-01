@@ -105,7 +105,7 @@ class CategoryController extends Controller {
 
         return $this->render('shop/category/detail.html.twig', array(
                     'id' => $id,
-                    'product' => $product,
+                    'product' => $parentChildren,
                     'arr_route_name' => $arr_route_name,
                     'children' => $children,
                     'additionalsselect' => $arr_additionals_select,

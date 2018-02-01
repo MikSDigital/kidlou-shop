@@ -94,6 +94,8 @@ class Product extends \Doctrine\ORM\EntityRepository {
 
                                 p.sku,
 
+                                p.url_key,
+
                                 price.value,
 
                                 pma.children AS children_id,
@@ -102,11 +104,15 @@ class Product extends \Doctrine\ORM\EntityRepository {
 
                                 pd.indicies,
 
+                                pd.accessoires,
+
                                 pd.long_text,
 
                                 pd.short_text,
 
-                                GROUP_CONCAT(size.path, '|', IFNULL(img.name,'media/placeholder/placeholder" . $img_product_size . ".jpg'), ',', IFNULL(img.original_name,'media/placeholder/placeholder800.jpg') SEPARATOR ',') AS product_images,
+                                IFNULL(GROUP_CONCAT(DISTINCT img.original_name SEPARATOR ','),'" . $img_product_size . ".jpg') AS product_image_original_names,
+
+                                IFNULL(GROUP_CONCAT(DISTINCT size.path, img.name SEPARATOR ','),'media/placeholder/" . $img_product_size . ".jpg') AS product_image_names,
 
                                 (SELECT child_price.value FROM App\Entity\Product child_p
                                     INNER JOIN App\Entity\Price child_price
@@ -118,11 +124,17 @@ class Product extends \Doctrine\ORM\EntityRepository {
                                     WITH child_pd.lang = child_lang.id AND child_lang.short_name = :lang
                                     WHERE child_pd.product = children_id) AS children_name,
 
+                                (SELECT IFNULL(GROUP_CONCAT(child_original_img.original_name SEPARATOR ','),'placeholder" . $img_children_size . ".jpg') FROM App\Entity\Product\Image child_original_img
+                                    INNER JOIN App\Entity\Product\Image\Size child_original_size
+                                    WITH child_original_img.size = child_original_size.id
+                                    AND child_original_size.name = :img_children_name
+                                    WHERE child_original_img.product = children_id) AS children_image_original_names,
+
                                 (SELECT IFNULL(GROUP_CONCAT(child_size.path, child_img.name SEPARATOR ','),'media/placeholder/placeholder" . $img_children_size . ".jpg') FROM App\Entity\Product\Image child_img
                                     INNER JOIN App\Entity\Product\Image\Size child_size
                                     WITH child_img.size = child_size.id
                                     AND child_size.name = :img_children_name
-                                    WHERE child_img.product = children_id) AS children_image
+                                    WHERE child_img.product = children_id) AS children_image_names
 
                                     FROM App\Entity\Product p
                                         INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent AND p.url_key = :url_key
@@ -138,12 +150,20 @@ class Product extends \Doctrine\ORM\EntityRepository {
                 ->setParameter('img_children_name', 'image' . $img_children_size)
                 ->setParameter('lang', $lang);
         $arr_data = $query->getResult();
-        print_r($arr_data);
-        exit;
         $product = new ProductClass($arr_data[0]);
-        $product->addImages($arr_data[0]['product_images']);
+        $original_images = explode(',', $arr_data[0]['product_image_original_names']);
+        $images = explode(',', $arr_data[0]['product_image_names']);
+        foreach ($original_images as $key => $original_image) {
+            $product->addImages($original_image, $images[$key]);
+        }
+
         foreach ($arr_data as $data) {
             $product->addChildren($data);
+            $original_images = explode(',', $data['children_image_original_names']);
+            $images = explode(',', $data['children_image_names']);
+            foreach ($original_images as $key => $original_image) {
+                $product->getCurrentChildren()->addImages($original_image, $images[$key]);
+            }
         }
         return $product;
     }

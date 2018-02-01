@@ -20,6 +20,16 @@ class Product {
      */
     private $children_items = array();
 
+    /**
+     *
+     * @var type array
+     */
+    private $image_items = array();
+
+    /**
+     *
+     * @param type $data
+     */
     public function __construct($data) {
         $this->data = $data;
     }
@@ -38,6 +48,14 @@ class Product {
      */
     public function getProductId() {
         return $this->data['product_id'];
+    }
+
+    /**
+     *
+     * @return type string
+     */
+    public function getUrlKey() {
+        return $this->data['url_key'];
     }
 
     /**
@@ -98,17 +116,21 @@ class Product {
 
     /**
      *
+     * @param type $original_name
+     * @param type $name
+     * @return $this
+     */
+    public function addImages($original_name, $name) {
+        $this->image_items[] = new Image($original_name, $name);
+        return $this;
+    }
+
+    /**
+     *
      * @return type array
      */
     public function getImages() {
-        return explode(',', $this->data['product_images']);
-    }
-
-    public function addImages($data) {
-        $arr_data = explode(',', $data);
-        foreach ($arr_data as $data) {
-
-        }
+        return $this->image_items;
     }
 
     /**
@@ -127,6 +149,18 @@ class Product {
      */
     public function getChildren() {
         return $this->children_items;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function getCurrentChildren() {
+        $key = count($this->children_items) - 1;
+        if ($key < 0) {
+            return FALSE;
+        }
+        return $this->children_items[$key];
     }
 
 }
