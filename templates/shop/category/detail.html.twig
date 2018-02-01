@@ -50,6 +50,12 @@
 
                                     <div class="col-xs-12 col-sm-6 col-md-4">
                                         <div class="box-border-gray">
+                                            {% set string_select = '' %}
+                                            {% for additionalselect in additionalsselect %}
+                                                {% if additionalselect == child.id %}
+                                                    {% set string_select = 'checked' %}
+                                                {% endif %}
+                                            {% endfor %}
                                             <input name="additionalproduct[]" value="{{ child.getId }}" type="checkbox">
                                             {% if child.getImages | length > 0 %}
                                                 {% for image in child.getImages %}

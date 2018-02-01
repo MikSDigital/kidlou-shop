@@ -10,4 +10,20 @@ namespace App\Repository\Map;
  */
 class QuoteProductAdditional extends \Doctrine\ORM\EntityRepository {
 
+    /**
+     *
+     * @param type $url_key
+     * @param type $lang
+     * @return type products
+     */
+    public function getChildrens($quote_id, $product_id) {
+
+        return $this->createQueryBuilder('qpa')
+                        ->where('qpa.quote = :quote_id AND qpa.parent = :product_id')
+                        ->setParameter('quote_id', $quote_id)
+                        ->setParameter('product_id', $product_id)
+                        ->getQuery()
+                        ->getResult();
+    }
+
 }

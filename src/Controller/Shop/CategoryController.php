@@ -69,16 +69,9 @@ class CategoryController extends Controller {
      * @return type string
      */
     private function getDetail($id, $arr_route_name, $request, ServiceProduct $serviceProduct, ServiceOrder $serviceOrder) {
-        $parentChildren = $this->getDoctrine()->getRepository(\App\Entity\Product::class)->getParentChildrenProducts($id, $request->getLocale(), '800', '80');
-//
-//        echo $parentChildren->getName();
-//        foreach ($parentChildren->getChildren() as $children) {
-//            echo $children->getPrice() . '<br/>';
-//        }
-//
-//        exit;
-        $product = $serviceProduct->getProduct($id);
-        $children = $serviceProduct->getChildrenByParent($id);
+        $product = $this->getDoctrine()->getRepository(\App\Entity\Product::class)->getParentChildrenProducts($id, $request->getLocale(), '800', '80');
+        //$product = $serviceProduct->getProduct($id);
+        //$children = $serviceProduct->getChildrenByParent($id);
         $arr_additionals_select = array();
         if (!is_null($request->query->get('additionals'))) {
             $arr_additionals_select = explode(',', $request->query->get('additionals'));
@@ -87,13 +80,7 @@ class CategoryController extends Controller {
             // get quote
             $quote_id = $this->container->get('session')->get('quote_id');
             if ($quote_id) {
-
-                $quote = $this->getDoctrine()->getRepository(Quote::class)->findOneBy(array('id' => $quote_id));
-                $additionals = $this->getDoctrine()->getRepository(QuoteProductAdditional::class)->findBy(array(
-                    'quote' => $quote,
-                    'parent' => $product->getId()
-                        )
-                );
+                $additionals = $this->getDoctrine()->getRepository(\App\Entity\Map\QuoteProductAdditional::class)->getChildrens($quote_id, $product->getProductId());
                 foreach ($additionals as $additional) {
                     $arr_additionals_select[] = $additional->getChildren();
                 }
@@ -104,10 +91,8 @@ class CategoryController extends Controller {
         $calendarorders = $serviceOrder->getOrderData($product);
 
         return $this->render('shop/category/detail.html.twig', array(
-                    'id' => $id,
-                    'product' => $parentChildren,
+                    'product' => $product,
                     'arr_route_name' => $arr_route_name,
-                    'children' => $children,
                     'additionalsselect' => $arr_additionals_select,
                     'calendarorders' => $calendarorders
                         )
