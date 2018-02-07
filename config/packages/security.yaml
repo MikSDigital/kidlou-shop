@@ -99,4 +99,5 @@ security:
         - { path: ^/%locale%/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%locale%/user/new, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%locale%/user, roles: ROLE_USER }
+#        - { path: ^/api/v1, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 

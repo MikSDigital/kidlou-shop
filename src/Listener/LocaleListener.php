@@ -51,6 +51,11 @@ class LocaleListener implements EventSubscriberInterface {
         if ($this->getIsAdmin()) {
             return;
         }
+
+        if ($this->getIsApi()) {
+            return;
+        }
+
         $locale = $this->checkLanguage();
         if ($locale === null) {
             return;
@@ -96,6 +101,16 @@ class LocaleListener implements EventSubscriberInterface {
             return TRUE;
         }
         if (0 === strpos($this->oldUrl, '/' . $this->parameter->getAdminPathName() . '/')) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    private function getIsApi() {
+        if (0 === strpos($this->newUrl, '/' . $this->parameter->getApiPathName() . '/')) {
+            return TRUE;
+        }
+        if (0 === strpos($this->oldUrl, '/' . $this->parameter->getApiPathName() . '/')) {
             return TRUE;
         }
         return FALSE;

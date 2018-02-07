@@ -3,6 +3,12 @@ closas_admin:
     type:     annotation
     prefix:   /%admin_path_name%/
 
+closas_api:
+    resource: ../../src/Controller/Api/
+    type:     annotation
+    prefix:   /%api_path_name%/
+
+
 closas_user:
     resource: ../../src/Controller/User/
     type:     annotation
@@ -18,3 +24,4 @@ closas_shop:
     requirements:
         _locale: fr|de|en|es
     defaults: {_locale: fr}
+
