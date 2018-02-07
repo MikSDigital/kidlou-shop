@@ -137,7 +137,8 @@ class Product extends \Doctrine\ORM\EntityRepository {
                                     WHERE child_img.product = children_id) AS children_image_names
 
                                     FROM App\Entity\Product p
-                                        INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent AND p.url_key = :url_key
+                                        INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent AND p.url_key = :url_key AND p.status = 1
+                                        INNER JOIN App\Entity\Product pchild WITH pma.children = pchild.id AND pchild.status = 1
                                         INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product
                                         INNER JOIN App\Entity\Language lang WITH pd.lang = lang.id AND lang.short_name = :lang
                                         INNER JOIN App\Entity\Product\Image img WITH p.id = img.product

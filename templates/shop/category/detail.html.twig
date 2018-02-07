@@ -13,7 +13,9 @@
             <div class="row">
                 <div class="col-sm-5 col-xs-12">
                     <p class="product-image">
-                        {% for image in product.getImages if image.getIsDefault %}
+                        {% set isdefault = 0 %}
+                        {% for image in product.getImages if image.getIsDefault and isdefault == 0 %}
+                            {% set isdefault = 1 %}
                             <img src="/{{ image.getName }}" title="{{ product.getName }}" class="img-responsive"/>
                         {% endfor %}
                     </p>
