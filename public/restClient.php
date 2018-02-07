@@ -12,12 +12,12 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $client = new \GuzzleHttp\Client([
     'base_url' => 'http://localhost:8000',
-//    'defaults' => [
-//        'exceptions' => false
-//    ]
+    'defaults' => [
+        'exceptions' => false
+    ]
         ]);
 
-$client->get('/api/v1/users');
+$test = $client->get('/api/v1/users');
 //echo $response;
 
 
