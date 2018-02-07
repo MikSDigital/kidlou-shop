@@ -24,7 +24,7 @@ class UserController extends Controller {
      */
     public function newAction(Request $request) {
         //$em = $this->getDoctrine()->getManager();
-        return new Response('Let\'s do this!');
+        return new Response('Let\'s post do this!');
     }
 
     /**

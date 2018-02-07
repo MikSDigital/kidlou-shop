@@ -44,7 +44,6 @@ class LocaleListener implements EventSubscriberInterface {
     public function onKernelRequest(GetResponseEvent $event) {
         $request = $event->getRequest();
         // wenn nicht lang und admin
-
         $this->newUrl = $request->getPathInfo();
         $this->oldUrl = $request->headers->get('referer');
         // check if admin
