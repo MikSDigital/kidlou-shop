@@ -88,7 +88,7 @@ class ApiUser implements UserInterface {
      * @return string
      */
     public function getRoles() {
-        return array('ROLE_USER');
+        return array('ROLE_API');
     }
 
     /**

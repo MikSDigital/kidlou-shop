@@ -85,7 +85,17 @@ services:
         tags:
           - { name: kernel.event_subscriber }
 
-
-
     App\Handler\AuthenticationHandler:
         arguments: ["@service_container","@router"]
+
+#    App\Security\ApiKeyUserProvider:
+#        arguments: ["@api_user_repository"]
+#        public: false
+
+#    api_user_repository:
+#        class:   Doctrine\ORM\EntityManager
+#       factory: ["@doctrine.orm.entity_manager", "getRepository"]
+#        arguments:
+#            - '@App\Entity\ApiUser'
+
+

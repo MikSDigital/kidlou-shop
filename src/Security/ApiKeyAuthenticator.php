@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Handler;
+namespace App\Security;
 
 //use App\Security\ApiKeyUserProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,35 +15,53 @@ use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterfa
 class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
 
     public function createToken(Request $request, $providerKey) {
-        $apiKey = $request->query->get('apiKey');
+        // look for an apikey query parameter
+        $apiKey = $request->query->get('apikey');
+
+        // or if you want to use an "apikey" header, then do something like this:
+        // $apiKey = $request->headers->get('apikey');
+
+        if (!$apiKey) {
+            throw new BadCredentialsException();
+
+            // or to just skip api key authentication
+            // return null;
+        }
 
         return new PreAuthenticatedToken(
                 'anon.', $apiKey, $providerKey
         );
     }
 
-    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey) {
-        $apiKey = $token->getCredentials();
-        $username = $userProvider->getUsernameForApiKey($apiKey);
+    public function supportsToken(TokenInterface $token, $providerKey) {
+        return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
+    }
 
-        // The part where we try and keep the user in the session!
-        $user = $token->getUser();
-        if ($user instanceof ApiKeyUser) {
-            return new PreAuthenticatedToken(
-                    $user, $apiKey, $providerKey, $user->getRoles()
+    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey) {
+        if (!$userProvider instanceof ApiKeyUserProvider) {
+            throw new \InvalidArgumentException(
+            sprintf(
+                    'The user provider must be an instance of ApiKeyUserProvider (%s was given).', get_class($userProvider)
+            )
             );
         }
 
+        $apiKey = $token->getCredentials();
+        $username = $userProvider->getUsernameForApiKey($apiKey);
+
+        if (!$username) {
+            // CAUTION: this message will be returned to the client
+            // (so don't put any un-trusted messages / error strings here)
+            throw new CustomUserMessageAuthenticationException(
+            sprintf('API Key "%s" does not exist.', $apiKey)
+            );
+        }
 
         $user = $userProvider->loadUserByUsername($username);
 
         return new PreAuthenticatedToken(
                 $user, $apiKey, $providerKey, $user->getRoles()
         );
-    }
-
-    public function supportsToken(TokenInterface $token, $providerKey) {
-        return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
     }
 
 }
