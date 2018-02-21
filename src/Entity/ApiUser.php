@@ -31,23 +31,6 @@ class ApiUser implements UserInterface {
     private $apiKey;
 
     /**
-     * @Assert\NotBlank()
-     * @Assert\Length(
-     *      min = 6,
-     *      max = 8,
-     *      minMessage = "Your first name must be at least {{ limit }} characters long",
-     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
-     * )
-     * @ORM\Column(type="string", length=64)
-     */
-    private $password;
-
-    /**
-     * @ORM\Column(name="is_active", type="boolean", options={"default":true})
-     */
-    private $isActive;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
