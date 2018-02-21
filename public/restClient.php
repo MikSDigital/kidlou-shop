@@ -19,7 +19,7 @@ $client = new \GuzzleHttp\Client([
     ]
         ]);
 
-$res = $client->post('/api/v1/users');
+$res = $client->post('/api/v1/users?apikey=773b1340-ccb6-4644-a7ba-d7b5c6aff492');
 
 echo $res->getStatusCode();
 echo $res->getBody();
