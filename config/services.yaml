@@ -88,14 +88,10 @@ services:
     App\Handler\AuthenticationHandler:
         arguments: ["@service_container","@router"]
 
-#    App\Security\ApiKeyUserProvider:
-#        arguments: ["@api_user_repository"]
-#        public: false
+    App\Security\ApiKeyUserProvider:
+        arguments: ['App\EntityApiUser']
+        public: false
 
-#    api_user_repository:
-#        class:   Doctrine\ORM\EntityManager
-#       factory: ["@doctrine.orm.entity_manager", "getRepository"]
-#        arguments:
-#            - '@App\Entity\ApiUser'
-
-
+    App\Security\ApiKeyAuthenticator:
+        arguments: ["@security.http_utils"]
+        public: false

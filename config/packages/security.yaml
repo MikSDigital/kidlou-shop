@@ -26,8 +26,8 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
-#        api_key_user_provider:
-#            id: App\Security\ApiKeyUserProvider
+        api_key_user_provider:
+            id: App\Security\ApiKeyUserProvider
 
 
     encoders:
@@ -69,12 +69,12 @@ security:
                 target: user_login
                 invalidate_session: false
             logout_on_user_change: true
-#        main:
-#            pattern: ^/api
-#            stateless: true
-#            simple_preauth:
-#                authenticator: App\Security\ApiKeyAuthenticator
-#            provider: api_key_user_provider
+        main:
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: App\Security\ApiKeyAuthenticator
+            provider: api_key_user_provider
 
                 #delete_cookies:
                 #    a: { path: null, domain: null }
@@ -106,5 +106,6 @@ security:
         - { path: ^/%locale%/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%locale%/user/new, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%locale%/user, roles: ROLE_USER }
+        - { path: ^/api, roles: ROLE_API }
 #        - { path: ^/api/v1, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 

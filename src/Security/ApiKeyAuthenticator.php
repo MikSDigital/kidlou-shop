@@ -4,6 +4,7 @@ namespace App\Security;
 
 //use App\Security\ApiKeyUserProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -13,6 +14,17 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
 
 class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
+
+    /**
+     * Durée de validité du token en secondes, 12 heures
+     */
+    const TOKEN_VALIDITY_DURATION = 12 * 3600;
+
+    protected $httpUtils;
+
+    public function __construct(HttpUtils $httpUtils) {
+        $this->httpUtils = $httpUtils;
+    }
 
     public function createToken(Request $request, $providerKey) {
         // look for an apikey query parameter
@@ -62,6 +74,13 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface {
         return new PreAuthenticatedToken(
                 $user, $apiKey, $providerKey, $user->getRoles()
         );
+    }
+
+    /**
+     * Vérifie la validité du token
+     */
+    private function isTokenValid($token) {
+        return (time() - $token->getCreatedAt()->getTimestamp()) < self::TOKEN_VALIDITY_DURATION;
     }
 
 }
