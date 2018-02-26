@@ -36,8 +36,10 @@ class ProductController extends Controller {
     public function showAllProducts(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-                'SELECT p.id, p.sku, p.url_key, p.status
-                    FROM App\Entity\Product p'
+                "SELECT p.id, p.sku, p.url_key, p.status
+                    FROM App\Entity\Product p
+                    INNER JOIN App\Entity\Product\Typ pt WITH p.typ = pt.id AND pt.short_name = 'SIP'
+                "
         );
         $products = $query->getArrayResult();
         $response = new Response();
