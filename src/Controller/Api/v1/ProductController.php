@@ -72,6 +72,7 @@ class ProductController extends Controller {
                     ORDER BY pd.lang ASC
                 "
         );
+        $data = array();
         $products = $query->getArrayResult();
         $response = new Response();
         $response->setContent(json_encode($products));
