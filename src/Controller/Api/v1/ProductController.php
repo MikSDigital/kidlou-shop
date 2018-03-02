@@ -63,7 +63,7 @@ class ProductController extends Controller {
     public function showAction($id, Request $request) {
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-                "SELECT p.id, p.sku, p.status, pd.name, pd.short_text, pd.long_text, pd.indicies, pd.accessoires, pr.value, l.short_name
+                "SELECT p.id, p.sku, p.status, pd.name, pd.short_text, pd.long_text, pd.indicies, pd.accessoires, pr.value, l.short_name, l.name AS lang_name
                     FROM App\Entity\Product p
                     INNER JOIN App\Entity\Product\Typ pt WITH p.typ = pt.id AND pt.short_name = 'SIP' AND p.id = {$id}
                     INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product AND pd.lang IS NOT NULL

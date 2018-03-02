@@ -252,7 +252,7 @@
         "version": "v1.7.0"
     },
     "symfony/process": {
-        "version": "v4.0.3"
+        "version": "v4.0.5"
     },
     "symfony/profiler-pack": {
         "version": "v1.0.3"
