@@ -33,7 +33,6 @@ $(document).ready(function () {
 
     $(document).on('click', '#date-from', function (e) {
         e.preventDefault();
-
         if ($('.calendar-result').length > 0) {
             $('.calendar-result').hide();
         }
@@ -72,7 +71,6 @@ $(document).ready(function () {
 
     $(document).on('click', '#date-to', function (e) {
         e.preventDefault();
-
         if ($('.calendar-result').length > 0) {
             $('.calendar-result').hide();
         }
@@ -84,7 +82,6 @@ $(document).ready(function () {
             return;
         }
         var date_from = splitDateInput($('#date-from').val());
-
         if ($(this).val() != '') {
             $('.calendar-dates').fadeIn();
             // wert von input feld einlesen
