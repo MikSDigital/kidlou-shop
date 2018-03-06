@@ -69,7 +69,7 @@ class ProductController extends Controller {
                     INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product AND pd.lang IS NOT NULL
                     INNER JOIN App\Entity\Language l WITH pd.lang = l.id
                     INNER JOIN App\Entity\Price pr WITH p.id = pr.product
-                    ORDER BY pd.lang ASC
+                    ORDER BY l.id ASC
                 "
         );
         $data = array();
