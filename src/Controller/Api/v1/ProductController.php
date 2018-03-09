@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\User;
+use App\Entity\Product;
+use App\Entity\Product\Description;
 
 /**
  * @Route("/v1")
@@ -45,13 +47,9 @@ class ProductController extends Controller {
                 "
         );
         $products = $query->getArrayResult();
-        $response = new Response();
-        $response->setContent(json_encode($products));
-        $response->headers->set('Content-Type', 'application/json');
-        // Allow all websites
-        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response = new JsonResponse();
+        $response->setData($products);
         return $response;
-        //return new JsonResponse($products);
     }
 
     /**
@@ -74,11 +72,8 @@ class ProductController extends Controller {
         );
         $data = array();
         $products = $query->getArrayResult();
-        $response = new Response();
-        $response->setContent(json_encode($products));
-        $response->headers->set('Content-Type', 'application/json');
-        // Allow all websites
-        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response = new JsonResponse();
+        $response->setData($products);
         return $response;
     }
 
@@ -89,7 +84,35 @@ class ProductController extends Controller {
      * @Method("PUT")
      */
     public function updateAction($id, Request $request) {
+//        $response = new JsonResponse();
 
+        $datas = $request->getContent();
+        $datas = json_decode($datas);
+        $arr_test = array();
+
+        $em = $this->getDoctrine()->getManager();
+        foreach ($datas as $data) {
+            $productDescriptions = $this->getDoctrine()->getRepository(\App\Entity\Product\Description::class)
+                    ->findBy(array('id' => $data->id), array('lang' => 'ASC'));
+            foreach ($productDescriptions as $productDescription) {
+                $productDescription->setName($data->name);
+                $productDescription->setLongText($data->long_text);
+                $productDescription->setShortText($data->short_text);
+                $productDescription->setIndicies($data->indicies);
+                $productDescription->setAccessoires($data->accessoires);
+                $em->persist($productDescription);
+                $em->flush();
+
+                // noch price
+            }
+            $arr_test[] = $data->name;
+        }
+
+        $response = new JsonResponse();
+        $response->setData($arr_test);
+
+
+        return $response;
     }
 
     /**
