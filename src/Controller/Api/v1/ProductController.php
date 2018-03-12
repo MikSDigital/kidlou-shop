@@ -61,7 +61,7 @@ class ProductController extends Controller {
     public function showAction($id, Request $request) {
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-                "SELECT p.id, p.sku, p.status, pd.name, pd.short_text, pd.long_text, pd.indicies, pd.accessoires, pr.value, l.short_name, l.name AS lang_name
+                "SELECT p.id, p.sku, p.status, pd.name, pd.short_text, pd.long_text, pd.indicies, pd.accessoires, pr.value, l.short_name, l.name AS lang_name, l.id AS lang_id
                     FROM App\Entity\Product p
                     INNER JOIN App\Entity\Product\Typ pt WITH p.typ = pt.id AND pt.short_name = 'SIP' AND p.id = {$id}
                     INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product AND pd.lang IS NOT NULL
@@ -88,30 +88,28 @@ class ProductController extends Controller {
 
         $datas = $request->getContent();
         $datas = json_decode($datas);
-        $arr_test = array();
-
         $em = $this->getDoctrine()->getManager();
         foreach ($datas as $data) {
-            $productDescriptions = $this->getDoctrine()->getRepository(\App\Entity\Product\Description::class)
-                    ->findBy(array('id' => $data->id), array('lang' => 'ASC'));
-            foreach ($productDescriptions as $productDescription) {
-                $productDescription->setName($data->name);
-                $productDescription->setLongText($data->long_text);
-                $productDescription->setShortText($data->short_text);
-                $productDescription->setIndicies($data->indicies);
-                $productDescription->setAccessoires($data->accessoires);
-                $em->persist($productDescription);
-                $em->flush();
-
-                // noch price
-            }
-            $arr_test[] = $data->name;
+            $productDescription = $this->getDoctrine()->getRepository(\App\Entity\Product\Description::class)
+                    ->findOneBy(array(
+                'product' => $data->id,
+                'lang' => $data->lang_id));
+            $productDescription->setName($data->name);
+            $productDescription->setLongText($data->long_text);
+            $productDescription->setShortText($data->short_text);
+            $productDescription->setIndicies($data->indicies);
+            $productDescription->setAccessoires($data->accessoires);
+            $em->persist($productDescription);
+            $em->flush();
+//            // noch price
+//            $price = $this->getDoctrine()->getRepository(\App\Entity\Price::class)
+//                    ->findOneBy(array('product' => $data->id));
+//            $price->setValue($data->value);
+//            $em->persist($price);
+//            $em->flush();
         }
-
         $response = new JsonResponse();
-        $response->setData($arr_test);
-
-
+        $response->setData($datas);
         return $response;
     }
 
