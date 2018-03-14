@@ -85,7 +85,21 @@ class Product extends \Doctrine\ORM\EntityRepository {
      * @param type $lang
      * @return type products
      */
-    public function getParentChildrenProducts($url_key, $lang, $img_product_size, $img_children_size) {
+    public function getDetailProduct($url_key, $lang, $img_product_size, $img_children_size) {
+        if ($this->hasChildren($url_key)) {
+            return $this->getParentChildrenProduct($url_key, $lang, $img_product_size, $img_children_size);
+        } else {
+            return $this->getParentProduct($url_key, $lang, $img_product_size);
+        }
+    }
+
+    /**
+     *
+     * @param type $url_key
+     * @param type $lang
+     * @return type products
+     */
+    public function getParentChildrenProduct($url_key, $lang, $img_product_size, $img_children_size) {
         $arr_data = new ArrayCollection();
         $query = $this->getEntityManager()
                 ->createQuery(
@@ -137,14 +151,13 @@ class Product extends \Doctrine\ORM\EntityRepository {
                                     WHERE child_img.product = children_id) AS children_image_names
 
                                     FROM App\Entity\Product p
-                                        INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent
+                                        INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent AND p.url_key = :url_key AND p.status = 1
                                         INNER JOIN App\Entity\Product pchild WITH pma.children = pchild.id AND pchild.status = 1
                                         INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product
                                         INNER JOIN App\Entity\Language lang WITH pd.lang = lang.id AND lang.short_name = :lang
                                         INNER JOIN App\Entity\Product\Image img WITH p.id = img.product
                                         INNER JOIN App\Entity\Price price WITH p.id = price.product
                                         INNER JOIN App\Entity\Product\Image\Size size WITH img.size = size.id AND size.name = :img_product_name
-                                        WHERE p.url_key = :url_key AND p.status = 1
                                         GROUP BY pma.children"
                 )
                 ->setParameter('url_key', $url_key)
@@ -168,6 +181,81 @@ class Product extends \Doctrine\ORM\EntityRepository {
             }
         }
         return $product;
+    }
+
+    /**
+     *
+     * @param type $url_key
+     * @param type $lang
+     * @return type products
+     */
+    public function getParentProduct($url_key, $lang, $img_product_size) {
+        $arr_data = new ArrayCollection();
+        $query = $this->getEntityManager()
+                ->createQuery(
+                        "SELECT
+                                p.id AS product_id,
+
+                                p.sku,
+
+                                p.url_key,
+
+                                price.value,
+
+                                pd.name,
+
+                                pd.indicies,
+
+                                pd.accessoires,
+
+                                pd.long_text,
+
+                                pd.short_text,
+
+                                IFNULL(GROUP_CONCAT(DISTINCT img.original_name SEPARATOR ','),'" . $img_product_size . ".jpg') AS product_image_original_names,
+
+                                IFNULL(GROUP_CONCAT(DISTINCT size.path, img.name SEPARATOR ','),'media/placeholder/" . $img_product_size . ".jpg') AS product_image_names
+
+                                FROM App\Entity\Product p
+                                    INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product AND p.url_key = :url_key AND p.status = 1
+                                    INNER JOIN App\Entity\Language lang WITH pd.lang = lang.id AND lang.short_name = :lang
+                                    INNER JOIN App\Entity\Product\Image img WITH p.id = img.product
+                                    INNER JOIN App\Entity\Price price WITH p.id = price.product
+                                    INNER JOIN App\Entity\Product\Image\Size size WITH img.size = size.id AND size.name = :img_product_name
+"
+                )
+                ->setParameter('url_key', $url_key)
+                ->setParameter('img_product_name', 'image' . $img_product_size)
+                ->setParameter('lang', $lang);
+        $arr_data = $query->getResult();
+        $product = new ProductClass($arr_data[0]);
+        $original_images = explode(',', $arr_data[0]['product_image_original_names']);
+        $images = explode(',', $arr_data[0]['product_image_names']);
+        foreach ($original_images as $key => $original_image) {
+            $product->addImages($original_image, $images[$key]);
+        }
+
+        return $product;
+    }
+
+    /**
+     * Diese Methode prüft ob Produkt children hat
+     * @return boolean
+     */
+    private function hasChildren($url_key) {
+        // check if has children
+        $arr_data = new ArrayCollection();
+        $query = $this->getEntityManager()
+                ->createQuery("SELECT pma.parent
+                                    FROM App\Entity\Product p
+                                    INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent AND p.url_key = :url_key AND p.status = 1
+                                ")
+                ->setParameter('url_key', $url_key);
+        $arr_data = $query->getResult();
+        if ($arr_data) {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 }
