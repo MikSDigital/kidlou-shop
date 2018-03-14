@@ -137,13 +137,14 @@ class Product extends \Doctrine\ORM\EntityRepository {
                                     WHERE child_img.product = children_id) AS children_image_names
 
                                     FROM App\Entity\Product p
-                                        INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent AND p.url_key = :url_key AND p.status = 1
+                                        INNER JOIN App\Entity\Map\ProductAdditional pma WITH p.id = pma.parent
                                         INNER JOIN App\Entity\Product pchild WITH pma.children = pchild.id AND pchild.status = 1
                                         INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product
                                         INNER JOIN App\Entity\Language lang WITH pd.lang = lang.id AND lang.short_name = :lang
                                         INNER JOIN App\Entity\Product\Image img WITH p.id = img.product
                                         INNER JOIN App\Entity\Price price WITH p.id = price.product
                                         INNER JOIN App\Entity\Product\Image\Size size WITH img.size = size.id AND size.name = :img_product_name
+                                        WHERE p.url_key = :url_key AND p.status = 1
                                         GROUP BY pma.children"
                 )
                 ->setParameter('url_key', $url_key)

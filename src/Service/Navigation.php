@@ -252,8 +252,11 @@ class Navigation {
                 $temp_arr_urls[] = $url;
             }
         }
-
         $category = $this->em->getRepository(Category::class)->findOneBy(array('url_key' => $temp_arr_urls[(count($temp_arr_urls) - 1)]));
+        // check if category exists for this url
+        if (!$category) {
+            return $temp_arr_urls[(count($temp_arr_urls) - 1)];
+        }
         foreach ($category->getLabels() as $label) {
             if ($label->getLang()->getShortName() == $this->request->getLocale()) {
                 return $label->getName();
