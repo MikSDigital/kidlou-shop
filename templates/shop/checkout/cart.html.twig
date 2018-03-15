@@ -4,6 +4,9 @@
 {% block stylesheets %}
     {{ parent() }}
 {% endblock %}
+{% block additionaljavascripts %}
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+{% endblock %}
 
 {% block pagetitle %} {{ 'Checkout' | trans }} {% endblock %}
 {% block body %}
