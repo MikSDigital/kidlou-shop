@@ -62,7 +62,7 @@ class CommonController extends Controller {
         $cash_cost = 0;
         if ($quote_id) {
             if ($typ == 'ca') {
-                $pcashs = $this->getDoctrine()->getRepository(Payment\Cash::class)->findAll();
+                $pcashs = $this->getDoctrine()->getRepository(\App\Entity\Payment\Cash::class)->findAll();
                 if (count($pcashs)) {
                     foreach ($pcashs as $pcash) {
                         if ($pcash->getPrice()) {

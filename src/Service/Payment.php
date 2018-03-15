@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\Payment\Typ;
+use App\Entity\Payment\Bank;
 
 class Payment {
 
@@ -65,14 +66,16 @@ class Payment {
     public function getPayments() {
         $arr_payments = array();
         $locale = $this->getRequest()->getLocale();
-        $payments = $this->getEm()->getRepository(Payment::class)->findBy(array('status' => 1));
-        $language = $this->getEm()->getRepository(Language::class)->findOneBy(array('short_name' => $locale));
+        $payments = $this->getEm()->getRepository(\App\Entity\Payment::class)->findBy(array('status' => 1));
+        $language = $this->getEm()->getRepository(\App\Entity\Language::class)->findOneBy(array('short_name' => $locale));
         // payments
         foreach ($payments as $payment) {
-            $paymentTyp = $this->getEm()->getRepository('Payment\\' . $payment->getName() . '::class')
+            $str_class = '\\App\\Entity\\Payment\\' . $payment->getName();
+            $object = new $str_class;
+            $paymentTyp = $this->getEm()->getRepository(get_class($object))
                     ->findOneBy(array('payment' => $payment));
             $name = strtolower($payment->getName());
-            $label = $this->getEm()->getRepository(Payment\Lang\Label::class)
+            $label = $this->getEm()->getRepository(\App\Entity\Payment\Lang\Label::class)
                     ->findOneBy(array($name => $paymentTyp, 'lang' => $language));
             if ($payment->getName() == 'Bank') {
                 $arr_payments[] = new Typ($payment, $label, $paymentTyp, NULL, NULL, NULL, $this->getCommon());

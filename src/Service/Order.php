@@ -200,7 +200,7 @@ class Order {
      */
     public function getPaymentName() {
         $order = $this->getCurrentOrder();
-        return $this->getEm()->getRepository(Order\Payment::class)->findOneBy(array('order' => $order))->getPaymentName();
+        return $this->getEm()->getRepository(\App\Entity\Order\Payment::class)->findOneBy(array('order' => $order))->getPaymentName();
     }
 
     /**
@@ -241,7 +241,7 @@ class Order {
      */
     private function getCurrentQuote() {
         $quote_id = $this->getContainer()->get('session')->get('quote_id');
-        return $this->getEm()->getRepository(Quote::class)->findOneById($quote_id);
+        return $this->getEm()->getRepository(\App\Entity\Quote::class)->findOneById($quote_id);
     }
 
     /**
@@ -250,7 +250,7 @@ class Order {
      */
     public function getCurrentOrder() {
         $order_id = $this->getContainer()->get('session')->get('order_id');
-        return $this->getEm()->getRepository(Order::class)->findOneById($order_id);
+        return $this->getEm()->getRepository(\App\Entity\Order::class)->findOneById($order_id);
     }
 
     /**
@@ -258,7 +258,7 @@ class Order {
      * @return status $status
      */
     private function getStatusByName($name) {
-        return $this->getEm()->getRepository(Order\Status::class)->findOneBy(array('name' => $name));
+        return $this->getEm()->getRepository(\App\Entity\Order\Status::class)->findOneBy(array('name' => $name));
     }
 
     /**
@@ -267,7 +267,7 @@ class Order {
      * @return type $statuses
      */
     public function getAllStatus() {
-        return $this->getEm()->getRepository(Order\Status::class)->findAll();
+        return $this->getEm()->getRepository(\App\Entity\Order\Status::class)->findAll();
     }
 
     /**
@@ -277,7 +277,7 @@ class Order {
     private function _getOrderNumber() {
         $arr_order = array();
         $order_number = $this->getBeginOrderNumber();
-        $order = $this->getEm()->getRepository(Order::class)
+        $order = $this->getEm()->getRepository(\App\Entity\Order::class)
                 ->findOneBy(array(), array('id' => 'DESC'));
         if ($order) {
             $order_number = $order->getOrderNumber();
@@ -325,8 +325,8 @@ class Order {
      * save order
      */
     private function saveOrder() {
-        $lang = $this->getEm()->getRepository(Language::class)->findOneBy(array('short_name' => $this->getRequest()->getLocale()));
-        $order = $this->getEm()->getRepository(Order::class)->findOneBy(array('quote' => $this->getCurrentQuote()));
+        $lang = $this->getEm()->getRepository(\App\Entity\Language::class)->findOneBy(array('short_name' => $this->getRequest()->getLocale()));
+        $order = $this->getEm()->getRepository(\App\Entity\Order::class)->findOneBy(array('quote' => $this->getCurrentQuote()));
 
         if (!$order) {
             $order = new EntityOrder();
@@ -380,7 +380,7 @@ class Order {
      * save address Order
      */
     private function saveOrderAddress() {
-        $addressTyp = $this->getEm()->getRepository(Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => $this->getBillingType()));
+        $addressTyp = $this->getEm()->getRepository(\App\Entity\Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => $this->getBillingType()));
 // save billing
         if (!$addressTyp) {
             $addressTyp = new OrderAddress();
@@ -390,7 +390,7 @@ class Order {
         $this->_saveAddress($addressTyp, 'billing');
 
 // save shipping
-        $addressTyp = $this->getEm()->getRepository(Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => $this->getShippingType()));
+        $addressTyp = $this->getEm()->getRepository(\App\Entity\Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => $this->getShippingType()));
         if (!$addressTyp) {
             $addressTyp = new OrderAddress();
             $addressTyp->setCreated($this->getNowTime());
@@ -437,9 +437,9 @@ class Order {
      */
     private function saveOrderPayment() {
         $paymenttyp_id = $this->getRequest()->get('paymenttyp');
-        $paymenttyp = $this->getEm()->getRepository(Payment::class)->findOneById($paymenttyp_id);
+        $paymenttyp = $this->getEm()->getRepository(\App\Entity\Payment::class)->findOneById($paymenttyp_id);
         $paymentAdditional = json_encode($this->getInstitutPaymentAsArray($paymenttyp->getName()));
-        $orderPayment = $this->getEm()->getRepository(Order\Payment::class)->findOneBy(array('order' => $this->getCurrentOrder()));
+        $orderPayment = $this->getEm()->getRepository(\App\Entity\Order\Payment::class)->findOneBy(array('order' => $this->getCurrentOrder()));
         if (!$orderPayment) {
             $orderPayment = new OrderPayment();
         }
@@ -461,7 +461,7 @@ class Order {
      */
     private function saveOrderCalendar() {
         $order = $this->getCurrentOrder();
-        $calendars = $this->getEm()->getRepository(Calendar::class)->findBy(array('quote' => $this->getCurrentQuote()));
+        $calendars = $this->getEm()->getRepository(\App\Entity\Calendar::class)->findBy(array('quote' => $this->getCurrentQuote()));
         foreach ($calendars as $calendar) {
             $calendar->setOrder($order);
             $this->getEm()->persist($calendar);
@@ -474,10 +474,10 @@ class Order {
      */
     private function saveOrderAdditional() {
         $order = $this->getCurrentOrder();
-        $quoteAdditionals = $this->getEm()->getRepository(Map\QuoteProductAdditional::class)->findBy(array('quote' => $this->getCurrentQuote()));
+        $quoteAdditionals = $this->getEm()->getRepository(\App\Entity\Map\QuoteProductAdditional::class)->findBy(array('quote' => $this->getCurrentQuote()));
 
         // delete order map if exists
-        $orderAdditionals = $this->getEm()->getRepository(Map\OrderProductAdditional::class)
+        $orderAdditionals = $this->getEm()->getRepository(\App\Entity\Map\OrderProductAdditional::class)
                 ->findBy(array('order' => $order));
 
         foreach ($orderAdditionals as $orderAdditional) {
@@ -500,12 +500,12 @@ class Order {
      */
     public function saveOrderItem() {
         $order = $this->getCurrentOrder();
-        $calendars = $this->getEm()->getRepository(Calendar::class)
+        $calendars = $this->getEm()->getRepository(\App\Entity\Calendar::class)
                 ->findBy(array('order' => $order));
         // check if order item exist if yes then remove
         $arr_order_item_additionals = array();
         foreach ($calendars as $calendar) {
-            $items = $this->getEm()->getRepository(Order\Item::class)
+            $items = $this->getEm()->getRepository(\App\Entity\Order\Item::class)
                     ->findBy(array('calendar' => $calendar));
             foreach ($items as $item) {
                 $arr_order_item_additionals[] = $item;
@@ -516,7 +516,7 @@ class Order {
         }
         // delete orderItemAdditional
         foreach ($arr_order_item_additionals as $item_additional) {
-            $orderItemAdditionals = $this->getEm()->getRepository(Map\OrderItemAdditional::class)->findBy(array('parent' => $item_additional->getId()));
+            $orderItemAdditionals = $this->getEm()->getRepository(\App\Entity\Map\OrderItemAdditional::class)->findBy(array('parent' => $item_additional->getId()));
             foreach ($orderItemAdditionals as $orderItemAdditional) {
                 $this->getEm()->remove($orderItemAdditional);
                 $this->getEm()->flush();
@@ -540,12 +540,12 @@ class Order {
 
 
             // check if has children
-            $quoteAdditionals = $this->getEm()->getRepository(Map\QuoteProductAdditional::class)
+            $quoteAdditionals = $this->getEm()->getRepository(\App\Entity\Map\QuoteProductAdditional::class)
                     ->findBy(array('quote' => $this->getCurrentQuote(), 'parent' => $calendar->getProduct()->getId()));
             foreach ($quoteAdditionals as $quoteAdditional) {
                 $item = new Item();
                 $item->setCalendar($calendar);
-                $children = $this->getEm()->getRepository(Product::class)->findOneById($quoteAdditional->getChildren());
+                $children = $this->getEm()->getRepository(\App\Entity\Product::class)->findOneById($quoteAdditional->getChildren());
                 $item->setName($this->_getProductItemName($children));
                 $item->setPrice($children->getPrice()->getValue());
                 $item->setSku($children->getSku());
@@ -591,8 +591,10 @@ class Order {
      * @return array bank_payment
      */
     public function getInstitutPaymentAsArray($name) {
+        $str_class = '\\App\\Entity\\Payment\\' . $name;
+        $object = new $str_class;
         return $this->getEm()
-                        ->getRepository('Payment\\' . $name . '::class')
+                        ->getRepository(get_class($object))
                         ->createQueryBuilder('p')
                         ->select('p')
                         ->getQuery()
@@ -604,7 +606,7 @@ class Order {
      * @return array payment_additional_information
      */
     private function getPaymentAdditionalInformation() {
-        $orderPayment = $this->getEm()->getRepository(Order\Payment::class)->findOneBy(array('order' => $this->getCurrentOrder()));
+        $orderPayment = $this->getEm()->getRepository(\App\Entity\Order\Payment::class)->findOneBy(array('order' => $this->getCurrentOrder()));
         return (array) json_decode($orderPayment->getPaymentAdditionalInformation());
     }
 
@@ -622,7 +624,7 @@ class Order {
      * @return type paymenttyp
      */
     public function getPaymenttyp() {
-        return $this->getEm()->getRepository(Order\Payment::class)->findOneBy(array('order' => $this->getCurrentOrder()));
+        return $this->getEm()->getRepository(\App\Entity\Order\Payment::class)->findOneBy(array('order' => $this->getCurrentOrder()));
     }
 
     /**
@@ -630,7 +632,7 @@ class Order {
      * @return string url
      */
     public function getUrl() {
-// check if url is intern, if has protocol then external link, if no protocol then internal link
+        // check if url is intern, if has protocol then external link, if no protocol then internal link
         $_protocol = 'http://';
         $request = $this->getRequest();
         if ($request->isSecure()) {
@@ -647,7 +649,7 @@ class Order {
      * canceled order
      */
     public function setOrderStatus($statustyp) {
-        $order = $this->getEm()->getRepository(Order::class)->findOneById($this->getCurrentOrder()->getId());
+        $order = $this->getEm()->getRepository(\App\Entity\Order::class)->findOneById($this->getCurrentOrder()->getId());
         if ($order) {
             $order->setStatus($this->getStatusByName($statustyp));
             $this->getEm()->persist($order);
@@ -659,7 +661,7 @@ class Order {
      * save additional Order
      */
     public function setAdditionalInformation($arr_data) {
-        $orderPayment = $this->getEm()->getRepository(Order\Payment::class)->findOneBy(array('order' => $this->getCurrentOrder()));
+        $orderPayment = $this->getEm()->getRepository(\App\Entity\Order\Payment::class)->findOneBy(array('order' => $this->getCurrentOrder()));
         if ($orderPayment) {
             $orderPayment->setAdditionalInformation(json_encode($arr_data));
             $this->getEm()->persist($orderPayment);
@@ -674,7 +676,7 @@ class Order {
      * @return string name
      */
     public function getName() {
-        $orderAddress = $this->getEm()->getRepository(Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => $this->getBillingType()));
+        $orderAddress = $this->getEm()->getRepository(\App\Entity\Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => $this->getBillingType()));
         return $orderAddress->getFirstName() . ' ' . $orderAddress->getLastname();
     }
 
@@ -683,7 +685,7 @@ class Order {
      * @return string $number
      */
     public function getOrderNumber() {
-        $order = $this->getEm()->getRepository(Order::class)->findOneBy(array('order' => $this->getCurrentOrder()));
+        $order = $this->getEm()->getRepository(\App\Entity\Order::class)->findOneBy(array('order' => $this->getCurrentOrder()));
         return $order->getOrderNumber();
     }
 
@@ -692,7 +694,7 @@ class Order {
      * @return string $number
      */
     public function getOrderCreated() {
-        $order = $this->getEm()->getRepository(Order::class)->findOneBy(array('order' => $this->getCurrentOrder()));
+        $order = $this->getEm()->getRepository(\App\Entity\Order::class)->findOneBy(array('order' => $this->getCurrentOrder()));
         return $order->getCreated()->format('d-m-Y H:i:s');
     }
 
@@ -711,7 +713,7 @@ class Order {
     public function sendEmailMessage($order, $mailer) {
         $order = $this->getOrderDataById($order->getId());
         $engine = $this->container->get('templating');
-        $mail = $this->getEm()->getRepository(Mail::class)->findOneBy(array('status' => TRUE, 'type' => 'product'));
+        $mail = $this->getEm()->getRepository(\App\Entity\Mail::class)->findOneBy(array('status' => TRUE, 'type' => 'product'));
         $html = $engine->render('email/' . $this->getRequest()->getLocale() . '_' . strtolower($order['payment_name']) . '.html.twig', array('order' => $order, 'mail' => $mail));
         $arr_bcc_mails = explode(',', $mail->getBccEmail());
         $message = (new \Swift_Message($order['payment_name']))
@@ -723,7 +725,7 @@ class Order {
     }
 
     public function getOrderData($product) {
-        return $this->getEm()->getRepository(EntityCalendar::class)->getReservedDates($product
+        return $this->getEm()->getRepository(\App\Entity\Calendar::class)->getReservedDates($product
                         , $this->getMonthCurrent(), $this->getYearCurrent()
                         , $this->getMonthBefore(), $this->getYearBefore()
                         , $this->getMonthNext(), $this->getYearNext());
@@ -827,7 +829,7 @@ class Order {
      * @return type $array order data
      */
     public function getOrderDataById($id) {
-        $arr_order = $this->getEm()->getRepository(Order::class)->getOrderData($id);
+        $arr_order = $this->getEm()->getRepository(\App\Entity\Order::class)->getOrderData($id);
 //        print_r($arr_order);
 //        exit;
         if ($arr_order['status'] != 'canceled') {
@@ -973,7 +975,7 @@ class Order {
 //        $event = new InteractiveLoginEvent($this->getRequest(), $token);
 //        $this->getContainer()->get('event_dispatcher')->dispatch('security.interactive_login', $event);
 
-        $lang = $this->getEm()->getRepository(Language::class)->findOneBy(array('short_name' => $this->getRequest()->getLocale()));
+        $lang = $this->getEm()->getRepository(\App\Entity\Language::class)->findOneBy(array('short_name' => $this->getRequest()->getLocale()));
         $person = new Personal();
         $person->setFirstName($data['firstname']);
         $person->setLastName($data['lastname']);

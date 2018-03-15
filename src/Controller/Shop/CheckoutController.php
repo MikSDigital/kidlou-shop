@@ -260,7 +260,7 @@ class CheckoutController extends Controller {
         $serviceOrder->setOrderStatus('canceled');
         $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
         $this->removeSessions($serviceOrder);
-        return array('order' => $order);
+        return $this->render('shop/checkout/paypalCancel.html.twig', array('order' => $order));
     }
 
     /**

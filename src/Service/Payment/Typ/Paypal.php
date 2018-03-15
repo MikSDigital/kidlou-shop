@@ -114,7 +114,7 @@ class Paypal {
      */
     private function getCurrentOrder() {
         $order_id = $this->getContainer()->get('session')->get('order_id');
-        return $this->getEm()->getRepository(Order::class)->findOneById($order_id);
+        return $this->getEm()->getRepository(\App\Entity\Order::class)->findOneById($order_id);
     }
 
     /**
@@ -122,7 +122,7 @@ class Paypal {
      * @return type $number
      */
     private function getTotalPriceItems() {
-        return $this->getEm()->getRepository(Order::class)->getTotalPriceItems($this->getCurrentOrder())['price'];
+        return $this->getEm()->getRepository(\App\Entity\Order::class)->getTotalPriceItems($this->getCurrentOrder())['price'];
     }
 
     /**
@@ -154,7 +154,7 @@ class Paypal {
      * @return type $items
      */
     private function getItems() {
-        return $this->getEm()->getRepository(Order::class)->getItemsByOrder($this->getCurrentOrder());
+        return $this->getEm()->getRepository(\App\Entity\Order::class)->getItemsByOrder($this->getCurrentOrder());
     }
 
     /**
@@ -162,8 +162,8 @@ class Paypal {
      * @return type Payment
      */
     private function setPaymentTyp() {
-        $payment = $this->getEm()->getRepository(Payment::class)->findOneBy(array('name' => 'Paypal'));
-        $this->payment_typ = $this->getEm()->getRepository(Payment\Paypal::class)->findOneBy(array('payment' => $payment));
+        $payment = $this->getEm()->getRepository(\App\Entity\Payment::class)->findOneBy(array('name' => 'Paypal'));
+        $this->payment_typ = $this->getEm()->getRepository(\App\Entity\Payment\Paypal::class)->findOneBy(array('payment' => $payment));
     }
 
     /**
@@ -179,7 +179,7 @@ class Paypal {
      * @return type $address
      */
     private function getShippingAddress() {
-        $address = $this->getEm()->getRepository(Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => 'shipping'));
+        $address = $this->getEm()->getRepository(\App\Entity\Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => 'shipping'));
         return $address;
     }
 
