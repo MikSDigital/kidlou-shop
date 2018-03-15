@@ -11,6 +11,7 @@ parameters:
     products_directory: '%kernel.root_dir%/../public/media/import/csv'
     admin_path_name: admin
     api_path_name: api
+    test_path_name: test
 #    parameter_name: value
 
 services:
@@ -76,7 +77,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container", "@helper.common", "@mailer"]
 
     App\Service\Parameter:
-        arguments: ["%locale%", "%languages%", "%admin_path_name%", "%api_path_name%"]
+        arguments: ["%locale%", "%languages%", "%admin_path_name%", "%api_path_name%", "%test_path_name%"]
 
 
     App\Listener\LocalListener:

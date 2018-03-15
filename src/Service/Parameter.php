@@ -28,11 +28,18 @@ class Parameter {
      */
     private $apiPathName;
 
-    public function __construct($locale, $languages, $adminPathName, $apiPathName) {
+    /**
+     *
+     * @var type string
+     */
+    private $testPathName;
+
+    public function __construct($locale, $languages, $adminPathName, $apiPathName, $testPathName) {
         $this->locale = $locale;
         $this->languages = $languages;
         $this->adminPathName = $adminPathName;
         $this->apiPathName = $apiPathName;
+        $this->testPathName = $testPathName;
     }
 
     /**
@@ -65,6 +72,14 @@ class Parameter {
      */
     public function getApiPathName() {
         return $this->apiPathName;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getTestPathName() {
+        return $this->testPathName;
     }
 
 }

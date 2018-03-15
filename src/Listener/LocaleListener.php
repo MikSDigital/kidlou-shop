@@ -55,6 +55,10 @@ class LocaleListener implements EventSubscriberInterface {
             return;
         }
 
+        if ($this->getIsTest()) {
+            return;
+        }
+
         $locale = $this->checkLanguage();
         if ($locale === null) {
             return;
@@ -110,6 +114,16 @@ class LocaleListener implements EventSubscriberInterface {
             return TRUE;
         }
         if (0 === strpos($this->oldUrl, '/' . $this->parameter->getApiPathName() . '/')) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    private function getIsTest() {
+        if (0 === strpos($this->newUrl, '/' . $this->parameter->getTestPathName() . '/')) {
+            return TRUE;
+        }
+        if (0 === strpos($this->oldUrl, '/' . $this->parameter->getTestPathName() . '/')) {
             return TRUE;
         }
         return FALSE;
