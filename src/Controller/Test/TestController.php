@@ -4,24 +4,16 @@ namespace App\Controller\Test;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\Payment As ServicePayment;
 
 class TestController extends Controller {
 
     /**
-     * @Route("/index/", name="index_test")
-     */
-    public function indexAction(Request $request) {
-        $datas = $this->getDoctrine()->getRepository(Quote::class)->getBasketItems(37, 'image80', 'image80', $request->getLocale());
-        print_r($datas);
-        exit;
-        return array();
-    }
-
-    /**
-     * @Route("/token/", name="token_test")
+     * @Route("/token/", name="test_token")
      */
     public function tokenAction() {
         $api_endpoint = "https://api.sandbox.paypal.com/v1/oauth2/token";
@@ -46,6 +38,20 @@ class TestController extends Controller {
         $json = json_decode($result);
         print_r($json->access_token);
         exit;
+    }
+
+    /**
+     * @Template()
+     * @Route("/cart/", name="test_checkout_cart")
+     */
+    public function cartAction(Request $request, ServicePayment $servicePayment) {
+        $locale = $request->getLocale();
+        $payments = $servicePayment->getPayments();
+        return array(
+            'payments' => $payments,
+            'zoneplz' => '1971',
+            'zonecity' => 'Grimisuat'
+        );
     }
 
 }

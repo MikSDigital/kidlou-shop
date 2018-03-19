@@ -90,4 +90,78 @@ class Payment {
         return $arr_payments;
     }
 
+    /**
+     *
+     * @return string
+     */
+    public function getJsPaypal() {
+        $html = "
+            <script>
+            var CREATE_PAYMENT_URL  = 'https://my-store.com/paypal/create-payment';
+            var EXECUTE_PAYMENT_URL = 'https://my-store.com/paypal/execute-payment';
+
+            var _actions;
+
+//            document.querySelector('#confirm-button')
+//                    .addEventListener('click', function() {
+//                    });
+
+
+            paypal.Button.render({
+                env: 'sandbox', // Or 'production',
+                // commit: true, // Show a 'Pay Now' button
+                locale: 'de_DE',
+                style: {
+                  color: 'gold',
+                  size: 'small'
+                },
+
+
+                validate: function(actions) {
+                    _actions = actions;
+                    //alert('validate');
+                    actions.disable();
+                },
+
+                onClick: function() {
+                    _actions.enable();
+                },
+
+
+                payment: function(actions) {
+                    //action.disable();
+                    //alert('osks');
+                  /*
+                   * Set up the payment here
+                   */
+//                    return paypal.request.post(CREATE_PAYMENT_URL).then(function(data) {
+//                        return data.id;
+//                    });
+                },
+
+                onAuthorize: function(data, actions) {
+                  /*
+                   * Execute the payment here
+                   */
+                },
+
+                onCancel: function(data, actions) {
+                  /*
+                   * Buyer cancelled the payment
+                   */
+                },
+
+                onError: function(err) {
+                  /*
+                   * An error occurred during the transaction
+                   */
+                }
+              },
+              '#paypal-button'
+            );
+            </script>
+        ";
+        return $html;
+    }
+
 }

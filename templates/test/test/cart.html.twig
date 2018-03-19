@@ -1,0 +1,315 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ 'Checkout' | trans }} {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block additionaljavascripts %}
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+{% endblock %}
+
+{% block pagetitle %} {{ 'Checkout' | trans }} {% endblock %}
+{% block body %}
+    <section class="box info section-checkout">
+        <div class="row">
+            <div class="col-md-12">
+                {% for message in app.flashes('error') %}
+                    <!--
+                     <div class="flash-notice">
+                    {{ message }}
+                </div>
+                    -->
+                {% endfor %}
+                <div style="padding-bottom: 10px;">{{ 'Already registred?' | trans }} <a class="user-login" href="{{ path('user_login') }}">{{ 'Please log in' }}</a></div>
+            </div>
+        </div>
+        <div class="row">
+            <form class="send-order" action="{{ path('checkout_order') }}" target="overlay-iframe" method="POST">
+                <div class="col-md-4 checkout-box">
+                    <div class="checkout-title"><h1>{{ '1 Adresse de facturation' | trans }}</h1></div>
+                    <div class="row">
+                        <div class="col-md-6 checkout-left">
+                            <div class="form-group">
+                                <label for="billing_firstname">{{ 'Prenom' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="billing_firstname" placeholder="{{ 'Prenom' | trans }}" name="billing[firstname]">
+                            </div>
+                        </div>
+                        <div class="col-md-6 checkout-right">
+                            <div class="form-group">
+                                <label for="billing_lastname">{{ 'Nom' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="billing_lastname" placeholder="{{ 'Nom' | trans }}" name="billing[lastname]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 checkout-left checkout-right">
+                            <div class="form-group">
+                                <label for="billing_street1">{{ 'Adresse' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="billing_street1" placeholder="{{ 'Adresse1' | trans }}" name="billing[street1]">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="billing_street2" placeholder="{{ 'Adresse2' | trans }}" name="billing[street2]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 checkout-left">
+                            <div class="form-group">
+                                <label for="billing_post_code">{{ 'Zip/Postal' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="billing_post_code" placeholder="{{ 'Zip/Postal' | trans }}" name="billing[post_code]">
+                            </div>
+                        </div>
+                        <div class="col-md-6 checkout-right">
+                            <div class="form-group">
+                                <label for="billing_city">{{ 'City' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="billing_city" placeholder="{{ 'City' | trans }}" name="billing[city]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 checkout-left">
+                            <label for="billing_country">{{ 'Country' | trans }}</label>
+                            <select class="form-control" name="billing[country_code]">
+                                {% for key, country in common.getCountries() %}
+                                    <option value="{{ key }}" {% if (key == 'CH') %} selected='selected' {% endif %}>{{ country }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 15px;">
+                        <div class="col-md-6 checkout-left">
+                            <div class="form-group">
+                                <label for="billing_email">{{ 'Email' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="billing_email" placeholder="{{ 'Email' | trans }}" name="billing[email]">
+                            </div>
+                        </div>
+                        <div class="col-md-6 checkout-right">
+                            <div class="form-group">
+                                <label for="billing_phone">{{ 'Telephone' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="billing_phone" placeholder="{{ 'Telephone' | trans }}" name="billing[phone]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 checkout-left">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input save_new_user" type="checkbox" name="billing[user_new]">
+                                        {{ 'save as new user' | trans }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row new_password">
+                        <div class="col-md-6 checkout-left">
+                            <div class="form-group">
+                                <label for="billing_password1">{{ 'Password' | trans }}</label>
+                                <input type="password" class="form-control" data-password-equal="{{ 'Password is not equal' | trans }}" data-password-length="{{ 'Password must be min. 6 and max. 8 character length' | trans }}" id="billing_password1" placeholder="{{ 'Password' | trans }}" name="billing[password1]">
+                            </div>
+                        </div>
+                        <div class="col-md-6 checkout-right">
+                            <div class="form-group">
+                                <label for="billing_password2">{{ 'Repeat password' | trans }}</label>
+                                <input type="password" class="form-control" id="billing_password2" placeholder="{{ 'Repeat password' | trans }}" name="billing[password2]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 checkout-box">
+                    <div class="checkout-title"><h1>{{ '2 Adresse de livraison' | trans }}</h1></div>
+                    <div class="row">
+                        <div class="col-md-6 checkout-left">
+                            <div class="form-group">
+                                <label for="shipping_firstname">{{ 'Prenom' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="shipping_firstname" placeholder="{{ 'Prenom' | trans }}" name="shipping[firstname]">
+                            </div>
+                        </div>
+                        <div class="col-md-6 checkout-right">
+                            <div class="form-group">
+                                <label for="shipping_lastname">{{ 'Nom' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="shipping_lastname" placeholder="{{ 'Nom' | trans }}" name="shipping[lastname]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 checkout-left checkout-right">
+                            <div class="form-group">
+                                <label for="shipping_street1">{{ 'Adresse' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="shipping_street1" placeholder="{{ 'Adresse1' | trans }}" name="shipping[street1]">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="shipping_street2" placeholder="{{ 'Adresse2' | trans }}" name="shipping[street2]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6 checkout-left">
+                            <div class="form-group">
+                                <label for="shipping_post_code">{{ 'Zip/Postal' | trans }}</label>
+                                <input readonly type="text" class="form-control form-must-field" id="shipping_post_code" value="{{ zoneplz }}" placeholder="{{ 'Zip/Postal' | trans }}" name="shipping[post_code]">
+                            </div>
+                        </div>
+                        <div class="col-md-6 checkout-right">
+                            <div class="form-group">
+                                <label for="shipping_city">{{ 'City' | trans }}</label>
+                                <input readonly type="text" class="form-control form-must-field" id="shipping_city" value="{{ zonecity }}" placeholder="{{ 'City' | trans }}" name="shipping[city]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 checkout-left">
+                            <label for="shipping_country">{{ 'Country' | trans }}</label>
+                            <select class="form-control" readonly name="shipping[country_code]">
+                                {% for key, country in common.getCountries() %}
+                                    {% if key == 'CH' %}
+                                        <option value="{{ key }}" selected='selected'>{{ country }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 15px;">
+                        <div class="col-md-6 checkout-left">
+                            <div class="form-group">
+                                <label for="shipping_phone">{{ 'Telephone' | trans }}</label>
+                                <input type="text" class="form-control form-must-field" id="shipping_phone" placeholder="{{ 'Telephone' | trans }}" name="shipping[phone]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 checkout-box payment-methods">
+                    <div class="checkout-title"><h1>{{ '3 Mode de paiment' | trans }}</h1></div>
+                            {% for payment in payments %}
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="paymenttyp" data-short-name="{{ payment.paymentShortName }}" data-cash-url="{{ path('payment_cash', {'typ' : payment.paymentShortName}) }}" value="{{ payment.paymentId }}" class="form-must-field">
+                                <strong>{{ payment.title }}</strong>
+                            </label>
+                        </div>
+                        <div class="payment-shorttext">{{ payment.shortText }} {% if payment.image != null %}<img src="/{{ payment.image }}"  /> {% endif %}</div>
+                        <div class="payment-infos">
+                            <table class="payment-data table table-bordered" {% if (payment.isTable == false) %} style="border:0px;" {% endif %}>
+                                {% if (payment.isTable) %}
+
+                                    {% for data in payment.datas %}
+                                        <tr>
+                                            <td style="text-align: left;">{{ data.fieldName }}</td>
+                                            <td style="text-align: left;">{{ data.fieldValue }}</td>
+                                        </tr>
+                                    {% endfor%}
+
+                                {% else %}
+                                    <td style="text-align: left; border:0px; padding-left:0px; padding-top:0px;">{{ "Wird nach der Bestellung zur %s weitergeleitet"|format(payment.paymentName) }}</td>
+                                {% endif %}
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="checkout-title"><h1>{{ '4 Review your order' | trans }}</h1></div>
+                <table id="shopping-cart-table" class="data-table cart-table">
+                    {% include 'shop/checkout/cart/body.html.twig' %}
+                    {% set shipping_cost = common.getShippingCost() %}
+                    {% set caution_cost = common.getCautionCost() %}
+                    {% set price_total = app.session.get('price_subtotal') %}
+                    {% set total = price_total + shipping_cost + caution_cost %}
+                    <tr>
+                        <td class="a-left" style="border-right:0; border-bottom:0" colspan="3"><div style="padding-left:30px">{{ 'Subtotal' | trans }}</div></td>
+                        <td class="a-right" style="border-left:0; border-bottom:0">{{ common.getCurrencyCode() }} {{ price_total | number_format(2) }}</td>
+                    </tr>
+                    <tr id="livraison-cost">
+                        <td class="a-left" style="border-right:0; border-bottom:0" colspan="3"><div style="padding-left:30px">{{ 'Livraison' | trans }}</div></td>
+                        <td class="a-right" style="border-left:0; border-bottom:0">{{ common.getCurrencyCode() }} {{ shipping_cost | number_format(2) }}</td>
+                    </tr>
+                    <tr id="caution-cost">
+                        <td class="a-left" style="border-right:0; border-bottom:0" colspan="3"><div style="padding-left:30px">{{ 'Caution' | trans }}</div></td>
+                        <td class="a-right" style="border-left:0;  border-bottom:0">{{ common.getCurrencyCode() }} {{ caution_cost | number_format(2) }}</td>
+                    </tr>
+                    <tr id="total-cost">
+                        <td class="a-left" style="border-right:0;" colspan="3"><strong><div style="padding-left:30px; font-size:16px;">{{ 'Total' | trans }}</div></strong></td>
+                        <td class="a-right" style="border-left:0; font-size:16px;" id="txt-total-price"><strong>{{ common.getCurrencyCode() }} {{ total | number_format(2) }}</strong></td>
+                    </tr>
+                    <tfoot>
+                        <tr class="first last">
+                            <td class="a-right last" colspan="4">
+                                <div id="paypal-button"></div>
+                                <button id="empty_cart_button" class="button btn-empty reserved-order" type="button" title="{{ 'Reservieren' | trans }}">
+                                    <span>
+                                        <span>{{ 'Reservieren' | trans }}</span>
+                                    </span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block bodyoverlay %}
+
+    <div id="bodyoverlay-content">
+        <div id="bodyoverlay-box"></div>
+    </div>
+
+    <div id="bodyoverlay" data-iframe-message="{{ 'Daten werden bearbeitet' | trans }}">
+        <iframe name="overlay-iframe" id="overlay-iframe" src="" style=""></iframe>
+    </div>
+
+    <div id="bodyoverlay-login">
+        <div class="login-box well" style="margin-top:100px;">
+            <div class="close">X</div>
+
+            <form action="{{ path('user_login') }}"  method="post">
+                <legend>{{ 'Sign In' | trans }}</legend>
+                {% if app.session.get('login_failed') %}
+                    <div class="error-message">{{ 'Anmeldung fehlgeschlagen!' | trans }}</div>
+                {% endif %}
+                {% for message in app.flashes('error') %}
+                    <div class="error-message">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <div class="form-group">
+                    <label for="username">{{ 'E-mail or Username' | trans }}</label>
+                    <input value='' id="username" name="_username" placeholder="{{ 'E-mail or Username' | trans }}" type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="password">{{ 'Password' | trans }}</label>
+                    <input id="password" value='' name="_password" placeholder="{{ 'Password' | trans }}" type="password" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default btn-login-submit btn-block m-t-md" value="{{ 'Login' | trans }}" />
+                </div>
+                <input type="hidden" name="_target_path" value="{{ path('user_checkout_cart') }}" />
+                <input type="hidden" name="_failure_path" value="{{ path('checkout_cart') }}" />
+                <input type="hidden" name="zone-plz" value="{{ app.request.get('zone-plz') }}" />
+                <input type="hidden" name="zone-city" value="{{ app.request.get('zone-city') }}" />
+            </form>
+        </div>
+    </div>
+    {% if app.session.get('login_failed') %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#bodyoverlay-login').css({'background-image': 'none'});
+                $('#bodyoverlay-login').fadeIn();
+            });
+        </script>
+        {{ app.session.set('login_failed', FALSE) }}
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ payment.getJsPaypal() | raw }}
+{% endblock %}
+
+
+

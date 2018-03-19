@@ -7,5 +7,6 @@ twig:
         order: "@helper.order"
         navigation: "@helper.navigation"
         calendar: "@helper.calendar"
+        payment: "@helper.payment"
     form_themes:
             - 'bootstrap_3_kidlou_horizontal_layout.html.twig'

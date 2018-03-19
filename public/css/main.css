@@ -9792,4 +9792,7 @@ html body div.order-overlay p {
   border-bottom: 1px solid #ddd;
   border-top: 0; }
 
+.paypal-button {
+  display: none; }
+
 /*# sourceMappingURL=main.css.map */

@@ -87,6 +87,13 @@ $(document).ready(function () {
         $(this).parent().parent().next().next().children().show();
         var typ = $(this).data('short-name');
         var url = $(this).data('cash-url');
+        if (typ != 'pp') {
+            $('.paypal-button').hide();
+            $('.reserved-order').show();
+        } else {
+            $('.paypal-button').show();
+            $('.reserved-order').hide();
+        }
         sendPaymentCash(typ, url);
     });
 
@@ -296,8 +303,9 @@ $(document).ready(function () {
         }
         setLocation(url);
     });
-}
-);
+
+});
+
 
 
 function setLocation(href) {
