@@ -102,9 +102,11 @@ class Payment {
 
             var _actions;
 
-//            document.querySelector('#confirm-button')
-//                    .addEventListener('click', function() {
-//                    });
+            document.querySelector('#shipping_street1')
+                    .addEventListener('click', function() {
+                        //alert('paypal');
+                        _actions.enable();
+                    });
 
 
             paypal.Button.render({
@@ -116,15 +118,15 @@ class Payment {
                   size: 'small'
                 },
 
-
                 validate: function(actions) {
                     _actions = actions;
-                    //alert('validate');
+                    // alert('validate');
                     actions.disable();
                 },
 
                 onClick: function() {
-                    _actions.enable();
+                    //_actions.enable();
+                    //payment();
                 },
 
 
