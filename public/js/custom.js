@@ -9,7 +9,6 @@ $(document).ready(function () {
             $('.navigation-responsive').removeClass('in');
         }
     });
-
     $(window).scroll(function () {
         if ($(document).scrollTop() > custom_header) {
             $('.header-navigation').addClass('navbar-fixed-top');
@@ -17,15 +16,12 @@ $(document).ready(function () {
             $('.header-navigation').removeClass('navbar-fixed-top');
         }
     });
-
     $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
         event.preventDefault();
         event.stopPropagation();
         $(this).parent().siblings().removeClass('open');
         $(this).parent().toggleClass('open');
     });
-
-
     $('.parentMenu span.submenu').parent().mouseenter(function () {
         var width = $(this).children().outerWidth();
         //if (!$(this).children().next().is(':visible')) {
@@ -34,7 +30,6 @@ $(document).ready(function () {
     }).mouseleave(function () {
         $(this).children().next().hide();
     });
-
     $('.title-vmega-menu').click(function () {
         if (!$('.category-vmega_toggle').is(':visible')) {
             $('.category-vmega_toggle').show();
@@ -42,7 +37,6 @@ $(document).ready(function () {
             $('.category-vmega_toggle').hide();
         }
     });
-
     $('.category-vmega_toggle > .pt_menu.hasMenu').hover(function () {
         $(this).children().next().show();
         var width = $('.category-vmega_toggle').width();
@@ -51,8 +45,6 @@ $(document).ready(function () {
         $(this).children().next().hide();
         $(this).children().next().css({'left': '110%'});
     });
-
-
     $('.tab_categorys > li').click(function () {
         $('.tabs-category_tabs > li').each(function () {
             $(this).removeClass();
@@ -60,8 +52,6 @@ $(document).ready(function () {
         $(this).addClass('active');
         categoryCarousel();
     });
-
-
     function categoryCarousel() {
         $('.tabs-category_tabs > li').each(function () {
             var name = $(this).children().attr('class');
@@ -74,10 +64,9 @@ $(document).ready(function () {
     }
 
     categoryCarousel();
-
 // checkout payment method click
     $('.payment-methods .radio input').click(function () {
-        // unshow all others elements
+// unshow all others elements
         $('.payment-methods .payment-infos').each(function () {
             if ($(this).children().is(':visible')) {
                 $(this).children().hide();
@@ -96,7 +85,6 @@ $(document).ready(function () {
         }
         sendPaymentCash(typ, url);
     });
-
     function sendPaymentCash(typ, url) {
         $('#bodyoverlay-content').fadeIn();
         $.ajax({
@@ -130,19 +118,16 @@ $(document).ready(function () {
     }, function () {
         $(this).children().next().hide();
     });
-
     $('.top-cart-wrapper').hover(function () {
         $(this).find('.top-cart-content').show();
     }, function () {
         $(this).find('.top-cart-content').hide();
     });
-
     $('.top-link').hover(function () {
         $(this).find('.toplink-inner').show();
     }, function () {
         $(this).find('.toplink-inner').hide();
     });
-
     $(document).on('click', '.input-error-field', function (e) {
         if ($(this).children().is(':radio')) {
             $('.payment-methods .form-must-field').each(function () {
@@ -150,11 +135,9 @@ $(document).ready(function () {
             });
         }
     });
-
     $(document).on('keydown', '.input-error-field', function (e) {
         $(this).removeClass('input-error-field');
     });
-
     //$('.paypal-button').hide();
 //    $(document).on('click', '.send-order input', function (e) {
 //        if ($('.paypal-button').is(':visible')) {
@@ -165,20 +148,17 @@ $(document).ready(function () {
 //    });
 
     $('.reserved-order').click(function () {
-        // inital
+// inital
         $(".send-order input[name^='billing'").each(function () {
             $(this).removeClass('input-error-field');
         });
-
         $(".send-order input[name^='shipping'").each(function () {
             $(this).removeClass('input-error-field');
         });
-
         $("input[name=paymenttyp]").each(function () {
             $(this).parent().removeClass('input-error-field');
         });
-
-
+        $('.billing_email_message').hide();
         var isSend = true;
         var id = '';
         // check must fields billing , shipping
@@ -186,6 +166,16 @@ $(document).ready(function () {
         $.each(arr_typs, function (i, typ) {
             $(".send-order input[name^='" + typ + "'").each(function () {
                 if ($(this).hasClass('form-must-field')) {
+                    if ($(this).attr('id') == "billing_email") {
+                        if (!validateEmail($(this).val())) {
+                            isSend = false;
+                            $(this).addClass('input-error-field');
+                            $('.billing_email_message').show();
+                        } else {
+                            $('.billing_email_message').hide();
+                        }
+                    }
+                    //console.log($(this).attr('id'));
                     if ($(this).val() == '') {
                         isSend = false;
                         $(this).addClass('input-error-field');
@@ -204,7 +194,6 @@ $(document).ready(function () {
                 }
             }
         });
-
         // springt zu den input fields, wenn Fehler
         if (id != '') {
             $('html, body').animate({
@@ -213,7 +202,7 @@ $(document).ready(function () {
             return false;
         }
 
-        // springt zu den input radiobuttons, wenn Fehler
+// springt zu den input radiobuttons, wenn Fehler
         if (!isChecked) {
             $('html, body').animate({
                 scrollTop: $(".payment-methods").offset().top - 25
@@ -221,7 +210,7 @@ $(document).ready(function () {
             return false;
         }
 
-        // is new user
+// is new user
         $(".send-order input[name^='billing'").each(function () {
             if ($(this).attr('name') == 'billing[user_new]') {
                 if ($(this).is(':checked')) {
@@ -237,7 +226,6 @@ $(document).ready(function () {
                 }
             }
         });
-
         if (!isChecked) {
             isSend = false;
             $("input[name=paymenttyp]").each(function () {
@@ -255,7 +243,6 @@ $(document).ready(function () {
             $('.send-order').submit();
         }
     });
-
     var css = '<link href="/css/main.css" rel="stylesheet" />';
     $('#overlay-iframe').load(function () {
         var overlay_iframe = $('#overlay-iframe').contents();
@@ -264,21 +251,18 @@ $(document).ready(function () {
             setLocation($(this).data('url'));
         });
     });
-
 // login form
     $(document).on('click', '.user-login', function (e) {
         e.preventDefault();
         $('#bodyoverlay-login').css({'background-image': 'none'});
         $('#bodyoverlay-login').fadeIn();
     });
-
 // login form
     $(document).on('click', '.close', function (e) {
         e.preventDefault();
         //$('#bodyoverlay-login').css({'background-image': 'none'});
         $('#bodyoverlay-login').fadeOut();
     });
-
     $(document).on('click', '.save_new_user', function (e) {
         if ($(this).is(':checked')) {
             $(this).prop('checked', true);
@@ -289,7 +273,6 @@ $(document).ready(function () {
         }
 
     });
-
     $(document).on('change', '.pagelimit-select', function (e) {
         var url = window.location.href;
         var pos = url.indexOf('?page=');
@@ -304,9 +287,7 @@ $(document).ready(function () {
         }
         setLocation(url);
     });
-
 });
-
 function isPaypalButton() {
     if ($('.paypal-button').is(':visible')) {
         return true;
@@ -344,14 +325,32 @@ function setErrorFieldsForPaypal() {
     $.each(arr_typs, function (i, typ) {
         $(".send-order input[name^='" + typ + "'").each(function () {
             if ($(this).hasClass('form-must-field')) {
+                if ($(this).attr('id') == "billing_email") {
+                    if (!validateEmail($(this).val())) {
+                        $(this).addClass('input-error-field');
+                        $('.billing_email_message').show();
+                    } else {
+                        $('.billing_email_message').hide();
+                    }
+                }
                 if ($(this).val() == '') {
                     $(this).addClass('input-error-field');
                 }
+
             }
         });
     });
 }
 
+
+function validateEmail(sEmail) {
+    var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+    if (filter.test(sEmail)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 function setLocation(href) {
     window.location.href = href;

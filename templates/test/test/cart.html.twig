@@ -79,7 +79,7 @@
                     <div class="row" style="padding-top: 15px;">
                         <div class="col-md-6 checkout-left">
                             <div class="form-group">
-                                <label for="billing_email">{{ 'Email' | trans }}</label>
+                                <label for="billing_email">{{ 'Email' | trans }} <span class="billing_email_message" style="color:red;">{{ 'Email not valid!' | trans }}</span></label>
                                 <input type="text" class="form-control form-must-field" id="billing_email" placeholder="{{ 'Email' | trans }}" name="billing[email]">
                             </div>
                         </div>
