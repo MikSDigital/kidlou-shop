@@ -315,7 +315,7 @@ function isPaypalButton() {
 }
 
 
-function isInputFieldsEmpty(el) {
+function isInputFieldsEmptyForPaypal(el) {
     console.log(el.value);
     var isEmpty = false;
     var arr_typs = ['billing', 'shipping'];
@@ -336,6 +336,20 @@ function isInputFieldsEmpty(el) {
         });
     });
     return isEmpty;
+}
+
+
+function setErrorFieldsForPaypal() {
+    var arr_typs = ['billing', 'shipping'];
+    $.each(arr_typs, function (i, typ) {
+        $(".send-order input[name^='" + typ + "'").each(function () {
+            if ($(this).hasClass('form-must-field')) {
+                if ($(this).val() == '') {
+                    $(this).addClass('input-error-field');
+                }
+            }
+        });
+    });
 }
 
 

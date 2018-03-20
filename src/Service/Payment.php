@@ -106,7 +106,7 @@ class Payment {
                 el.addEventListener('focusout', function() {
                     if(isPaypalButton()){
                         // check if all inputs are empty
-                        if(!isInputFieldsEmpty(el)){
+                        if(!isInputFieldsEmptyForPaypal(el)){
                             _actions.enable();
                         }
                     }
@@ -129,8 +129,7 @@ class Payment {
                 },
 
                 onClick: function() {
-                    //_actions.enable();
-                    //payment();
+                    setErrorFieldsForPaypal();
                 },
 
 
