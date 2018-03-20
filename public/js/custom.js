@@ -267,12 +267,17 @@ $(document).ready(function () {
         if ($(this).is(':checked')) {
             $(this).prop('checked', true);
             $('.new_password').show();
+            $('#billing_password1').addClass('form-must-field');
+            $('#billing_password2').addClass('form-must-field');
         } else {
             $(this).prop('checked', false);
             $('.new_password').hide();
+            $('#billing_password1').removeClass('form-must-field');
+            $('#billing_password2').removeClass('form-must-field');
         }
 
     });
+
     $(document).on('change', '.pagelimit-select', function (e) {
         var url = window.location.href;
         var pos = url.indexOf('?page=');
@@ -287,6 +292,16 @@ $(document).ready(function () {
         }
         setLocation(url);
     });
+
+    $(document).on('focusout', '#billing_email', function (e) {
+        if (!validateEmail($(this).val())) {
+            $(this).addClass('input-error-field');
+            $('.billing_email_message').show();
+        } else {
+            $('.billing_email_message').hide();
+        }
+    });
+
 });
 function isPaypalButton() {
     if ($('.paypal-button').is(':visible')) {
@@ -297,7 +312,7 @@ function isPaypalButton() {
 
 
 function isInputFieldsEmptyForPaypal(el) {
-    console.log(el.value);
+    console.log(el.name);
     var isEmpty = false;
     var arr_typs = ['billing', 'shipping'];
     $.each(arr_typs, function (i, typ) {
@@ -314,6 +329,20 @@ function isInputFieldsEmptyForPaypal(el) {
                     }
                 }
             }
+
+            // if checked fields
+            if ($(this).attr('name') == 'billing[user_new]') {
+                if ($(this).is(':checked')) {
+                    if ($("input[name='billing[password1]'").val().length >= 6 && $("input[name='billing[password1]'").val().length <= 8) {
+                        if ($("input[name='billing[password1]'").val() != $("input[name='billing[password2]'").val()) {
+                            isEmpty = true;
+                        }
+                    } else {
+                        isEmpty = true;
+                    }
+                }
+            }
+
         });
     });
     return isEmpty;

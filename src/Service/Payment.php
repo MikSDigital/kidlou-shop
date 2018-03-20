@@ -108,6 +108,8 @@ class Payment {
                         // check if all inputs are empty
                         if(!isInputFieldsEmptyForPaypal(el)){
                             _actions.enable();
+                        } else {
+                            _actions.disable();
                         }
                     }
                 });
