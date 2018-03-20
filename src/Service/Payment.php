@@ -102,11 +102,16 @@ class Payment {
 
             var _actions;
 
-            document.querySelector('#shipping_street1')
-                    .addEventListener('click', function() {
-                        //alert('paypal');
-                        _actions.enable();
-                    });
+            document.querySelectorAll('.send-order input').forEach(function(el) {
+                el.addEventListener('focusout', function() {
+                    if(isPaypalButton()){
+                        // check if all inputs are empty
+                        if(!isInputFieldsEmpty(el)){
+                            _actions.enable();
+                        }
+                    }
+                });
+            });
 
 
             paypal.Button.render({
@@ -120,7 +125,6 @@ class Payment {
 
                 validate: function(actions) {
                     _actions = actions;
-                    // alert('validate');
                     actions.disable();
                 },
 

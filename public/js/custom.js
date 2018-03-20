@@ -155,6 +155,15 @@ $(document).ready(function () {
         $(this).removeClass('input-error-field');
     });
 
+    //$('.paypal-button').hide();
+//    $(document).on('click', '.send-order input', function (e) {
+//        if ($('.paypal-button').is(':visible')) {
+//            console.log('paypal');
+//            //alert('ok');
+//        }
+//
+//    });
+
     $('.reserved-order').click(function () {
         // inital
         $(".send-order input[name^='billing'").each(function () {
@@ -172,26 +181,18 @@ $(document).ready(function () {
 
         var isSend = true;
         var id = '';
-        // check must fields billing
-        $(".send-order input[name^='billing'").each(function () {
-            if ($(this).hasClass('form-must-field')) {
-                if ($(this).val() == '') {
-                    isSend = false;
-                    $(this).addClass('input-error-field');
-                    id = $(this).attr('id');
+        // check must fields billing , shipping
+        var arr_typs = ['billing', 'shipping'];
+        $.each(arr_typs, function (i, typ) {
+            $(".send-order input[name^='" + typ + "'").each(function () {
+                if ($(this).hasClass('form-must-field')) {
+                    if ($(this).val() == '') {
+                        isSend = false;
+                        $(this).addClass('input-error-field');
+                        id = $(this).attr('id');
+                    }
                 }
-            }
-        });
-
-        // check must fields shipping
-        $(".send-order input[name^='shipping'").each(function () {
-            if ($(this).hasClass('form-must-field')) {
-                if ($(this).val() == '') {
-                    isSend = false;
-                    $(this).addClass('input-error-field');
-                    id = $(this).attr('id');
-                }
-            }
+            });
         });
 
         // mode payment
@@ -306,6 +307,36 @@ $(document).ready(function () {
 
 });
 
+function isPaypalButton() {
+    if ($('.paypal-button').is(':visible')) {
+        return true;
+    }
+    return false;
+}
+
+
+function isInputFieldsEmpty(el) {
+    console.log(el.value);
+    var isEmpty = false;
+    var arr_typs = ['billing', 'shipping'];
+    $.each(arr_typs, function (i, typ) {
+        // check must fields billing
+        $(".send-order input[name^='" + typ + "'").each(function () {
+            if ($(this).hasClass('form-must-field')) {
+                if ($(this).attr('id') != el.id) {
+                    if ($(this).val() == '') {
+                        isEmpty = true;
+                    }
+                } else {
+                    if (el.value == '') {
+                        isEmpty = true;
+                    }
+                }
+            }
+        });
+    });
+    return isEmpty;
+}
 
 
 function setLocation(href) {
