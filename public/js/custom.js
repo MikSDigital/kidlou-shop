@@ -312,7 +312,6 @@ function isPaypalButton() {
 
 
 function isInputFieldsEmptyForPaypal(el) {
-    console.log(el.name);
     var isEmpty = false;
     var arr_typs = ['billing', 'shipping'];
     $.each(arr_typs, function (i, typ) {
@@ -328,23 +327,28 @@ function isInputFieldsEmptyForPaypal(el) {
                         isEmpty = true;
                     }
                 }
-            }
-
-            // if checked fields
-            if ($(this).attr('name') == 'billing[user_new]') {
-                if ($(this).is(':checked')) {
-                    if ($("input[name='billing[password1]'").val().length >= 6 && $("input[name='billing[password1]'").val().length <= 8) {
-                        if ($("input[name='billing[password1]'").val() != $("input[name='billing[password2]'").val()) {
-                            isEmpty = true;
-                        }
-                    } else {
+                // check email
+                if ($(this).attr('id') == 'billing_email') {
+                    if (!validateEmail($(this).val())) {
                         isEmpty = true;
                     }
                 }
             }
-
         });
     });
+    // is not must field if is checked then must show the password are equal
+    isEmpty = isCheckboxEmptyForPaypal(isEmpty);
+    return isEmpty;
+}
+
+
+function isCheckboxEmptyForPaypal(isEmpty) {
+    // if checked fields
+    if ($('.send-order .save_new_user').is(':checked')) {
+        if (!checkPassword()) {
+            isEmpty = true;
+        }
+    }
     return isEmpty;
 }
 
@@ -365,10 +369,35 @@ function setErrorFieldsForPaypal() {
                 if ($(this).val() == '') {
                     $(this).addClass('input-error-field');
                 }
-
             }
+            // password handling if user will create user
+            if ($(this).attr('name') == 'billing[user_new]') {
+                if ($(this).is(':checked')) {
+                    if ($("input[name='billing[password1]'").val().length >= 6 && $("input[name='billing[password1]'").val().length <= 8) {
+                        if ($("input[name='billing[password1]'").val() != $("input[name='billing[password2]'").val()) {
+                            alert($("input[name='billing[password1]'").data('password-equal'));
+                        }
+                    } else {
+                        alert($("input[name='billing[password1]'").data('password-length'));
+                    }
+                }
+            }
+
         });
     });
+}
+
+
+function checkPassword() {
+    var isPassword = true;
+    if ($("input[name='billing[password1]'").val().length >= 6 && $("input[name='billing[password1]'").val().length <= 8) {
+        if ($("input[name='billing[password1]'").val() != $("input[name='billing[password2]'").val()) {
+            isPassword = false;
+        }
+    } else {
+        isPassword = false;
+    }
+    return isPassword;
 }
 
 

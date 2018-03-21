@@ -101,15 +101,30 @@ class Payment {
             var EXECUTE_PAYMENT_URL = 'https://my-store.com/paypal/execute-payment';
 
             var _actions;
-
+            var _isEmpty = true;
             document.querySelectorAll('.send-order input').forEach(function(el) {
                 el.addEventListener('focusout', function() {
                     if(isPaypalButton()){
                         // check if all inputs are empty
                         if(!isInputFieldsEmptyForPaypal(el)){
                             _actions.enable();
+                            _isEmpty = false;
+                        }
+                    }
+                });
+            });
+
+            // check if checkbox is checked
+            document.querySelectorAll('.send-order .save_new_user').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    if(isPaypalButton()){
+                        // check if is checked
+                        if(!isCheckboxEmptyForPaypal(_isEmpty)){
+                            _actions.enable();
+                            _isEmpty = false;
                         } else {
                             _actions.disable();
+                            _isEmpty = true;
                         }
                     }
                 });
