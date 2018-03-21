@@ -5,6 +5,7 @@ namespace App\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Routing\RouterInterface;
 use App\Service\Payment\Typ;
 use App\Entity\Payment\Bank;
 
@@ -30,6 +31,12 @@ class Payment {
 
     /**
      *
+     * @var router
+     */
+    private $router;
+
+    /**
+     *
      * @var em EntityManager
      */
     private $em;
@@ -40,11 +47,12 @@ class Payment {
      * @param RequestStack $requestStack
      * @param Common $common
      */
-    public function __construct(EntityManager $entityManager, RequestStack $requestStack, Common $common) {
+    public function __construct(EntityManager $entityManager, RequestStack $requestStack, Common $common, $router) {
         $this->em = $entityManager;
         $this->requestStack = $requestStack;
         $this->setCurrentRequest();
         $this->common = $common;
+        $this->router = $router;
     }
 
     protected function setCurrentRequest() {
@@ -95,10 +103,12 @@ class Payment {
      * @return string
      */
     public function getJsPaypal() {
+        $create_url = $this->router->generate('test_create_paypal');
+        $execute_url = $this->router->generate('test_execute_paypal');
         $html = "
             <script>
-            var CREATE_PAYMENT_URL  = 'https://my-store.com/paypal/create-payment';
-            var EXECUTE_PAYMENT_URL = 'https://my-store.com/paypal/execute-payment';
+            var CREATE_PAYMENT_URL  = '" . $create_url . "';
+            var EXECUTE_PAYMENT_URL = '" . $execute_url . "';
 
             var _actions;
             var _isEmpty = true;

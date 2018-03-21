@@ -71,7 +71,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@kernel","@helper.imageresizer"]
 
     App\Service\Payment:
-        arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common"]
+        arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common","@router"]
 
     App\Service\Order:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container", "@helper.common", "@mailer"]

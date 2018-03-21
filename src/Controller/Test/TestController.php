@@ -54,4 +54,18 @@ class TestController extends Controller {
         );
     }
 
+    /**
+     * @Route("/createpaypal/", name="test_create_paypal")
+     */
+    public function createPaypalAction() {
+
+    }
+
+    /**
+     * @Route("/executepaypal/", name="test_execute_paypal")
+     */
+    public function executePaypalAction() {
+
+    }
+
 }
