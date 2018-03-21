@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Service\Payment As ServicePayment;
+use App\Service\Order As ServiceOrder;
 
 class TestController extends Controller {
 
@@ -36,8 +37,7 @@ class TestController extends Controller {
             exit("_ failed: " . curl_error($ch) . '(' . curl_errno($ch) . ')');
         }
         $json = json_decode($result);
-        print_r($json->access_token);
-        exit;
+        return $json->access_token;
     }
 
     /**
@@ -55,17 +55,28 @@ class TestController extends Controller {
     }
 
     /**
+     * @Route("/order/", name="checkout_order")
+     */
+    public function orderAction(Request $request, ServiceOrder $serviceOrder) {
+        $order = $this->getDoctrine()->getRepository(\App\Entity\Order::class)->findOneById('');
+        $this->container->get('session')->set('order_id', $order->getId());
+        $serviceOrder->setPaypal('createPayment')->sendHttpPost();
+        $serviceOrder->setPaypal()->createPayment()->sendHttpPost();
+        $paypal = $serviceOrder->setPaypal();
+    }
+
+    /**
      * @Route("/createpaypal/", name="test_create_paypal")
      */
     public function createPaypalAction() {
-
+        $this->container->get('session')->get('quote_id');
     }
 
     /**
      * @Route("/executepaypal/", name="test_execute_paypal")
      */
     public function executePaypalAction() {
-
+        $this->container->get('session')->get('quote_id');
     }
 
 }

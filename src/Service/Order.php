@@ -128,7 +128,6 @@ class Order {
      */
     private function setCurrentRequest() {
         $this->request = $this->requestStack->getCurrentRequest();
-//$this->request->getLocale()
     }
 
     /**

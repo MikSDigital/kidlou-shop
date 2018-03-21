@@ -67,13 +67,14 @@ class Paypal {
      * @param type $request
      * @param type $container
      */
-    public function __construct($em, $request, $container, $common, $paypal_order) {
+    public function __construct($em, $request, $container, $common, $payment_order) {
         $this->em = $em;
         $this->request = $request;
         $this->container = $container;
         $this->common = $common;
         $this->setPaymentTyp();
-        $this->setExpressOrder($paypal_order);
+        $this->setPaymentOrder($payment_order);
+        //$this->setExpressOrder($paypal_order);
     }
 
     /**
@@ -181,6 +182,18 @@ class Paypal {
     private function getShippingAddress() {
         $address = $this->getEm()->getRepository(\App\Entity\Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => 'shipping'));
         return $address;
+    }
+
+    /**
+     *
+     * @param type $payment
+     */
+    private function setPaymentOrder($payment_order) {
+        if ($paypal_order == 'createPayment') {
+            //$this->setSetExpressCheckout();
+        } else if ($paypal_order == 'executePayment') {
+            //$this->setDoExpressCheckout();
+        }
     }
 
     /**
