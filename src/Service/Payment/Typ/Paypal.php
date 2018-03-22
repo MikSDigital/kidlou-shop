@@ -190,7 +190,7 @@ class Paypal {
      */
     private function setPaymentOrder($payment_order) {
         if ($paypal_order == 'createPayment') {
-            //$this->setSetExpressCheckout();
+            $this->setSetExpressCheckout();
         } else if ($paypal_order == 'executePayment') {
             //$this->setDoExpressCheckout();
         }
@@ -208,6 +208,37 @@ class Paypal {
         } else if ($paypal_order == 'getExpressCheckoutDetails') {
             $this->getTransactionDetails();
         }
+    }
+
+    private function createPayment() {
+
+        $data = '{
+            "intent":"sale",
+            "redirect_urls":{
+              "return_url":"http://<return URL here>",
+              "cancel_url":"http://<cancel URL here>"
+            },
+            "payer":{
+              "payment_method":"paypal"
+            },
+            "transactions":[
+              {
+                "amount":{
+                  "total":"7.47",
+                  "currency":"USD"
+                },
+                "description":"This is the payment transaction description."
+              }
+            ]
+          }';
+        $pp_token = $this->container->get('session')->get('pp_token');
+        curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/payments/payment");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Content-Type: application/json",
+            "Authorization: Bearer " . $pp_token,
+            "Content-length: " . strlen($data)));
     }
 
     /**

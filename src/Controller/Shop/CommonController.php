@@ -11,6 +11,7 @@ use App\Entity\Repository\Postalcode;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\Common As ServiceCommon;
 use App\Service\Navigation As ServiceNavigation;
+use App\Service\Payment As ServicePayment;
 
 /**
  * @Route("/common")
@@ -55,9 +56,9 @@ class CommonController extends Controller {
     }
 
     /**
-     * @Route("/paymentcash/{typ}/", name="payment_cash")
+     * @Route("/paymenttyp/{typ}/", name="payment_typ")
      */
-    public function paymentCashAction($typ, ServiceCommon $serviceCommon) {
+    public function paymentTypAction($typ, ServiceCommon $serviceCommon, ServicePayment $servicePayment) {
         $quote_id = $this->container->get('session')->get('quote_id');
         $cash_cost = 0;
         if ($quote_id) {
@@ -70,6 +71,9 @@ class CommonController extends Controller {
                         }
                     }
                 }
+            } else if ($typ == 'pp') {
+                $token = $servicePayment->getPaypalToken();
+                $this->container->get('session')->set('pp_token', $token);
             }
         }
         $this->container->get('session')->set('cash_cost', $cash_cost);
