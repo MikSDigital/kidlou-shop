@@ -210,8 +210,45 @@ class Paypal {
         }
     }
 
-    private function createPayment() {
+    /**
+     *
+     * @param product $product
+     * @return string product_name
+     */
+    private function _getProductItemName($product) {
+        foreach ($product->getDescriptions() as $description) {
+            if ($description->getLang() != NULL) {
+                if ($description->getLang()->getShortName() == $this->getRequest()->getLocale()) {
+                    return $description->getName();
+                }
+            }
+        }
+    }
 
+    /**
+     * prepare items for paypal send
+     */
+    private function getProductItems() {
+        $quote_id = $this->container->get('session')->get('quote_id');
+        $quote = $this->getEm()->getRepository(\App\Entity\Quote::class)
+                ->findOneById($quote_id);
+
+        $calendars = $this->getEm()->getRepository(\App\Entity\Calendar::class)
+                ->findBy(array('quote' => $quote));
+
+        $arr_data = array();
+        $item_id = 0;
+        foreach ($calendars as $calendar) {
+            $arr_data['items'][$item_id]['quantity'] = $calendar->getDateFrom()->format('d.m.Y') . ' - ' . $calendar->getDateTo()->format('d.m.Y');
+            $arr_data['items'][$item_id]['name'] = $this->_getProductItemName($calendar->getProduct());
+            $arr_data['items'][$item_id]['price'] = $calendar->getProduct()->getPrice()->getValue();
+            $arr_data['items'][$item_id]['currency'] = $this->getCommon()->getCurrencyCode();
+            $arr_data['items'][$item_id]['description'] = 'ID: ' . $calendar->getProduct()->getId() . ' SKU: ' . $calendar->getProduct()->getSku();
+            $item_id++;
+        }
+    }
+
+    private function createPayment() {
         $data = '{
             "intent":"sale",
             "redirect_urls":{
