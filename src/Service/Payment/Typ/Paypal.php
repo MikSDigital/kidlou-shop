@@ -63,17 +63,23 @@ class Paypal {
 
     /**
      *
+     * @var string
+     */
+    private $access_token;
+
+    /**
+     *
      * @param type $em
      * @param type $request
      * @param type $container
      */
-    public function __construct($em, $request, $container, $common, $payment_order) {
+    public function __construct($em, $request, $container, $common) {
         $this->em = $em;
         $this->request = $request;
         $this->container = $container;
         $this->common = $common;
         $this->setPaymentTyp();
-        $this->setPaymentOrder($payment_order);
+        //$this->setPaymentOrder($payment_order);
         //$this->setExpressOrder($paypal_order);
     }
 
@@ -218,7 +224,8 @@ class Paypal {
     private function _getProductItemName($product) {
         foreach ($product->getDescriptions() as $description) {
             if ($description->getLang() != NULL) {
-                if ($description->getLang()->getShortName() == $this->getRequest()->getLocale()) {
+                //if ($description->getLang()->getShortName() == $this->getRequest()->getLocale()) {
+                if ($description->getLang()->getShortName() == 'fr') {
                     return $description->getName();
                 }
             }
@@ -229,53 +236,77 @@ class Paypal {
      * prepare items for paypal send
      */
     private function getProductItems() {
-        $quote_id = $this->container->get('session')->get('quote_id');
-        $quote = $this->getEm()->getRepository(\App\Entity\Quote::class)
-                ->findOneById($quote_id);
-
-        $calendars = $this->getEm()->getRepository(\App\Entity\Calendar::class)
-                ->findBy(array('quote' => $quote));
-
-        $arr_data = array();
         $item_id = 0;
-        foreach ($calendars as $calendar) {
-            $arr_data['items'][$item_id]['quantity'] = $calendar->getDateFrom()->format('d.m.Y') . ' - ' . $calendar->getDateTo()->format('d.m.Y');
-            $arr_data['items'][$item_id]['name'] = $this->_getProductItemName($calendar->getProduct());
-            $arr_data['items'][$item_id]['price'] = $calendar->getProduct()->getPrice()->getValue();
-            $arr_data['items'][$item_id]['currency'] = $this->getCommon()->getCurrencyCode();
-            $arr_data['items'][$item_id]['description'] = 'ID: ' . $calendar->getProduct()->getId() . ' SKU: ' . $calendar->getProduct()->getSku();
+        $arr_data['transactions']['amount']['total'];
+        foreach ($this->getItems() as $item) {
+            $arr_data['transactions']['item_list']['items'][$item_id]['quantity'] = $item['date_from']->format('d.m.Y') . ' - ' . $item['date_to']->format('d.m.Y');
+            $arr_data['transactions']['item_list']['items'][$item_id]['name'] = $item['name'];
+            $arr_data['transactions']['item_list']['items'][$item_id]['price'] = number_format($item['price'], 2);
+            $arr_data['transactions']['item_list']['items'][$item_id]['currency'] = $this->getCommon()->getCurrencyCode();
+            $arr_data['transactions']['item_list']['items'][$item_id]['description'] = 'SKU: ' . $item['sku'];
             $item_id++;
         }
+        return json_encode($arr_data);
     }
 
-    private function createPayment() {
-        $data = '{
-            "intent":"sale",
-            "redirect_urls":{
-              "return_url":"http://<return URL here>",
-              "cancel_url":"http://<cancel URL here>"
-            },
-            "payer":{
-              "payment_method":"paypal"
-            },
-            "transactions":[
-              {
-                "amount":{
-                  "total":"7.47",
-                  "currency":"USD"
-                },
-                "description":"This is the payment transaction description."
-              }
-            ]
-          }';
-        $pp_token = $this->container->get('session')->get('pp_token');
+    /**
+     * Get paypal token
+     * @return string
+     */
+    public function setAccessToken() {
+        $api_endpoint = "https://api.sandbox.paypal.com/v1/oauth2/token";
+        $clientId = "AbWC1ORqKB2pksz3s5gEDASVugIzv0MuF6m3fySR4ZZFOkPZRwGDNBx0l8zR31tAaMWoX0fdElZKKWPE";
+        $secretKey = "EKL4JF0xTutP3Ldrdc3C86juGBLLyqRY79P4zZ4fO7D3Mtf3Oppv6-28CcrHCDYDIu7s1fYDhN65OlEa";
+        // Set the curl parameters.
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $api_endpoint);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $clientId . ":" . $secretKey);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+
+        // Get response from the server.
+        $result = curl_exec($ch);
+
+        if (!$result) {
+            exit("_ failed: " . curl_error($ch) . '(' . curl_errno($ch) . ')');
+        }
+        $json = json_decode($result);
+        $this->access_token = $json->access_token;
+        return $this;
+    }
+
+    public function createPayment() {
+//        $data = '{
+//            "intent":"sale",
+//            "redirect_urls":{
+//              "return_url":"http://<return URL here>",
+//              "cancel_url":"http://<cancel URL here>"
+//            },
+//            "payer":{
+//              "payment_method":"paypal"
+//            },
+//            "transactions":[
+//              {
+//                "amount":{
+//                  "total":"7.47",
+//                  "currency":"USD"
+//                },
+//                "description":"This is the payment transaction description."
+//              }
+//            ]
+//          }';
+        $data = $this->getProductItems();
         curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/payments/payment");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             "Content-Type: application/json",
-            "Authorization: Bearer " . $pp_token,
+            "Authorization: Bearer " . $this->access_token,
             "Content-length: " . strlen($data)));
+        return curl_exec($ch);
     }
 
     /**

@@ -131,8 +131,8 @@ class Payment {
      * @return string
      */
     public function getJsPaypal() {
-        $create_url = $this->router->generate('test_create_paypal');
-        $execute_url = $this->router->generate('test_execute_paypal');
+        $create_url = $this->router->generate('checkout_create_paypal');
+        $execute_url = $this->router->generate('checkout_execute_paypal');
         $html = "
             <script>
             var CREATE_PAYMENT_URL  = '" . $create_url . "';

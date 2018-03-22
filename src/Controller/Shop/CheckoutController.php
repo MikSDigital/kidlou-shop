@@ -123,6 +123,10 @@ class CheckoutController extends Controller {
         }
     }
 
+    public function paypalAction() {
+
+    }
+
     /**
      * remove sessions
      */
@@ -272,31 +276,34 @@ class CheckoutController extends Controller {
     }
 
     /**
-     * Create paypal Token
-     * @Route("/token/", name="checkout_paypal_token")
+     * @Route("/createpaypal", name="checkout_create_paypal")
      */
-    public function tokenAction() {
-        $api_endpoint = "https://api.sandbox.paypal.com/v1/oauth2/token";
-        $clientId = "AbWC1ORqKB2pksz3s5gEDASVugIzv0MuF6m3fySR4ZZFOkPZRwGDNBx0l8zR31tAaMWoX0fdElZKKWPE";
-        $secretKey = "EKL4JF0xTutP3Ldrdc3C86juGBLLyqRY79P4zZ4fO7D3Mtf3Oppv6-28CcrHCDYDIu7s1fYDhN65OlEa";
-        // Set the curl parameters.
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $api_endpoint);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERPWD, $clientId . ":" . $secretKey);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-
-        // Get response from the server.
-        $result = curl_exec($ch);
-
-        if (!$result) {
-            exit("_ failed: " . curl_error($ch) . '(' . curl_errno($ch) . ')');
+    public function createPaypalAction(ServiceOrder $serviceOrder) {
+        $quote_id = $this->container->get('session')->get('quote_id');
+        if (!$quote_id) {
+            return $this->render('shop/cart/empty.html.twig');
         }
-        $json = json_decode($result);
-        return $json->access_token;
+        //first save order
+        try {
+            $isServiceOrder = $serviceOrder->save();
+        } catch (UniqueConstraintViolationException $ex) {
+            return $this->render('shop/checkout/duplicate.html.twig', array(
+                        'zoneplz' => '1971',
+                        'zonecity' => 'Grimisuat')
+            );
+        } catch (Exception $ex) {
+            return $this->render('shop/checkout/failed.html.twig');
+        }
+
+
+        $paypal = $serviceOrder->setPaypal()->setAccessToken()->createToken();
+    }
+
+    /**
+     * @Route("/createpaypal", name="execute_create_paypal")
+     */
+    public function executePaypalAction() {
+
     }
 
 }

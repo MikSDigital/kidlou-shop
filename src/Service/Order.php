@@ -221,8 +221,8 @@ class Order {
     /**
      * set paypal
      */
-    public function setPaypal($paypal_order) {
-        $this->paypal = new Paypal($this->getEm(), $this->getRequest(), $this->getContainer(), $this->getCommon(), $paypal_order);
+    public function setPaypal() {
+        $this->paypal = new Paypal($this->getEm(), $this->getRequest(), $this->getContainer(), $this->getCommon());
         return $this;
     }
 

@@ -18,7 +18,7 @@ class TestController extends Controller {
      * @Route("/cart/", name="test_checkout_cart")
      */
     public function cartAction(Request $request, ServicePayment $servicePayment) {
-        $this->container->get('session')->set('quote_id', 145);
+        $this->container->get('session')->set('quote_id', 155);
         $locale = $request->getLocale();
         $payments = $servicePayment->getPayments();
         return array(
