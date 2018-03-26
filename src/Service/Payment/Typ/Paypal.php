@@ -79,6 +79,7 @@ class Paypal {
         $this->container = $container;
         $this->common = $common;
         $this->setPaymentTyp();
+        $this->setAccessToken();
         //$this->setPaymentOrder($payment_order);
         //$this->setExpressOrder($paypal_order);
     }
@@ -235,25 +236,44 @@ class Paypal {
     /**
      * prepare items for paypal send
      */
-    private function getProductItems() {
+    public function getOrderData() {
         $item_id = 0;
-        $arr_data['transactions']['amount']['total'];
+        $arr_data['intent'] = 'sale';
+        $arr_data['redirect_urls']['return_url'] = $this->getContainer()->get('router')->generate('checkout_order_paypal_return', array(), UrlGeneratorInterface::ABSOLUTE_URL);
+        $arr_data['redirect_urls']['cancel_url'] = $this->getContainer()->get('router')->generate('checkout_order_paypal_cancel', array(), UrlGeneratorInterface::ABSOLUTE_URL);
+        $arr_data['payer']['payment_method'] = 'paypal';
+
+        $arr_data['transactions']['amount']['total'] = number_format($this->getPriceTotal(), 2);
+        $arr_data['transactions']['amount']['currency'] = $this->getCommon()->getCurrencyCode();
+        $arr_data['transactions']['amount']['details']['subtotal'] = $this->getTotalPriceItems();
+        $arr_data['transactions']['amount']['details']['shipping'] = number_format($this->getShippingPrice() + $this->getCautionCost(), 2);
+
+
         foreach ($this->getItems() as $item) {
-            $arr_data['transactions']['item_list']['items'][$item_id]['quantity'] = $item['date_from']->format('d.m.Y') . ' - ' . $item['date_to']->format('d.m.Y');
+
+            $date_from = new \DateTime($item['date_from']->format('d.m.Y'));
+            $date_to = new \DateTime($item['date_to']->format('d.m.Y'));
+            $interval = $date_from->diff($date_to);
+            $count_days = $interval->format('%a');
+            $arr_data['transactions']['item_list']['items'][$item_id]['quantity'] = $count_days;
             $arr_data['transactions']['item_list']['items'][$item_id]['name'] = $item['name'];
             $arr_data['transactions']['item_list']['items'][$item_id]['price'] = number_format($item['price'], 2);
             $arr_data['transactions']['item_list']['items'][$item_id]['currency'] = $this->getCommon()->getCurrencyCode();
-            $arr_data['transactions']['item_list']['items'][$item_id]['description'] = 'SKU: ' . $item['sku'];
+            $dates = $item['date_from']->format('d.m.Y') . ' - ' . $item['date_to']->format('d.m.Y');
+            $arr_data['transactions']['item_list']['items'][$item_id]['description'] = 'SKU: ' . $item['sku'] . ' DATES ' . $dates;
             $item_id++;
         }
+        $arr_data['description'] = 'kidlou payment';
+        $arr_data['invoice_number'] = $this->getCurrentOrder()->getOrderNumber();
+        $arr_data['custom'] = 'merchant custom data';
         return json_encode($arr_data);
     }
 
     /**
      * Get paypal token
-     * @return string
+     * @return paypal
      */
-    public function setAccessToken() {
+    private function setAccessToken() {
         $api_endpoint = "https://api.sandbox.paypal.com/v1/oauth2/token";
         $clientId = "AbWC1ORqKB2pksz3s5gEDASVugIzv0MuF6m3fySR4ZZFOkPZRwGDNBx0l8zR31tAaMWoX0fdElZKKWPE";
         $secretKey = "EKL4JF0xTutP3Ldrdc3C86juGBLLyqRY79P4zZ4fO7D3Mtf3Oppv6-28CcrHCDYDIu7s1fYDhN65OlEa";
@@ -278,6 +298,14 @@ class Paypal {
         return $this;
     }
 
+    /**
+     *
+     * @return string
+     */
+    public function getAccessToken() {
+        return $this->access_token;
+    }
+
     public function createPayment() {
 //        $data = '{
 //            "intent":"sale",
@@ -298,7 +326,12 @@ class Paypal {
 //              }
 //            ]
 //          }';
-        $data = $this->getProductItems();
+
+
+        $data = $this->getOrderData();
+//        echo $data;
+//        exit;
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/payments/payment");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -345,7 +378,7 @@ class Paypal {
         $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOPHONENUM=' . urlencode($this->getShippingAddress()->getPhone());
 
         $this->express_data .= '&CARTBORDERCOLOR=87c540';
-        $this->express_data .= '&RETURNURL=' . urlencode($this->getContainer()->get('router')->generate('checkout_order', array(), UrlGeneratorInterface::ABSOLUTE_URL));
+        $this->express_data .= '&RETURNURL=' . urlencode($this->getContainer()->get('router')->generate('checkout_order_paypal_return', array(), UrlGeneratorInterface::ABSOLUTE_URL));
         $this->express_data .= '&CANCELURL=' . urlencode($this->getContainer()->get('router')->generate('checkout_order_paypal_cancel', array(), UrlGeneratorInterface::ABSOLUTE_URL));
         return $this;
     }

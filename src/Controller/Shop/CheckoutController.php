@@ -297,6 +297,8 @@ class CheckoutController extends Controller {
 
 
         $paypal = $serviceOrder->setPaypal()->setAccessToken()->createToken();
+        echo $serviceOrder->setPaypal()->getOrderData();
+        exit;
     }
 
     /**

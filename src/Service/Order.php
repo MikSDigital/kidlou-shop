@@ -290,7 +290,7 @@ class Order {
     /**
      * save order
      */
-    public function save() {
+    public function save($paymenttyp_id = null) {
 
         try {
             // check if user
@@ -302,7 +302,7 @@ class Order {
             // save order address
             $this->saveOrderAddress();
             // save order payment
-            $this->saveOrderPayment();
+            $this->saveOrderPayment($paymenttyp_id);
             // save calendar
             $this->saveOrderCalendar();
             // save order additional
@@ -434,8 +434,11 @@ class Order {
     /**
      * save order payment
      */
-    private function saveOrderPayment() {
-        $paymenttyp_id = $this->getRequest()->get('paymenttyp');
+    private function saveOrderPayment($paymenttyp_id = null) {
+        // if is null then from request
+        if (is_null($paymenttyp_id)) {
+            $paymenttyp_id = $this->getRequest()->get('paymenttyp');
+        }
         $paymenttyp = $this->getEm()->getRepository(\App\Entity\Payment::class)->findOneById($paymenttyp_id);
         $paymentAdditional = json_encode($this->getInstitutPaymentAsArray($paymenttyp->getName()));
         $orderPayment = $this->getEm()->getRepository(\App\Entity\Order\Payment::class)->findOneBy(array('order' => $this->getCurrentOrder()));

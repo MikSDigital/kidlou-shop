@@ -18,7 +18,7 @@ class TestController extends Controller {
      * @Route("/cart/", name="test_checkout_cart")
      */
     public function cartAction(Request $request, ServicePayment $servicePayment) {
-        $this->container->get('session')->set('quote_id', 155);
+        $this->container->get('session')->set('quote_id', 145);
         $locale = $request->getLocale();
         $payments = $servicePayment->getPayments();
         return array(
@@ -32,7 +32,31 @@ class TestController extends Controller {
      * @Route("/createpaypal/", name="test_create_paypal")
      */
     public function createPaypalAction(Request $request, ServiceOrder $serviceOrder) {
-        $serviceOrder->save();
+        $quote_id = $this->container->get('session')->get('quote_id');
+        if (!$quote_id) {
+            return $this->render('shop/cart/empty.html.twig');
+        }
+        //first save order
+        try {
+
+            $paymenttyp_id = 3; // 3 is paypal typ
+            $serviceOrder->save($paymenttyp_id);
+        } catch (UniqueConstraintViolationException $ex) {
+            return $this->render('shop/checkout/duplicate.html.twig', array(
+                        'zoneplz' => '1971',
+                        'zonecity' => 'Grimisuat')
+            );
+        } catch (Exception $ex) {
+            return $this->render('shop/checkout/failed.html.twig');
+        }
+
+        //$paypal = $serviceOrder->setPaypal()->setAccessToken()->createToken();
+        $paypal = $serviceOrder->setPaypal()->getPaypal();
+        //echo $paypal->getOrderData();
+        print_r($paypal->createPayment());
+        exit;
+        echo $serviceOrder->setPaypal()->getPaypal()->getOrderData();
+        exit;
 
 
 
