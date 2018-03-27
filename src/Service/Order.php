@@ -380,7 +380,7 @@ class Order {
      */
     private function saveOrderAddress() {
         $addressTyp = $this->getEm()->getRepository(\App\Entity\Order\Address::class)->findOneBy(array('order' => $this->getCurrentOrder(), 'address_typ' => $this->getBillingType()));
-// save billing
+        // save billing
         if (!$addressTyp) {
             $addressTyp = new OrderAddress();
             $addressTyp->setCreated($this->getNowTime());

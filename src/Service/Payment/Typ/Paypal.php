@@ -243,10 +243,10 @@ class Paypal {
         $arr_data['redirect_urls']['cancel_url'] = $this->getContainer()->get('router')->generate('checkout_order_paypal_cancel', array(), UrlGeneratorInterface::ABSOLUTE_URL);
         $arr_data['payer']['payment_method'] = 'paypal';
 
-        $arr_data['transactions']['amount']['total'] = number_format($this->getPriceTotal(), 2);
-        $arr_data['transactions']['amount']['currency'] = $this->getCommon()->getCurrencyCode();
-        $arr_data['transactions']['amount']['details']['subtotal'] = $this->getTotalPriceItems();
-        $arr_data['transactions']['amount']['details']['shipping'] = number_format($this->getShippingPrice() + $this->getCautionCost(), 2);
+        $arr_data['transactions'][0]['amount']['total'] = number_format($this->getPriceTotal(), 2);
+        $arr_data['transactions'][0]['amount']['currency'] = $this->getCommon()->getCurrencyCode();
+        $arr_data['transactions'][0]['amount']['details']['subtotal'] = number_format($this->getTotalPriceItems(), 2);
+        $arr_data['transactions'][0]['amount']['details']['shipping'] = number_format($this->getShippingPrice() + $this->getCautionCost(), 2);
 
 
         foreach ($this->getItems() as $item) {
@@ -255,17 +255,17 @@ class Paypal {
             $date_to = new \DateTime($item['date_to']->format('d.m.Y'));
             $interval = $date_from->diff($date_to);
             $count_days = $interval->format('%a');
-            $arr_data['transactions']['item_list']['items'][$item_id]['quantity'] = $count_days;
-            $arr_data['transactions']['item_list']['items'][$item_id]['name'] = $item['name'];
-            $arr_data['transactions']['item_list']['items'][$item_id]['price'] = number_format($item['price'], 2);
-            $arr_data['transactions']['item_list']['items'][$item_id]['currency'] = $this->getCommon()->getCurrencyCode();
+            $arr_data['transactions'][0]['item_list']['items'][$item_id]['quantity'] = 1;
+            $arr_data['transactions'][0]['item_list']['items'][$item_id]['name'] = $item['name'];
+            $arr_data['transactions'][0]['item_list']['items'][$item_id]['price'] = number_format($item['price'], 2);
+            $arr_data['transactions'][0]['item_list']['items'][$item_id]['currency'] = $this->getCommon()->getCurrencyCode();
             $dates = $item['date_from']->format('d.m.Y') . ' - ' . $item['date_to']->format('d.m.Y');
-            $arr_data['transactions']['item_list']['items'][$item_id]['description'] = 'SKU: ' . $item['sku'] . ' DATES ' . $dates;
+            $arr_data['transactions'][0]['item_list']['items'][$item_id]['description'] = 'SKU: ' . $item['sku'] . ' DATES ' . $dates;
             $item_id++;
         }
-        $arr_data['description'] = 'kidlou payment';
-        $arr_data['invoice_number'] = $this->getCurrentOrder()->getOrderNumber();
-        $arr_data['custom'] = 'merchant custom data';
+        $arr_data['transactions'][0]['description'] = 'kidlou payment';
+        $arr_data['transactions'][0]['invoice_number'] = $this->getCurrentOrder()->getOrderNumber();
+        $arr_data['transactions'][0]['custom'] = 'merchant custom data';
         return json_encode($arr_data);
     }
 
@@ -307,30 +307,7 @@ class Paypal {
     }
 
     public function createPayment() {
-//        $data = '{
-//            "intent":"sale",
-//            "redirect_urls":{
-//              "return_url":"http://<return URL here>",
-//              "cancel_url":"http://<cancel URL here>"
-//            },
-//            "payer":{
-//              "payment_method":"paypal"
-//            },
-//            "transactions":[
-//              {
-//                "amount":{
-//                  "total":"7.47",
-//                  "currency":"USD"
-//                },
-//                "description":"This is the payment transaction description."
-//              }
-//            ]
-//          }';
-
-
         $data = $this->getOrderData();
-//        echo $data;
-//        exit;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/payments/payment");
         curl_setopt($ch, CURLOPT_POST, true);

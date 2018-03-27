@@ -50,23 +50,8 @@ class TestController extends Controller {
             return $this->render('shop/checkout/failed.html.twig');
         }
 
-        //$paypal = $serviceOrder->setPaypal()->setAccessToken()->createToken();
         $paypal = $serviceOrder->setPaypal()->getPaypal();
-        //echo $paypal->getOrderData();
-        print_r($paypal->createPayment());
-        exit;
-        echo $serviceOrder->setPaypal()->getPaypal()->getOrderData();
-        exit;
-
-
-
-//        print_r($request->request->get('billing'));
-//        $this->container->get('session')->get('quote_id');
-//        $order = $this->getDoctrine()->getRepository(\App\Entity\Order::class)->findOneById('');
-//        $this->container->get('session')->set('order_id', $order->getId());
-//        $serviceOrder->setPaypal('createPayment')->sendHttpPost();
-//        $paypal = $serviceOrder->setPaypal();
-        return new \Symfony\Component\HttpFoundation\JsonResponse();
+        return $paypal->createPayment();
     }
 
     /**
