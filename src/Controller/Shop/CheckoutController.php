@@ -299,10 +299,10 @@ class CheckoutController extends Controller {
     }
 
     /**
-     * @Route("/createpaypal", name="checkout_create_paypal")
+     * @Route("/createpaypal/", name="checkout_create_paypal")
      */
     public function createPaypalAction(ServiceOrder $serviceOrder) {
-        return;
+
 //        $quote_id = $this->container->get('session')->get('quote_id');
 //        if (!$quote_id) {
 //            return $this->render('shop/cart/empty.html.twig');

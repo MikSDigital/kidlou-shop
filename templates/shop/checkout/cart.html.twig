@@ -185,7 +185,7 @@
                             {% for payment in payments %}
                         <div class="radio">
                             <label>
-                                <input type="radio" name="paymenttyp" data-short-name="{{ payment.paymentShortName }}" data-cash-url="{{ path('payment_typ', {'typ' : payment.paymentShortName}) }}" value="{{ payment.paymentId }}" class="form-must-field">
+                                <input type="radio" name="paymenttyp" data-short-name="{{ payment.paymentShortName }}" data-cash-url="{{ path('payment_typ', {'typ' : payment.paymentShortName}) }}" value="{{ payment.paymentId }}" class="form-must-field payment-radio">
                                 <strong>{{ payment.title }}</strong>
                             </label>
                         </div>

@@ -140,37 +140,6 @@ class Payment {
             var CREATE_PAYMENT_URL  = '" . $create_url . "';
             var EXECUTE_PAYMENT_URL = '" . $execute_url . "';
 
-            var _actions;
-            var _isEmpty = true;
-            document.querySelectorAll('.send-order input').forEach(function(el) {
-                el.addEventListener('focusout', function() {
-                    if(isPaypalButton()){
-                        // check if all inputs are empty
-                        if(!isInputFieldsEmptyForPaypal(el)){
-                            _actions.enable();
-                            _isEmpty = false;
-                        }
-                    }
-                });
-            });
-
-            // check if checkbox is checked
-            document.querySelectorAll('.send-order .save_new_user').forEach(function(el) {
-                el.addEventListener('click', function() {
-                    if(isPaypalButton()){
-                        // check if is checked
-                        if(!isCheckboxEmptyForPaypal(_isEmpty)){
-                            _actions.enable();
-                            _isEmpty = false;
-                        }
-//                        else {
-//                            _actions.disable();
-//                            _isEmpty = true;
-//                        }
-                    }
-                });
-            });
-
 
             paypal.Button.render({
                 env: 'sandbox', // Or 'production',
@@ -182,7 +151,9 @@ class Payment {
                 },
 
                 validate: function(actions) {
-                    _actions = actions;
+                    pay_actions = actions;
+                    // setPaypalActions(actions);
+                    //_actions = actions;
                     actions.disable();
                 },
 
@@ -191,7 +162,6 @@ class Payment {
                 },
 
                 payment: function(actions) {
-                    saveOrderForPayPal(ORDER_SAVE_URL);
                     /*
                     * Set up the payment here
                     */
