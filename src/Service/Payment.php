@@ -131,10 +131,12 @@ class Payment {
      * @return string
      */
     public function getJsPaypal() {
-        $create_url = $this->router->generate('test_create_paypal');
-        $execute_url = $this->router->generate('test_execute_paypal');
+        $order_save_url = $this->router->generate('checkout_save_order');
+        $create_url = $this->router->generate('checkout_create_paypal');
+        $execute_url = $this->router->generate('checkout_execute_paypal');
         $html = "
             <script>
+            var ORDER_SAVE_URL  = '" . $order_save_url . "';
             var CREATE_PAYMENT_URL  = '" . $create_url . "';
             var EXECUTE_PAYMENT_URL = '" . $execute_url . "';
 
@@ -188,17 +190,15 @@ class Payment {
                     setErrorFieldsForPaypal();
                 },
 
-
-
                 payment: function(actions) {
-
-                   /*
-                   * Set up the payment here
-                   */
-                    return paypal.request.post(CREATE_PAYMENT_URL)
-                            .then(function(data) {
-                        return data.id;
-                    });
+                    saveOrderForPayPal(ORDER_SAVE_URL);
+                    /*
+                    * Set up the payment here
+                    */
+                     return paypal.request.post(CREATE_PAYMENT_URL)
+                             .then(function(data) {
+                         return data.id;
+                     });
                 },
 
                 onAuthorize: function(data, actions) {

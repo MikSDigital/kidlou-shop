@@ -238,6 +238,7 @@
                     <tfoot>
                         <tr class="first last">
                             <td class="a-right last" colspan="4">
+                                <div id="paypal-button"></div>
                                 <button id="empty_cart_button" class="button btn-empty reserved-order" type="button" title="{{ 'Reservieren' | trans }}">
                                     <span>
                                         <span>{{ 'Reservieren' | trans }}</span>
@@ -306,6 +307,9 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    {{ payment.getJsPaypal() | raw }}
+{% endblock %}
 
 
 

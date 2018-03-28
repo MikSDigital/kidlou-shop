@@ -276,33 +276,57 @@ class CheckoutController extends Controller {
     }
 
     /**
-     * @Route("/createpaypal", name="checkout_create_paypal")
+     * @Route("/saveorder", name="checkout_save_order")
      */
-    public function createPaypalAction(ServiceOrder $serviceOrder) {
-        $quote_id = $this->container->get('session')->get('quote_id');
-        if (!$quote_id) {
-            return $this->render('shop/cart/empty.html.twig');
-        }
-        //first save order
-        try {
-            $isServiceOrder = $serviceOrder->save();
-        } catch (UniqueConstraintViolationException $ex) {
-            return $this->render('shop/checkout/duplicate.html.twig', array(
-                        'zoneplz' => '1971',
-                        'zonecity' => 'Grimisuat')
-            );
-        } catch (Exception $ex) {
-            return $this->render('shop/checkout/failed.html.twig');
-        }
+    public function saveOrderAction(ServiceOrder $serviceOrder, Request $request) {
+        return new JsonResponse(array('post_code' => $request->request->get('shipping')['post_code']));
 
-
-        $paypal = $serviceOrder->setPaypal()->setAccessToken()->createToken();
-        echo $serviceOrder->setPaypal()->getOrderData();
-        exit;
+//        $quote_id = $this->container->get('session')->get('quote_id');
+//        if (!$quote_id) {
+//            return $this->redirectToRoute('shop/cart/empty.html.twig');
+//        }
+//        //first save order
+//        try {
+//            $serviceOrder->save();
+//        } catch (UniqueConstraintViolationException $ex) {
+//            return $this->redirectToRoute('shop/checkout/duplicate.html.twig', array(
+//                        'zoneplz' => $request->request->get('shipping')['post_code'],
+//                        'zonecity' => $request->request->get('shipping')['city'])
+//            );
+//        } catch (Exception $ex) {
+//            return $this->redirectToRoute('shop/checkout/failed.html.twig');
+//        }
     }
 
     /**
-     * @Route("/createpaypal", name="execute_create_paypal")
+     * @Route("/createpaypal", name="checkout_create_paypal")
+     */
+    public function createPaypalAction(ServiceOrder $serviceOrder) {
+        return;
+//        $quote_id = $this->container->get('session')->get('quote_id');
+//        if (!$quote_id) {
+//            return $this->render('shop/cart/empty.html.twig');
+//        }
+//        //first save order
+//        try {
+//            $isServiceOrder = $serviceOrder->save();
+//        } catch (UniqueConstraintViolationException $ex) {
+//            return $this->render('shop/checkout/duplicate.html.twig', array(
+//                        'zoneplz' => '1971',
+//                        'zonecity' => 'Grimisuat')
+//            );
+//        } catch (Exception $ex) {
+//            return $this->render('shop/checkout/failed.html.twig');
+//        }
+//
+//
+//        $paypal = $serviceOrder->setPaypal()->setAccessToken()->createToken();
+//        echo $serviceOrder->setPaypal()->getOrderData();
+//        exit;
+    }
+
+    /**
+     * @Route("/createpaypal", name="checkout_execute_paypal")
      */
     public function executePaypalAction() {
 

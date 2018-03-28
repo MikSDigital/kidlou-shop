@@ -387,6 +387,18 @@ function setErrorFieldsForPaypal() {
     });
 }
 
+function saveOrderForPayPal(order_url) {
+    $.ajax({
+        url: order_url, // point to server-side PHP script
+        type: 'POST',
+        data: $('.send-order').serialize(),
+        success: function (data) {
+            //data = jQuery.parseJSON(data);
+            alert(data.post_code);
+        }
+    });
+}
+
 
 function checkPassword() {
     var isPassword = true;
