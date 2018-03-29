@@ -307,15 +307,16 @@ class CheckoutController extends Controller {
      */
     public function createPaypalAction(ServiceOrder $serviceOrder) {
         $paypal = $serviceOrder->setPaypal()->getPaypal();
-        $paypal->createPayment();
+        $paypal->createAccessToken()->createPayment();
         return new Response();
     }
 
     /**
-     * @Route("/createpaypal", name="checkout_execute_paypal")
+     * @Route("/executepaypal", name="checkout_execute_paypal")
      */
-    public function executePaypalAction() {
-
+    public function executePaypalAction(Request $request) {
+        $paymentID = $request->request->get('paymentID');
+        $payerID = $request->request->get('payerID');
     }
 
 }

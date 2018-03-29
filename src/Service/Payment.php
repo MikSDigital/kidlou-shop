@@ -164,17 +164,16 @@ class Payment {
                     */
                      return paypal.request.post(CREATE_PAYMENT_URL)
                              .then(function(data) {
-                             alert(data.id);
                          return data.id;
                      });
                 },
 
-                onAuthorize: function(data, actions) {
+                onAuthorize: function(data) {
                   /*
                    * Execute the payment here
                    */
                     var data = {
-                        paymentID: data.id,
+                        paymentID: data.paymentID,
                         payerID: data.payerID
                     };
                     return paypal.request.post(EXECUTE_PAYMENT_URL, data)

@@ -4,6 +4,7 @@ namespace App\Service\Payment\Typ;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class Paypal {
 
@@ -63,12 +64,6 @@ class Paypal {
 
     /**
      *
-     * @var string
-     */
-    private $access_token;
-
-    /**
-     *
      * @param type $em
      * @param type $request
      * @param type $container
@@ -79,7 +74,6 @@ class Paypal {
         $this->container = $container;
         $this->common = $common;
         $this->setPaymentTyp();
-        $this->setAccessToken();
         //$this->setPaymentOrder($payment_order);
         //$this->setExpressOrder($paypal_order);
     }
@@ -280,7 +274,7 @@ class Paypal {
      * Get paypal token
      * @return paypal
      */
-    private function setAccessToken() {
+    public function createAccessToken() {
         $api_endpoint = "https://api.sandbox.paypal.com/v1/oauth2/token";
         $clientId = "AbWC1ORqKB2pksz3s5gEDASVugIzv0MuF6m3fySR4ZZFOkPZRwGDNBx0l8zR31tAaMWoX0fdElZKKWPE";
         $secretKey = "EKL4JF0xTutP3Ldrdc3C86juGBLLyqRY79P4zZ4fO7D3Mtf3Oppv6-28CcrHCDYDIu7s1fYDhN65OlEa";
@@ -301,17 +295,30 @@ class Paypal {
             exit("_ failed: " . curl_error($ch) . '(' . curl_errno($ch) . ')');
         }
         $json = json_decode($result);
-        $this->access_token = $json->access_token;
+
+        $this->setAccessToken($json->access_token);
+        return $this;
     }
 
     /**
      *
-     * @return string
+     * @param type $access_token
      */
-    public function getAccessToken() {
-        return $this->access_token;
+    public function setAccessToken($access_token) {
+        $this->getContainer()->get('session')->set('paypal_access_token', $access_token);
     }
 
+    /**
+     *
+     * @param type $access_token
+     */
+    public function getAccessToken() {
+        return $this->getContainer()->get('session')->get('paypal_access_token');
+    }
+
+    /**
+     * Create Payment
+     */
     public function createPayment() {
         $data = $this->getOrderData();
         $ch = curl_init();
@@ -320,7 +327,29 @@ class Paypal {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             "Content-Type: application/json",
-            "Authorization: Bearer " . $this->access_token,
+            "Authorization: Bearer " . $this->getAccessToken(),
+            "Content-length: " . strlen($data)));
+        $result = curl_exec($ch);
+        if (!$result) {
+            exit("_ failed: " . curl_error($ch) . '(' . curl_errno($ch) . ')');
+        }
+    }
+
+    /**
+     *
+     * @param type $id
+     * @param type $payer_id
+     */
+    public function executePayment() {
+        $id = $this->getRequest()->get('paymentID');
+        $data['payer_id'] = $this->getRequest()->get('payerID');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/payments/payment/" . $id . "/execute/ ");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Content-Type: application/json",
+            "Authorization: Bearer " . $this->getAccessToken(),
             "Content-length: " . strlen($data)));
         $result = curl_exec($ch);
         if (!$result) {
@@ -343,14 +372,14 @@ class Paypal {
             $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . '=' . urlencode($item['date_from']->format('d-m-Y'));
             $this->express_data .= '&L_PAYMENTREQUEST_0_AMT' . $itemid . '=' . urlencode(number_format($item['price'], 2));
             $this->express_data .= '&L_PAYMENTREQUEST_0_QTY' . $itemid . '=1';
-            // Date From To
+// Date From To
             $date = new \DateTime($item['date_from']->format('Y-m-d'));
             $date->modify('+' . ($item['count_days'] - 1) . ' day');
             $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . '=' . urlencode($item['date_from']->format('d-m-Y') . ' - ' . $date->format('d-m-Y'));
             $itemid++;
         }
 
-        // set item
+// set item
         $this->express_data .= '&PAYMENTREQUEST_0_ITEMAMT=' . urlencode(number_format($this->getTotalPriceItems(), 2));
         $this->express_data .= '&PAYMENTREQUEST_0_SHIPPINGAMT=' . urlencode(number_format($this->getShippingPrice(), 2));
         $this->express_data .= '&PAYMENTREQUEST_0_HANDLINGAMT=' . urlencode(number_format($this->getCautionCost(), 2));
@@ -384,19 +413,19 @@ class Paypal {
             $this->express_data .= '&L_PAYMENTREQUEST_0_NUMBER' . $itemid . '=' . urlencode($item->getSku());
             $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . '=' . urlencode($item->getDateFrom()->format('d-m-Y'));
             $this->express_data .= '&L_PAYMENTREQUEST_0_AMT' . $itemid . '=' . urlencode($item->getPrice());
-            // Date From To
+// Date From To
             $date = new \DateTime($item->getDateFrom()->format('Y-m-d'));
             $date->modify('+' . ($item->getTyp()->getCountDays() - 1) . ' day');
             $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . '=' . urlencode($item->getDateFrom()->format('d-m-Y') . ' - ' . $date->format('d-m-Y'));
             $itemid++;
         }
-        // set item
+// set item
         $this->express_data .= '&PAYMENTREQUEST_0_ITEMAMT=' . urlencode($this->getTotalPriceItems());
         $this->express_data .= '&PAYMENTREQUEST_0_SHIPPINGAMT=' . urlencode($this->getShippingPrice());
         $this->express_data .= '&PAYMENTREQUEST_0_HANDLINGAMT=' . urlencode($this->getCautionCost());
         $this->express_data .= '&PAYMENTREQUEST_0_AMT=' . urlencode($this->getPriceTotal());
         $this->express_data .= '&PAYMENTREQUEST_0_CURRENCYCODE=' . urlencode($this->getCommon()->getCurrencyCode());
-        // send data
+// send data
         return $this;
     }
 
@@ -415,9 +444,9 @@ class Paypal {
     public function isExpressCheckoutResult() {
         if ("SUCCESS" == strtoupper($this->getExpressCheckoutResult()["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($this->getExpressCheckoutResult()["ACK"])) {
             return true;
-            //header('Location: ' . $paypalurl);
+//header('Location: ' . $paypalurl);
         } else {
-            //Show error message
+//Show error message
             return false;
         }
     }
@@ -438,7 +467,7 @@ class Paypal {
         if ($this->getPaymentTyp()->getSandboxMode()) {
             $paypalmode = '.sandbox';
         }
-        //Redirect user to PayPal store with Token received.
+//Redirect user to PayPal store with Token received.
         $paypalurl = 'https://www' . $paypalmode . '.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=' . $this->getExpressCheckoutResult()["TOKEN"] . '';
 
         return $paypalurl;
@@ -474,13 +503,13 @@ class Paypal {
             $paypalmode = '.sandbox';
         }
         $api_endpoint = "https://api-3t" . $paypalmode . ".paypal.com/nvp";
-        //$version = urlencode('109.0');
-        // Set the curl parameters.
+//$version = urlencode('109.0');
+// Set the curl parameters.
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $api_endpoint);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
 
-        // Turn off the server and peer verification (TrustManager Concept).
+// Turn off the server and peer verification (TrustManager Concept).
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 
@@ -489,14 +518,14 @@ class Paypal {
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->getExpressData());
 
-        // Get response from the server.
+// Get response from the server.
         $httpResponse = curl_exec($ch);
 
         if (!$httpResponse) {
             exit("$methodName_ failed: " . curl_error($ch) . '(' . curl_errno($ch) . ')');
         }
 
-        // Extract the response details.
+// Extract the response details.
         $httpResponseAr = explode("&", $httpResponse);
 
         $this->httpParsedResponseAr = array();
