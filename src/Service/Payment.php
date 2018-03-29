@@ -164,6 +164,7 @@ class Payment {
                     */
                      return paypal.request.post(CREATE_PAYMENT_URL)
                              .then(function(data) {
+                             alert(data.id);
                          return data.id;
                      });
                 },

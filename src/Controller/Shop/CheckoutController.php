@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -306,7 +307,8 @@ class CheckoutController extends Controller {
      */
     public function createPaypalAction(ServiceOrder $serviceOrder) {
         $paypal = $serviceOrder->setPaypal()->getPaypal();
-        return $paypal->createPayment();
+        $paypal->createPayment();
+        return new Response();
     }
 
     /**

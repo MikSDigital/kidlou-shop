@@ -112,6 +112,9 @@ $(document).ready(function () {
             $('.reserved-order').hide();
         }
         sendPaymentCash(typ, url, el);
+        if (!isInputFieldsEmptyForPaypal(el) && !isOrderSave) {
+            saveOrderForPayPal(false);
+        }
     });
 
     function sendPaymentCash(typ, url, el) {
@@ -133,10 +136,9 @@ $(document).ready(function () {
                     $(data.html_cash_cost).insertAfter('#livraison-cost');
                 }
                 $('#txt-total-price').children().html(data.txt_total_price);
-                if (!isInputFieldsEmptyForPaypal(el) && !isOrderSave) {
-                    saveOrderForPayPal(false);
+                if (isInputFieldsEmptyForPaypal(el)) {
+                    $('#bodyoverlay-content').fadeOut();
                 }
-                $('#bodyoverlay-content').fadeOut();
             }
         });
     }
@@ -422,6 +424,9 @@ function saveOrderForPayPal(isOverlay) {
             $('#bodyoverlay-content').fadeOut();
             pay_actions.enable();
             pay_isEmpty = false;
+            if (!isOverlay) {
+                $('#bodyoverlay-content').fadeOut();
+            }
         }
     });
 }

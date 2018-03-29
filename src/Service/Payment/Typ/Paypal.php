@@ -130,7 +130,15 @@ class Paypal {
      * @return type $number
      */
     private function getTotalPriceItems() {
-        return $this->getEm()->getRepository(\App\Entity\Order::class)->getTotalPriceItems($this->getCurrentOrder())['price'];
+        $items_price = 0;
+        foreach ($this->getItems() as $item) {
+            $date_from = new \DateTime($item['date_from']->format('d.m.Y'));
+            $date_to = new \DateTime($item['date_to']->format('d.m.Y'));
+            $interval = $date_from->diff($date_to);
+            $count_days = $interval->format('%a');
+            $items_price = $items_price + ($item['price'] * $count_days);
+        }
+        return $items_price;
     }
 
     /**
@@ -154,9 +162,6 @@ class Paypal {
      * @return type $priceTotal
      */
     private function getPriceTotal() {
-        foreach ($this->getItems() as $item) {
-            
-        }
         return $this->getTotalPriceItems() + $this->getShippingPrice() + $this->getCautionCost();
     }
 
@@ -317,7 +322,10 @@ class Paypal {
             "Content-Type: application/json",
             "Authorization: Bearer " . $this->access_token,
             "Content-length: " . strlen($data)));
-        return curl_exec($ch);
+        $result = curl_exec($ch);
+        if (!$result) {
+            exit("_ failed: " . curl_error($ch) . '(' . curl_errno($ch) . ')');
+        }
     }
 
     /**
