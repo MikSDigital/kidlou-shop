@@ -1,5 +1,6 @@
 var pay_actions;
 var pay_isEmpty = true;
+var isOrderSave = false;
 
 $(document).ready(function () {
     var custom_header = $('.custom-header').outerHeight();
@@ -55,6 +56,7 @@ $(document).ready(function () {
         $(this).addClass('active');
         categoryCarousel();
     });
+
     function categoryCarousel() {
         $('.tabs-category_tabs > li').each(function () {
             var name = $(this).children().attr('class');
@@ -68,12 +70,13 @@ $(document).ready(function () {
 
     categoryCarousel();
 
+
     $(document).on('focusout', '.send-order input', function (el) {
+        el.preventDefault();
         if (isPaypalButton()) {
             // check if all inputs are empty
-            if (!isInputFieldsEmptyForPaypal(el)) {
-                pay_actions.enable();
-                pay_isEmpty = false;
+            if (!isInputFieldsEmptyForPaypal(el) && !isOrderSave) {
+                saveOrderForPayPal(true);
             }
         }
     });
@@ -82,9 +85,8 @@ $(document).ready(function () {
     $(document).on('click', '.send-order .save_new_user', function (el) {
         if (isPaypalButton()) {
             // check if all inputs are empty
-            if (!isCheckboxEmptyForPaypal(pay_isEmpty)) {
-                pay_actions.enable();
-                pay_isEmpty = false;
+            if (!isCheckboxEmptyForPaypal(pay_isEmpty) && !isOrderSave) {
+                saveOrderForPayPal(true);
             }
         }
     });
@@ -108,14 +110,11 @@ $(document).ready(function () {
         } else {
             $('.paypal-button').show();
             $('.reserved-order').hide();
-            if (!isInputFieldsEmptyForPaypal(el)) {
-                pay_actions.enable();
-                pay_isEmpty = false;
-            }
         }
-        sendPaymentCash(typ, url);
+        sendPaymentCash(typ, url, el);
     });
-    function sendPaymentCash(typ, url) {
+
+    function sendPaymentCash(typ, url, el) {
         $('#bodyoverlay-content').fadeIn();
         $.ajax({
             url: url, // point to server-side PHP script
@@ -134,6 +133,9 @@ $(document).ready(function () {
                     $(data.html_cash_cost).insertAfter('#livraison-cost');
                 }
                 $('#txt-total-price').children().html(data.txt_total_price);
+                if (!isInputFieldsEmptyForPaypal(el) && !isOrderSave) {
+                    saveOrderForPayPal(false);
+                }
                 $('#bodyoverlay-content').fadeOut();
             }
         });
@@ -406,14 +408,20 @@ function setErrorFieldsForPaypal() {
     });
 }
 
-function saveOrderForPayPal(order_url) {
+function saveOrderForPayPal(isOverlay) {
+    isOrderSave = true;
+    var order_url = $('#paypal-button').data('save-order-url');
+    if (isOverlay) {
+        $('#bodyoverlay-content').fadeIn();
+    }
     $.ajax({
         url: order_url, // point to server-side PHP script
         type: 'POST',
         data: $('.send-order').serialize(),
         success: function (data) {
-            //data = jQuery.parseJSON(data);
-            alert(data.post_code);
+            $('#bodyoverlay-content').fadeOut();
+            pay_actions.enable();
+            pay_isEmpty = false;
         }
     });
 }

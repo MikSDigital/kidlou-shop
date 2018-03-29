@@ -131,15 +131,12 @@ class Payment {
      * @return string
      */
     public function getJsPaypal() {
-        $order_save_url = $this->router->generate('checkout_save_order');
         $create_url = $this->router->generate('checkout_create_paypal');
         $execute_url = $this->router->generate('checkout_execute_paypal');
         $html = "
             <script>
-            var ORDER_SAVE_URL  = '" . $order_save_url . "';
             var CREATE_PAYMENT_URL  = '" . $create_url . "';
             var EXECUTE_PAYMENT_URL = '" . $execute_url . "';
-
 
             paypal.Button.render({
                 env: 'sandbox', // Or 'production',
@@ -183,8 +180,6 @@ class Payment {
                         .then(function (res) {
                         window.alert('Payment Complete!');
                     });
-
-
                 },
 
                 onCancel: function(data, actions) {

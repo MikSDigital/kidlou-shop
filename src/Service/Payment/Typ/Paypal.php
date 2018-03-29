@@ -154,6 +154,9 @@ class Paypal {
      * @return type $priceTotal
      */
     private function getPriceTotal() {
+        foreach ($this->getItems() as $item) {
+            
+        }
         return $this->getTotalPriceItems() + $this->getShippingPrice() + $this->getCautionCost();
     }
 
@@ -250,12 +253,11 @@ class Paypal {
 
 
         foreach ($this->getItems() as $item) {
-
             $date_from = new \DateTime($item['date_from']->format('d.m.Y'));
             $date_to = new \DateTime($item['date_to']->format('d.m.Y'));
             $interval = $date_from->diff($date_to);
             $count_days = $interval->format('%a');
-            $arr_data['transactions'][0]['item_list']['items'][$item_id]['quantity'] = 1;
+            $arr_data['transactions'][0]['item_list']['items'][$item_id]['quantity'] = $count_days;
             $arr_data['transactions'][0]['item_list']['items'][$item_id]['name'] = $item['name'];
             $arr_data['transactions'][0]['item_list']['items'][$item_id]['price'] = number_format($item['price'], 2);
             $arr_data['transactions'][0]['item_list']['items'][$item_id]['currency'] = $this->getCommon()->getCurrencyCode();
@@ -295,7 +297,6 @@ class Paypal {
         }
         $json = json_decode($result);
         $this->access_token = $json->access_token;
-        return $this;
     }
 
     /**
