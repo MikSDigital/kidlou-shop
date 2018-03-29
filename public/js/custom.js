@@ -326,13 +326,19 @@ $(document).ready(function () {
     });
 
 });
+
+function getPaypalResult(res) {
+    $.each(res, function (_i, _value) {
+        console.log('index: ' + _i + ' value: ' + _value);
+    });
+}
+
 function isPaypalButton() {
     if ($('.paypal-button').is(':visible')) {
         return true;
     }
     return false;
 }
-
 
 function isInputFieldsEmptyForPaypal(el) {
     var isEmpty = false;
@@ -431,11 +437,6 @@ function saveOrderForPayPal(isOverlay) {
     });
 }
 
-
-//function setPaypalActions(actions) {
-//    pay_actions = actions;
-//}
-
 function checkPassword() {
     var isPassword = true;
     if ($("input[name='billing[password1]'").val().length >= 6 && $("input[name='billing[password1]'").val().length <= 8) {
@@ -447,7 +448,6 @@ function checkPassword() {
     }
     return isPassword;
 }
-
 
 function validateEmail(sEmail) {
     var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;

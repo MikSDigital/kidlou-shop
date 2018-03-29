@@ -343,6 +343,7 @@ class Paypal {
     public function executePayment() {
         $id = $this->getRequest()->get('paymentID');
         $data['payer_id'] = $this->getRequest()->get('payerID');
+        $data = json_encode($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/payments/payment/" . $id . "/execute/ ");
         curl_setopt($ch, CURLOPT_POST, true);
@@ -363,38 +364,38 @@ class Paypal {
      */
     private function setSetExpressCheckout() {
         $this->express_data = $this->getApiAccount();
-        $this->express_data .= '&METHOD=SetExpressCheckout';
-        $this->express_data .= '&PAYMENTREQUEST_0_PAYMENTACTION=' . urlencode("SALE");
+        $this->express_data .= '&METHOD = SetExpressCheckout';
+        $this->express_data .= '&PAYMENTREQUEST_0_PAYMENTACTION = ' . urlencode("SALE");
         $itemid = 0;
         foreach ($this->getItems() as $item) {
-            $this->express_data .= '&L_PAYMENTREQUEST_0_NAME' . $itemid . '=' . urlencode($item['name']);
-            $this->express_data .= '&L_PAYMENTREQUEST_0_NUMBER' . $itemid . '=' . urlencode($item['sku']);
-            $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . '=' . urlencode($item['date_from']->format('d-m-Y'));
-            $this->express_data .= '&L_PAYMENTREQUEST_0_AMT' . $itemid . '=' . urlencode(number_format($item['price'], 2));
-            $this->express_data .= '&L_PAYMENTREQUEST_0_QTY' . $itemid . '=1';
+            $this->express_data .= '&L_PAYMENTREQUEST_0_NAME' . $itemid . ' = ' . urlencode($item['name']);
+            $this->express_data .= '&L_PAYMENTREQUEST_0_NUMBER' . $itemid . ' = ' . urlencode($item['sku']);
+            $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . ' = ' . urlencode($item['date_from']->format('d-m-Y'));
+            $this->express_data .= '&L_PAYMENTREQUEST_0_AMT' . $itemid . ' = ' . urlencode(number_format($item['price'], 2));
+            $this->express_data .= '&L_PAYMENTREQUEST_0_QTY' . $itemid . ' = 1';
 // Date From To
             $date = new \DateTime($item['date_from']->format('Y-m-d'));
             $date->modify('+' . ($item['count_days'] - 1) . ' day');
-            $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . '=' . urlencode($item['date_from']->format('d-m-Y') . ' - ' . $date->format('d-m-Y'));
+            $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . ' = ' . urlencode($item['date_from']->format('d-m-Y') . ' - ' . $date->format('d-m-Y'));
             $itemid++;
         }
 
 // set item
-        $this->express_data .= '&PAYMENTREQUEST_0_ITEMAMT=' . urlencode(number_format($this->getTotalPriceItems(), 2));
-        $this->express_data .= '&PAYMENTREQUEST_0_SHIPPINGAMT=' . urlencode(number_format($this->getShippingPrice(), 2));
-        $this->express_data .= '&PAYMENTREQUEST_0_HANDLINGAMT=' . urlencode(number_format($this->getCautionCost(), 2));
-        $this->express_data .= '&PAYMENTREQUEST_0_AMT=' . urlencode(number_format($this->getPriceTotal(), 2));
-        $this->express_data .= '&PAYMENTREQUEST_0_CURRENCYCODE=' . urlencode($this->getCommon()->getCurrencyCode());
-        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTONAME=' . urlencode($this->getShippingAddress()->getFirstname() . ' ' . $this->getShippingAddress()->getLastname());
-        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOSTREET=' . urlencode($this->getShippingAddress()->getStreet());
-        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOCITY=' . urlencode($this->getShippingAddress()->getCity());
-        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE=' . urlencode($this->getShippingAddress()->getCountryCode());
-        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOZIP=' . urlencode($this->getShippingAddress()->getPostCode());
-        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOPHONENUM=' . urlencode($this->getShippingAddress()->getPhone());
+        $this->express_data .= '&PAYMENTREQUEST_0_ITEMAMT = ' . urlencode(number_format($this->getTotalPriceItems(), 2));
+        $this->express_data .= '&PAYMENTREQUEST_0_SHIPPINGAMT = ' . urlencode(number_format($this->getShippingPrice(), 2));
+        $this->express_data .= '&PAYMENTREQUEST_0_HANDLINGAMT = ' . urlencode(number_format($this->getCautionCost(), 2));
+        $this->express_data .= '&PAYMENTREQUEST_0_AMT = ' . urlencode(number_format($this->getPriceTotal(), 2));
+        $this->express_data .= '&PAYMENTREQUEST_0_CURRENCYCODE = ' . urlencode($this->getCommon()->getCurrencyCode());
+        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTONAME = ' . urlencode($this->getShippingAddress()->getFirstname() . ' ' . $this->getShippingAddress()->getLastname());
+        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOSTREET = ' . urlencode($this->getShippingAddress()->getStreet());
+        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOCITY = ' . urlencode($this->getShippingAddress()->getCity());
+        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE = ' . urlencode($this->getShippingAddress()->getCountryCode());
+        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOZIP = ' . urlencode($this->getShippingAddress()->getPostCode());
+        $this->express_data .= '&PAYMENTREQUEST_0_SHIPTOPHONENUM = ' . urlencode($this->getShippingAddress()->getPhone());
 
-        $this->express_data .= '&CARTBORDERCOLOR=87c540';
-        $this->express_data .= '&RETURNURL=' . urlencode($this->getContainer()->get('router')->generate('checkout_order_paypal_return', array(), UrlGeneratorInterface::ABSOLUTE_URL));
-        $this->express_data .= '&CANCELURL=' . urlencode($this->getContainer()->get('router')->generate('checkout_order_paypal_cancel', array(), UrlGeneratorInterface::ABSOLUTE_URL));
+        $this->express_data .= '&CARTBORDERCOLOR = 87c540';
+        $this->express_data .= '&RETURNURL = ' . urlencode($this->getContainer()->get('router')->generate('checkout_order_paypal_return', array(), UrlGeneratorInterface::ABSOLUTE_URL));
+        $this->express_data .= '&CANCELURL = ' . urlencode($this->getContainer()->get('router')->generate('checkout_order_paypal_cancel', array(), UrlGeneratorInterface::ABSOLUTE_URL));
         return $this;
     }
 
@@ -404,27 +405,27 @@ class Paypal {
      */
     private function setDoExpressCheckout() {
         $this->express_data = $this->getApiAccount();
-        $this->express_data = '&TOKEN=' . urlencode($this->getRequest()->request->get('token'));
-        $this->express_data .= '&PAYERID=' . urlencode($this->getRequest()->request->get('PayerID'));
-        $this->express_data .= '&PAYMENTREQUEST_0_PAYMENTACTION=' . urlencode("SALE");
+        $this->express_data = '&TOKEN = ' . urlencode($this->getRequest()->request->get('token'));
+        $this->express_data .= '&PAYERID = ' . urlencode($this->getRequest()->request->get('PayerID'));
+        $this->express_data .= '&PAYMENTREQUEST_0_PAYMENTACTION = ' . urlencode("SALE");
         $itemid = 1;
         foreach ($this->getItems() as $item) {
-            $this->express_data .= '&L_PAYMENTREQUEST_0_NAME' . $itemid . '=' . urlencode($item->getName());
-            $this->express_data .= '&L_PAYMENTREQUEST_0_NUMBER' . $itemid . '=' . urlencode($item->getSku());
-            $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . '=' . urlencode($item->getDateFrom()->format('d-m-Y'));
-            $this->express_data .= '&L_PAYMENTREQUEST_0_AMT' . $itemid . '=' . urlencode($item->getPrice());
+            $this->express_data .= '&L_PAYMENTREQUEST_0_NAME' . $itemid . ' = ' . urlencode($item->getName());
+            $this->express_data .= '&L_PAYMENTREQUEST_0_NUMBER' . $itemid . ' = ' . urlencode($item->getSku());
+            $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . ' = ' . urlencode($item->getDateFrom()->format('d-m-Y'));
+            $this->express_data .= '&L_PAYMENTREQUEST_0_AMT' . $itemid . ' = ' . urlencode($item->getPrice());
 // Date From To
             $date = new \DateTime($item->getDateFrom()->format('Y-m-d'));
             $date->modify('+' . ($item->getTyp()->getCountDays() - 1) . ' day');
-            $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . '=' . urlencode($item->getDateFrom()->format('d-m-Y') . ' - ' . $date->format('d-m-Y'));
+            $this->express_data .= '&L_PAYMENTREQUEST_0_DESC' . $itemid . ' = ' . urlencode($item->getDateFrom()->format('d-m-Y') . ' - ' . $date->format('d-m-Y'));
             $itemid++;
         }
 // set item
-        $this->express_data .= '&PAYMENTREQUEST_0_ITEMAMT=' . urlencode($this->getTotalPriceItems());
-        $this->express_data .= '&PAYMENTREQUEST_0_SHIPPINGAMT=' . urlencode($this->getShippingPrice());
-        $this->express_data .= '&PAYMENTREQUEST_0_HANDLINGAMT=' . urlencode($this->getCautionCost());
-        $this->express_data .= '&PAYMENTREQUEST_0_AMT=' . urlencode($this->getPriceTotal());
-        $this->express_data .= '&PAYMENTREQUEST_0_CURRENCYCODE=' . urlencode($this->getCommon()->getCurrencyCode());
+        $this->express_data .= '&PAYMENTREQUEST_0_ITEMAMT = ' . urlencode($this->getTotalPriceItems());
+        $this->express_data .= '&PAYMENTREQUEST_0_SHIPPINGAMT = ' . urlencode($this->getShippingPrice());
+        $this->express_data .= '&PAYMENTREQUEST_0_HANDLINGAMT = ' . urlencode($this->getCautionCost());
+        $this->express_data .= '&PAYMENTREQUEST_0_AMT = ' . urlencode($this->getPriceTotal());
+        $this->express_data .= '&PAYMENTREQUEST_0_CURRENCYCODE = ' . urlencode($this->getCommon()->getCurrencyCode());
 // send data
         return $this;
     }
@@ -433,7 +434,7 @@ class Paypal {
      * set express data
      */
     private function getTransactionDetails() {
-        $this->express_data = '&TOKEN=' . urlencode($this->getRequest()->request->get('token'));
+        $this->express_data = '&TOKEN = ' . urlencode($this->getRequest()->request->get('token'));
         return $this;
     }
 

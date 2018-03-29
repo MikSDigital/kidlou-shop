@@ -178,21 +178,22 @@ class Payment {
                     };
                     return paypal.request.post(EXECUTE_PAYMENT_URL, data)
                         .then(function (res) {
+                        getPaypalResult(res);
                         window.alert('Payment Complete!');
                     });
                 },
 
-                onCancel: function(data, actions) {
-                  /*
-                   * Buyer cancelled the payment
-                   */
-                },
-
-                onError: function(err) {
-                  /*
-                   * An error occurred during the transaction
-                   */
-                }
+//                onCancel: function(data, actions) {
+//                  /*
+//                   * Buyer cancelled the payment
+//                   */
+//                },
+//
+//                onError: function(err) {
+//                  /*
+//                   * An error occurred during the transaction
+//                   */
+//                }
               },
               '#paypal-button'
             );
