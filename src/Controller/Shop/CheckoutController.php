@@ -236,7 +236,7 @@ class CheckoutController extends Controller {
     }
 
     /**
-     * @Route("/paypal/return", name="checkout_order_paypal_return")
+     * @Route("/paypal/return/", name="checkout_order_paypal_return")
      */
     public function paypalReturnAction(Request $request, ServiceOrder $serviceOrder) {
 
@@ -260,7 +260,7 @@ class CheckoutController extends Controller {
 
     /**
      * @Template()
-     * @Route("/paypal/cancel", name="checkout_order_paypal_cancel")
+     * @Route("/paypal/cancel/", name="checkout_order_paypal_cancel")
      */
     public function paypalCancelAction(ServiceOrder $serviceOrder) {
         $order = $serviceOrder->getCurrentOrder();
@@ -316,8 +316,6 @@ class CheckoutController extends Controller {
      * @Route("/executepaypal/", name="checkout_execute_paypal")
      */
     public function executePaypalAction(ServiceOrder $serviceOrder, Request $request) {
-        $paymentID = $request->request->get('paymentID');
-        $payerID = $request->request->get('payerID');
         $paypal = $serviceOrder->setPaypal()->getPaypal();
         $paypal->executePayment();
         return new Response();
