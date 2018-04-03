@@ -327,12 +327,6 @@ $(document).ready(function () {
 
 });
 
-function getPaypalResult(res) {
-    $.each(res, function (_i, _value) {
-        console.log('index: ' + _i + ' value: ' + _value);
-    });
-}
-
 function isPaypalButton() {
     if ($('.paypal-button').is(':visible')) {
         return true;
@@ -440,6 +434,11 @@ function saveOrderForPayPal(isOverlay) {
 
 function getPaypalCancel(cancelUrl, paymentID) {
     var url = cancelUrl + '&paymentID=' + paymentID;
+    window.location.href = url;
+}
+
+function getPaypalReturn(returnUrl, paymentID) {
+    var url = returnUrl + '&paymentID=' + paymentID;
     window.location.href = url;
 }
 

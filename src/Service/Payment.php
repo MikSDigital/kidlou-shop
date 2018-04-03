@@ -144,11 +144,12 @@ class Payment {
                    */
                     var data = {
                         paymentID: data.paymentID,
-                        payerID: data.payerID
+                        payerID: data.payerID,
+                        returnUrl: data.returnUrl
                     };
                     return paypal.request.post(EXECUTE_PAYMENT_URL, data)
                         .then(function (res) {
-                        getPaypalResult(res);
+                        getPaypalReturn(data.returnUrl, data.paymentID);
                     });
                 },
 

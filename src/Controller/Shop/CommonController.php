@@ -71,9 +71,6 @@ class CommonController extends Controller {
                         }
                     }
                 }
-            } else if ($typ == 'pp') {
-                $token = $servicePayment->getPaypalToken();
-                $this->container->get('session')->set('pp_token', $token);
             }
         }
         $this->container->get('session')->set('cash_cost', $cash_cost);

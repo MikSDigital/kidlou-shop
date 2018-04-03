@@ -240,24 +240,15 @@ class CheckoutController extends Controller {
     /**
      * @Route("/paypal/return/", name="checkout_order_paypal_return")
      */
-    public function paypalReturnAction(Request $request, ServiceOrder $serviceOrder) {
-
-        if ($order && $request->request->get('token') != '' && $request->request->get('token') != '') {
-            $paypal = $serviceOrder->setPaypal('doExpressCheckout')->sendHttpPost();
-            if ($paypal->isExpressCheckoutResult()) {
-                $serviceOrder->setOrderStatus('complete');
-                // set additional information
-                $paypal = $serviceOrder->setPaypal('getExpressCheckoutDetails')->sendHttpPost();
-                $serviceOrder->setAdditionalInformation($paypal->getExpressCheckoutResult());
-                return $this->render('shop/checkout/paypalSuccess.html.twig', array('order' => $order));
-            } else {
-                // set status canceled
-                $serviceOrder->setOrderStatus('canceled');
-                $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-                return $this->render('shop/checkout/paypalFailed.html.twig', array('paypalmessage' => $paypal->getExpressCheckoutResult()['L_LONGMESSAGE0']));
-            }
-        }
-        return $this->render('shop/checkout/paypalCancel.html.twig', array('order' => $order));
+    public function paypalReturnAction(ServiceOrder $serviceOrder, Request $request) {
+        $order = $serviceOrder->getCurrentOrder();
+        $serviceOrder->setOrderStatus('complete');
+        $arr_data['message'] = $this->get('translator')->trans('Zahlung wurde erfolgreich ausgeführt');
+        $arr_data['token'] = $request->query->get('token');
+        $arr_data['paymentID'] = $request->query->get('paymentID');
+        $serviceOrder->setAdditionalInformation($arr_data);
+        $this->removeSessions($serviceOrder);
+        return $this->render('shop/checkout/paypalSuccess.html.twig', array('order' => $order));
     }
 
     /**
