@@ -33,7 +33,7 @@ class OrderController extends Controller {
      * @Route("/list", name="admin_order_list")
      */
     public function listAction() {
-        $orders = $this->getDoctrine()->getRepository(Quote::class)->getAllOrderDatas();
+        $orders = $this->getDoctrine()->getRepository(\App\Entity\Order::class)->getAllOrderDatas();
         return array(
             'orders' => $orders
         );
@@ -66,7 +66,7 @@ class OrderController extends Controller {
      * @Route("/sendmail/{id}/", name="admin_send_mail")
      */
     public function sendMail($id = null, ServiceOrder $serviceOrder, \Swift_Mailer $mailer) {
-        $order = $this->getDoctrine()->getRepository(Quote::class)->findOneById($id);
+        $order = $this->getDoctrine()->getRepository(\App\Entity\Order::class)->findOneById($id);
         $result = $serviceOrder->sendEmailMessage($order, $mailer);
         return $this->redirect($this->generateUrl('admin_order_detail_message', array('id' => $order->getId(), 'success' => $result, 'message' => true)));
     }

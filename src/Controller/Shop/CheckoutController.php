@@ -88,45 +88,11 @@ class CheckoutController extends Controller {
             return $this->render('shop/checkout/postForm.html.twig', array(
                         'fields' => $post->getFormFieldsValues(),
                         'url' => $post->getPaymentTyp()->getFormularUrl()));
-        } else if ($serviceOrder->getPaymentName() == 'Paypal') {
-
-//            if ($order && $request->request->get('token') != '' && $request->request->get('token') != '') {
-//                $paypal = $serviceOrder->setPaypal('doExpressCheckout')->sendHttpPost();
-//                if ($paypal->isExpressCheckoutResult()) {
-//                    $serviceOrder->setOrderStatus('complete');
-//                    // set additional information
-//                    $paypal = $serviceOrder->setPaypal('getExpressCheckoutDetails')->sendHttpPost();
-//                    $serviceOrder->setAdditionalInformation($paypal->getExpressCheckoutResult());
-//                    $this->removeSessions($serviceOrder);
-//                    return $this->render('shop/checkout/paypalSuccess.html.twig', array('order' => $order));
-//                } else {
-//                    // set status canceled
-//                    $serviceOrder->setOrderStatus('canceled');
-//                    $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-//                    $this->removeSessions($serviceOrder);
-//                    return $this->render('shop/checkout/paypalFailed.html.twig', array('paypalmessage' => $paypal->getExpressCheckoutResult()['L_LONGMESSAGE0']));
-//                }
-//            } else {
-//                $paypal = $serviceOrder->setPaypal('setExpressCheckout')->getPaypal()->sendHttpPost();
-//                if ($paypal->isExpressCheckoutResult()) {
-//                    return $this->redirect($paypal->getExpressCheckoutTokenurl());
-//                } else {
-//                    // set status canceled
-//                    $serviceOrder->setOrderStatus('canceled');
-//                    $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-//                    $this->removeSessions($serviceOrder);
-//                    return $this->render('shop/checkout/paypalFailed.html.twig', array('paypalmessage' => urldecode($paypal->getExpressCheckoutResult()['L_LONGMESSAGE0'])));
-//                }
-//            }
         } else if ($serviceOrder->getPaymentName() == 'Bank') {
             return $this->redirectToRoute('checkout_order_bank_success');
         } else {
             return array();
         }
-    }
-
-    public function paypalAction() {
-
     }
 
     /**
@@ -243,6 +209,7 @@ class CheckoutController extends Controller {
     public function paypalReturnAction(ServiceOrder $serviceOrder, Request $request) {
         $order = $serviceOrder->getCurrentOrder();
         $serviceOrder->setOrderStatus('complete');
+        $arr_data['typ'] = $this->get('translator')->trans('Paypal');
         $arr_data['message'] = $this->get('translator')->trans('Zahlung wurde erfolgreich ausgeführt');
         $arr_data['token'] = $request->query->get('token');
         $arr_data['paymentID'] = $request->query->get('paymentID');
@@ -258,6 +225,7 @@ class CheckoutController extends Controller {
     public function paypalCancelAction(ServiceOrder $serviceOrder, Request $request) {
         $order = $serviceOrder->getCurrentOrder();
         $serviceOrder->setOrderStatus('canceled');
+        $arr_data['typ'] = $this->get('translator')->trans('Paypal');
         $arr_data['message'] = $this->get('translator')->trans('Zahlung wurde abgebrochen');
         $arr_data['token'] = $request->query->get('token');
         $arr_data['paymentID'] = $request->query->get('paymentID');
