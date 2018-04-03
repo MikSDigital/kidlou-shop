@@ -139,6 +139,8 @@ class CheckoutController extends Controller {
         $serviceOrder->removeOrderSession();
         // remove basket items
         $serviceOrder->removeBasketItemsSession();
+        // remove paypal session
+        $serviceOrder->removePaypalTokenSession();
     }
 
     /**
@@ -262,10 +264,13 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/paypal/cancel/", name="checkout_order_paypal_cancel")
      */
-    public function paypalCancelAction(ServiceOrder $serviceOrder) {
+    public function paypalCancelAction(ServiceOrder $serviceOrder, Request $request) {
         $order = $serviceOrder->getCurrentOrder();
         $serviceOrder->setOrderStatus('canceled');
-        $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
+        $arr_data['message'] = $this->get('translator')->trans('Zahlung wurde abgebrochen');
+        $arr_data['token'] = $request->query->get('token');
+        $arr_data['paymentID'] = $request->query->get('paymentID');
+        $serviceOrder->setAdditionalInformation($arr_data);
         $this->removeSessions($serviceOrder);
         return $this->render('shop/checkout/paypalCancel.html.twig', array('order' => $order));
     }

@@ -369,6 +369,14 @@ class Order {
      *
      * @param type $order
      */
+    public function removePaypalTokenSession() {
+        $this->getContainer()->get('session')->remove('paypal_access_token');
+    }
+
+    /**
+     *
+     * @param type $order
+     */
     public function removeBasketItemsSession() {
         $this->getContainer()->get('session')->remove('basket_items');
         $this->getContainer()->get('session')->remove('cash_cost');

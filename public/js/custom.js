@@ -437,6 +437,13 @@ function saveOrderForPayPal(isOverlay) {
     });
 }
 
+
+function getPaypalCancel(cancelUrl, paymentID) {
+    var url = cancelUrl + '&paymentID=' + paymentID;
+    window.location.href = url;
+}
+
+
 function checkPassword() {
     var isPassword = true;
     if ($("input[name='billing[password1]'").val().length >= 6 && $("input[name='billing[password1]'").val().length <= 8) {

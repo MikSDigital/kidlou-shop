@@ -1,4 +1,20 @@
-<div class="order-overlay">
-    <p>{{ 'Bestellung %s wurde abgebrochen' | format(order.orderNumber) | trans }}</p>
-    <button class="btn btn-default" onclick="window.top.location.href = '{{ path("checkout_order_payment_home") }}';">{{ 'Weiter' | trans }}</button>
-</div>
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ 'Checkout paypal' | trans }} {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block pagetitle %} {{ 'Panier' | trans }} {% endblock %}
+{% block body %}
+    <section class="box info">
+        <div class="cart-grid">
+            {{ 'Paypal Zahlung wurde abgebrochen' | trans }}
+        </div>
+        <div class="cart-bottom">
+            <p>{{ 'Bestellung %s wurde abgebrochen' | format(order.orderNumber) | trans }}</p>
+            <button class="btn btn-default" onclick="window.top.location.href = '{{ path("checkout_order_payment_home") }}';">{{ 'Weiter' | trans }}</button>
+        </div>
+    </section>
+{% endblock %}
+
