@@ -206,7 +206,7 @@ class CheckoutController extends Controller {
     /**
      * @Route("/paypal/return/", name="checkout_order_paypal_return")
      */
-    public function paypalReturnAction(ServiceOrder $serviceOrder, Request $request) {
+    public function paypalReturnAction(ServiceOrder $serviceOrder, Request $request, \Swift_Mailer $mailer) {
         $order = $serviceOrder->getCurrentOrder();
         $serviceOrder->setOrderStatus('complete');
         $arr_data['typ'] = $this->get('translator')->trans('Paypal');
@@ -215,6 +215,7 @@ class CheckoutController extends Controller {
         $arr_data['paymentID'] = $request->query->get('paymentID');
         $serviceOrder->setAdditionalInformation($arr_data);
         $this->removeSessions($serviceOrder);
+        $serviceOrder->sendEmailMessage($order, $mailer);
         return $this->render('shop/checkout/paypalSuccess.html.twig', array('order' => $order));
     }
 
