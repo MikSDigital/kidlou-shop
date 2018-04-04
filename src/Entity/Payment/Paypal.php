@@ -41,17 +41,12 @@ class Paypal {
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      */
-    private $api_username = null;
+    private $client_id = null;
 
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      */
-    private $api_password = null;
-
-    /**
-     * @ORM\Column(type="string", length=200, nullable=true)
-     */
-    private $api_signature = null;
+    private $secret_key = null;
 
     /**
      * @ORM\Column(type="integer", length=5, options={"default":0})
@@ -157,69 +152,47 @@ class Paypal {
     }
 
     /**
-     * Set apiUsername
+     * Set client id
      *
-     * @param string $apiUsername
+     * @param string $client_id
      *
      * @return Paypal
      */
-    public function setApiUsername($apiUsername) {
-        $this->api_username = $apiUsername;
+    public function setClientId($client_id) {
+        $this->client_id = $client_id;
 
         return $this;
     }
 
     /**
-     * Get apiUsername
+     * Get client id
      *
      * @return string
      */
-    public function getApiUsername() {
-        return $this->api_username;
+    public function getClientId() {
+        return $this->client_id;
     }
 
     /**
-     * Set apiPassword
+     * Set secret key
      *
-     * @param string $apiPassword
+     * @param string $secret_key
      *
      * @return Paypal
      */
-    public function setApiPassword($apiPassword) {
-        $this->api_password = $apiPassword;
+    public function setSecretKey($secret_key) {
+        $this->secret_key = $secret_key;
 
         return $this;
     }
 
     /**
-     * Get apiPassword
+     * Get secret key
      *
      * @return string
      */
-    public function getApiPassword() {
-        return $this->api_password;
-    }
-
-    /**
-     * Set apiSignature
-     *
-     * @param string $apiSignature
-     *
-     * @return Paypal
-     */
-    public function setApiSignature($apiSignature) {
-        $this->api_signature = $apiSignature;
-
-        return $this;
-    }
-
-    /**
-     * Get apiSignature
-     *
-     * @return string
-     */
-    public function getApiSignature() {
-        return $this->api_signature;
+    public function getSecretKey() {
+        return $this->secret_key;
     }
 
     /**
@@ -319,7 +292,6 @@ class Paypal {
         return $this->labels;
     }
 
-
     /**
      * Set formularUrl
      *
@@ -327,8 +299,7 @@ class Paypal {
      *
      * @return Paypal
      */
-    public function setFormularUrl($formularUrl)
-    {
+    public function setFormularUrl($formularUrl) {
         $this->formular_url = $formularUrl;
 
         return $this;
@@ -339,8 +310,8 @@ class Paypal {
      *
      * @return string
      */
-    public function getFormularUrl()
-    {
+    public function getFormularUrl() {
         return $this->formular_url;
     }
+
 }

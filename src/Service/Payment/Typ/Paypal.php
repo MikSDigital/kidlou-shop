@@ -235,12 +235,16 @@ class Paypal {
      * @return paypal
      */
     public function createAccessToken() {
-        $api_endpoint = "https://api.sandbox.paypal.com/v1/oauth2/token";
-        $clientId = "AbWC1ORqKB2pksz3s5gEDASVugIzv0MuF6m3fySR4ZZFOkPZRwGDNBx0l8zR31tAaMWoX0fdElZKKWPE";
-        $secretKey = "EKL4JF0xTutP3Ldrdc3C86juGBLLyqRY79P4zZ4fO7D3Mtf3Oppv6-28CcrHCDYDIu7s1fYDhN65OlEa";
+        if ($this->getPaymentTyp()->getSandboxMode()) {
+            $api_url = "https://api.sandbox.paypal.com/v1/oauth2/token";
+        } else {
+            $api_url = "https://api.paypal.com/v1/oauth2/token";
+        }
+        $clientId = $this->getPaymentTyp()->getClientId();
+        $secretKey = $this->getPaymentTyp()->getSecretKey();
         // Set the curl parameters.
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $api_endpoint);
+        curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -280,9 +284,14 @@ class Paypal {
      * Create Payment
      */
     public function createPayment() {
+        if ($this->getPaymentTyp()->getSandboxMode()) {
+            $api_url = "https://api.sandbox.paypal.com/v1/payments/payment";
+        } else {
+            $api_url = "https://api.paypal.com/v1/payments/payment";
+        }
         $data = $this->getOrderData();
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/payments/payment");
+        curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -302,10 +311,15 @@ class Paypal {
      */
     public function executePayment() {
         $id = $this->getRequest()->get('paymentID');
+        if ($this->getPaymentTyp()->getSandboxMode()) {
+            $api_url = "https://api.sandbox.paypal.com/v1/payments/payment/" . $id . "/execute/ ";
+        } else {
+            $api_url = "https://api.paypal.com/v1/payments/payment/" . $id . "/execute/ ";
+        }
         $data['payer_id'] = $this->getRequest()->get('payerID');
         $data = json_encode($data);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/payments/payment/" . $id . "/execute/ ");
+        curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(

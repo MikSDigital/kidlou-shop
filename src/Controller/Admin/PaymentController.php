@@ -144,7 +144,7 @@ class PaymentController extends Controller {
      */
     public function detailAction($id = null, $lang = 'fr', Request $request, ServiceImage $serviceImage) {
         if ($id != null) {
-            $reposPayment = $this->getDoctrine()->getRepository(Payment::class);
+            $reposPayment = $this->getDoctrine()->getRepository(\App\Entity\Payment::class);
             $payment = $reposPayment->findOneById($id);
             $this->setPasswordFromEntity($payment);
         } else {
@@ -181,14 +181,11 @@ class PaymentController extends Controller {
                     $paymentTyp->setSecretKey($this->getPasswordFromEntity()->getSecretKey());
                 }
             } else if ($payment->getName() == 'Paypal') {
-                if ($paymentTyp->getApiUsername() == '') {
-                    $paymentTyp->setApiUsername($this->getPasswordFromEntity()->getApiUsername());
+                if ($paymentTyp->getClientId() == '') {
+                    $paymentTyp->setClientId($this->getPasswordFromEntity()->getClientId());
                 }
-                if ($paymentTyp->getApiPassword() == '') {
-                    $paymentTyp->setApiPassword($this->getPasswordFromEntity()->getApiPassword());
-                }
-                if ($paymentTyp->getApiSignature() == '') {
-                    $paymentTyp->setApiSignature($this->getPasswordFromEntity()->getApiSignature());
+                if ($paymentTyp->getSecretKey() == '') {
+                    $paymentTyp->setSecretKey($this->getPasswordFromEntity()->getSecretKey());
                 }
             }
             $em->persist($paymentTyp);
@@ -250,7 +247,9 @@ class PaymentController extends Controller {
      * @return type $form
      */
     private function getPaymentTyp($payment) {
-        return $this->getDoctrine()->getRepository('Payment\\' . $payment->getName() . '::class')
+        $str_class = '\\App\\Entity\\Payment\\' . $payment->getName();
+        $object = new $str_class;
+        return $this->getDoctrine()->getRepository(get_class($object))
                         ->findOneBy(array('payment' => $payment));
     }
 
@@ -347,7 +346,7 @@ class PaymentController extends Controller {
      * @return type collection
      */
     private function getAllLanguages() {
-        $languages = $this->getDoctrine()->getRepository(Language::class)->findAll();
+        $languages = $this->getDoctrine()->getRepository(\App\Entity\Language::class)->findAll();
         foreach ($languages as $key => $lang) {
             $arr_lang[$lang->getName()] = $lang->getShortName();
         }
@@ -363,11 +362,11 @@ class PaymentController extends Controller {
      */
     private function getPaymentLabel($payment, $request, $lang) {
         $arr_form = $request->request->get('form');
-        $lang = $this->getDoctrine()->getRepository(Language::class)->findOneBy(array('short_name' => $lang));
+        $lang = $this->getDoctrine()->getRepository(\App\Entity\Language::class)->findOneBy(array('short_name' => $lang));
         if (isset($arr_form['lang_short_name'])) {
-            $lang = $this->getDoctrine()->getRepository(Language::class)->findOneBy(array('short_name' => $arr_form['lang_short_name']));
+            $lang = $this->getDoctrine()->getRepository(\App\Entity\Language::class)->findOneBy(array('short_name' => $arr_form['lang_short_name']));
         }
-        return $this->getDoctrine()->getRepository(Payment\Lang\Label::class)
+        return $this->getDoctrine()->getRepository(\App\Entity\Payment\Lang\Label::class)
                         ->findOneBy(array($this->getPaymentName($payment) => $this->getPaymentTyp($payment), 'lang' => $lang));
     }
 
@@ -469,18 +468,14 @@ class PaymentController extends Controller {
                 ->add('email_account', TextType::class, array(
                     'label' => $this->get('translator')->trans('Email Account'),
                     'attr' => array('placeholder' => $this->get('translator')->trans('Email Account'))))
-                ->add('api_username', PasswordType::class, array(
-                    'label' => $this->get('translator')->trans('Api Username'),
+                ->add('client_id', TextType::class, array(
+                    'label' => $this->get('translator')->trans('Client Id'),
                     'required' => FALSE,
-                    'attr' => array('placeholder' => $this->get('translator')->trans('Api Username'), 'value' => $paymentTyp->getApiUsername())))
-                ->add('api_password', PasswordType::class, array(
-                    'label' => $this->get('translator')->trans('Api Password'),
+                    'attr' => array('placeholder' => $this->get('translator')->trans('Client Id'), 'value' => $paymentTyp->getClientId())))
+                ->add('secret_key', TextType::class, array(
+                    'label' => $this->get('translator')->trans('Secret Key'),
                     'required' => FALSE,
-                    'attr' => array('placeholder' => $this->get('translator')->trans('Api Password'), 'value' => $paymentTyp->getApiPassword())))
-                ->add('api_signature', PasswordType::class, array(
-                    'label' => $this->get('translator')->trans('Api Signature'),
-                    'required' => FALSE,
-                    'attr' => array('placeholder' => $this->get('translator')->trans('Api Signature'), 'value' => $paymentTyp->getApiSignature())))
+                    'attr' => array('placeholder' => $this->get('translator')->trans('Secret Key'), 'value' => $paymentTyp->getSecretKey())))
                 ->add('authentication_methods', HiddenType::class, array(
                     'data' => 0))
                 ->add('sandbox_mode', ChoiceType::class, array(
@@ -610,17 +605,17 @@ class PaymentController extends Controller {
      * @param type $payment
      */
     private function setPasswordFromEntity($payment) {
-        $paymentTyp = $this->getDoctrine()->getRepository('Payment\\' . $payment->getName() . '::class')->findOneBy(array('payment' => $payment));
+        $str_class = '\\App\\Entity\\Payment\\' . $payment->getName();
+        $object = new $str_class;
+        $paymentTyp = $this->getDoctrine()->getRepository(get_class($object))
+                ->findOneBy(array('payment' => $payment));
         $name = '\App\Entity\Payment\\' . $payment->getName();
         $this->payment_entity = new $name();
         if ($payment->getName() == 'Post') {
             $this->payment_entity->setSecretKey($paymentTyp->getSecretKey());
-        } else if ($payment->getName() == 'Paypal
-
-        ') {
-            $this->payment_entity->setApiUsername($paymentTyp->getApiUsername());
-            $this->payment_entity->setApiPassword($paymentTyp->getApiPassword());
-            $this->payment_entity->setApiSignature($paymentTyp->getApiSignature());
+        } else if ($payment->getName() == 'Paypal') {
+            $this->payment_entity->setClientId($paymentTyp->getClientId());
+            $this->payment_entity->setSecretKey($paymentTyp->getSecretKey());
         }
     }
 
