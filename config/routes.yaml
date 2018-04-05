@@ -1,22 +1,22 @@
 closas_admin:
-    resource: ../../src/Controller/Admin/
+    resource: ../src/Controller/Admin/
     type:     annotation
     prefix:   /%admin_path_name%/
 
 closas_api:
-    resource: ../../src/Controller/Api/
+    resource: ../src/Controller/Api/
     type:     annotation
     prefix:   /%api_path_name%/
 
 closas_user:
-    resource: ../../src/Controller/User/
+    resource: ../src/Controller/User/
     type:     annotation
     prefix:   /{_locale}/user/
     requirements:
         _locale: fr|de|en|es
 
 closas_shop:
-    resource: ../../src/Controller/Shop/
+    resource: ../src/Controller/Shop/
     type:     annotation
 #    defaults: {_locale: fr}
     prefix:   /{_locale}/
@@ -25,6 +25,6 @@ closas_shop:
     defaults: {_locale: fr}
 
 closas_test:
-    resource: ../../src/Controller/Test/
+    resource: ../src/Controller/Test/
     type:     annotation
     prefix:   /%test_path_name%/
