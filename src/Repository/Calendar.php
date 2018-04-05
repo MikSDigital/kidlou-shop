@@ -48,7 +48,7 @@ class Calendar extends \Doctrine\ORM\EntityRepository {
                         'SELECT c.date_from AS date_from FROM App\Entity\Calendar c'
                         . ' INNER JOIN App\Entity\Order o WITH o.id = c.order AND c.date_from LIKE :datum OR c.date_from LIKE :datumBefore OR c.date_from LIKE :datumNext'
                         . ' INNER JOIN App\Entity\Order\Item oi WITH oi.calendar = c.id AND oi.sku = :sku'
-                        //. ' INNER JOIN App\Entity\Order\Status os WITH os.id = o.status AND os.id IN (:status)'
+                        . ' INNER JOIN App\Entity\Order\Status os WITH os.id = o.status AND os.id IN (:status)'
                 )
                 ->setParameter('datum', $datum)
                 ->setParameter('datumBefore', $datumBefore)

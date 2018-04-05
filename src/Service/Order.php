@@ -840,8 +840,6 @@ class Order {
      */
     public function getOrderDataById($id) {
         $arr_order = $this->getEm()->getRepository(\App\Entity\Order::class)->getOrderData($id);
-//        print_r($arr_order);
-//        exit;
         if ($arr_order['status'] != 'canceled') {
             $arr_order['additional_information'] = (array) json_decode($arr_order['additional_information']);
         }
