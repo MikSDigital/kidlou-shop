@@ -3,11 +3,18 @@ var pay_isEmpty = true;
 var isOrderSave = false;
 
 $(document).ready(function () {
+    var height = $(document).outerHeight();
+    var footer = $('.ma-footer-container').outerHeight();
+    var header_navigation = $('.header-navigation').outerHeight();
+
     var custom_header = $('.custom-header').outerHeight();
     var input_search = $('#search').outerHeight();
     var input_top = (custom_header - input_search) / 2;
-    //$('#search').css({'margin-top': input_top + 'px'});
-//    var custom_row_header = $('.custom-header .row-header').height();
+    if (height < 1000) {
+        $('.main').css({'min-height': (height - (footer + custom_header + header_navigation + 30)) + 'px'});
+    }
+
+
     $(window).resize(function () {
         if ($(window).width() > 1000) {
             $('.navigation-responsive').removeClass('in');
