@@ -22,7 +22,7 @@
                                     <span class="title-blog">{{ content.title }}</span>
                                 </a>
                                 {{ content.longText | striptags | slice(0, 50)~ '...' }}
-                                <a class="readmore" href="/{{ app.request.getLocale() }}/content/{{ content.categoryUrlKey }}/">{{ 'Read more...' | trans }}</a>
+                                <a class="readmore" href="/{{ app.request.getLocale() }}/content/{{ content.categoryUrlKey }}/">{{ 'read more...' | trans }}</a>
                             </div>
                         </div>
                     </div>

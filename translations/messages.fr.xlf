@@ -28,7 +28,7 @@
             </trans-unit>
             <trans-unit id="7">
                 <source>Upsell Products</source>
-                <target>Upsell Products</target>
+                <target>supplément produits</target>
             </trans-unit>
             <trans-unit id="8">
                 <source>Notice_utilisation</source>
@@ -49,6 +49,182 @@
             <trans-unit id="12">
                 <source>Dieses Produkt %sku% existiert bereits</source>
                 <target>Cette Produit %sku% exist deja</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>day</source>
+                <target>jour</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>read more...</source>
+                <target>lire la suite...</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>Read more</source>
+                <target>lire la suite</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>Commander</source>
+                <target>commander</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>Commander</source>
+                <target>commander</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>Mon panier</source>
+                <target>mon panier</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Blog</source>
+                <target>Blog</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>Mon panier</source>
+                <target>mon panier</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>Login</source>
+                <target>Login</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>Supprimer cet élément</source>
+                <target>supprimer cet élément</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>Sous-total</source>
+                <target>sous-total</target>
+            </trans-unit>
+            <trans-unit id="24">
+                <source>shop now</source>
+                <target>achetez maintenant</target>
+            </trans-unit>
+            <trans-unit id="25">
+                <source>Etape 1 : Zone de livraison</source>
+                <target>Etape 1 : Zone de livraison</target>
+            </trans-unit>
+            <trans-unit id="26">
+                <source>Vérifiez si votre lieu de séjour est desservi par kidlou</source>
+                <target>Vérifiez si votre lieu de séjour est desservi par kidlou</target>
+            </trans-unit>
+            <trans-unit id="27">
+                <source>Code postal / Ville</source>
+                <target>Code postal / Ville</target>
+            </trans-unit>
+            <trans-unit id="28">
+                <source>Cette localité est desservie par kidlou</source>
+                <target>Cette localité est desservie par kidlou</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>Etape 2 : Choix de produits</source>
+                <target>Etape 2 : Choix de produits</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>Choisissez les articles qui correspondent à vos besoins et réservez les directement online dans le calendrier selon la durée de votre séjour.</source>
+                <target>Choisissez les articles qui correspondent à vos besoins et réservez les directement online dans le calendrier selon la durée de votre séjour.</target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>Etape 3 : Paiment et livraison</source>
+                <target>Etape 3 : Paiment et livraison</target>
+            </trans-unit>
+            <trans-unit id="32">
+                <source>Payez simplement online et rendez-vous le jour de votre arrivée sur votre lieu de séjour pour la livraison de tout l’équipement choisi pour votre enfant.</source>
+                <target>Payez simplement online et rendez-vous le jour de votre arrivée sur votre lieu de séjour pour la livraison de tout l’équipement choisi pour votre enfant.</target>
+            </trans-unit>
+            <trans-unit id="33">
+                <source>Follow us</source>
+                <target>Suivez nous</target>
+            </trans-unit>
+            <trans-unit id="34">
+                <source>Cette localité n'est pas desservie par kidlou</source>
+                <target>Cette localité n'est pas desservie par kidlou</target>
+            </trans-unit>
+            <trans-unit id="35">
+                <source>from date</source>
+                <target>partir de</target>
+            </trans-unit>
+            <trans-unit id="36">
+                <source>to date</source>
+                <target>jusque'au</target>
+            </trans-unit>
+            <trans-unit id="37">
+                <source>Gesamtsumme</source>
+                <target>total</target>
+            </trans-unit>
+            <trans-unit id="38">
+                <source>Resevierung anfragen</source>
+                <target>demande de réservation</target>
+            </trans-unit>
+            <trans-unit id="39">
+                <source>Panier</source>
+                <target>Panier</target>
+            </trans-unit>
+            <trans-unit id="40">
+                <source>Remove</source>
+                <target>supprimer</target>
+            </trans-unit>
+            <trans-unit id="41">
+                <source>Name</source>
+                <target>nom</target>
+            </trans-unit>
+            <trans-unit id="42">
+                <source>Price per day</source>
+                <target>prix ​​par jour</target>
+            </trans-unit>
+            <trans-unit id="43">
+                <source>Période de location</source>
+                <target>période de location</target>
+            </trans-unit>
+            <trans-unit id="44">
+                <source>days</source>
+                <target>jours</target>
+            </trans-unit>
+            <trans-unit id="45">
+                <source>Continuer vos achats</source>
+                <target>continuer vos achats</target>
+            </trans-unit>
+            <trans-unit id="46">
+                <source>Clear Shopping Cart</source>
+                <target>effacer le panier</target>
+            </trans-unit>
+            <trans-unit id="47">
+                <source>Coupons</source>
+                <target>coupons</target>
+            </trans-unit>
+            <trans-unit id="48">
+                <source>Coupon einlösen</source>
+                <target>échanger un coupon</target>
+            </trans-unit>
+            <trans-unit id="49">
+                <source>Livraison</source>
+                <target>livraison</target>
+            </trans-unit>
+            <trans-unit id="50">
+                <source>Caution</source>
+                <target>dépôt</target>
+            </trans-unit>
+            <trans-unit id="51">
+                <source>Montant global</source>
+                <target>montant global</target>
+            </trans-unit>
+            <trans-unit id="52">
+                <source>Images</source>
+                <target>images</target>
+            </trans-unit>
+            <trans-unit id="53">
+                <source>Zone</source>
+                <target>zone</target>
+            </trans-unit>
+            <trans-unit id="54">
+                <source>Vérifier si votre lieu de séjour est desservi par kidlou :</source>
+                <target>Vérifier si votre lieu de séjour est desservi par kidlou :</target>
+            </trans-unit>
+            <trans-unit id="55">
+                <source>Enter postalcode</source>
+                <target>enter postalcode</target>
+            </trans-unit>
+            <trans-unit id="56">
+                <source>Découvrez la zone de livraison :</source>
+                <target>Découvrez la zone de livraison :</target>
             </trans-unit>
         </body>
     </file>
