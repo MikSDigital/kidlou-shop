@@ -9062,7 +9062,7 @@ table.calendar-kidlou-table > tbody > tr > td.calendar-reserved input {
   font-weight: normal;
   padding: 10px;
   text-align: center;
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   vertical-align: middle;
   white-space: nowrap; }
 

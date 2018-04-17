@@ -226,6 +226,122 @@
                 <source>Découvrez la zone de livraison :</source>
                 <target>Découvrez la zone de livraison :</target>
             </trans-unit>
+            <trans-unit id="57">
+                <source>Votre panier est vide</source>
+                <target>Votre panier est vide</target>
+            </trans-unit>
+            <trans-unit id="58">
+                <source>Checkout</source>
+                <target>check-out</target>
+            </trans-unit>
+            <trans-unit id="59">
+                <source>Already registred?</source>
+                <target>Déjà enregistré?</target>
+            </trans-unit>
+            <trans-unit id="60">
+                <source>1 Adresse de facturation</source>
+                <target>1 Adresse de facturation</target>
+            </trans-unit>
+            <trans-unit id="61">
+                <source>Prenom</source>
+                <target>Prenom</target>
+            </trans-unit>
+            <trans-unit id="62">
+                <source>Adresse</source>
+                <target>Adresse</target>
+            </trans-unit>
+            <trans-unit id="63">
+                <source>Adresse1</source>
+                <target>Adresse1</target>
+            </trans-unit>
+            <trans-unit id="64">
+                <source>Adresse2</source>
+                <target>Adresse2</target>
+            </trans-unit>
+            <trans-unit id="65">
+                <source>Zip/Postal</source>
+                <target>Zip/Postal</target>
+            </trans-unit>
+            <trans-unit id="66">
+                <source>City</source>
+                <target>Ville</target>
+            </trans-unit>
+            <trans-unit id="67">
+                <source>Email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="68">
+                <source>Telephone</source>
+                <target>Telephone</target>
+            </trans-unit>
+            <trans-unit id="69">
+                <source>save as new user</source>
+                <target>enregistrer un nouvel utilisateur</target>
+            </trans-unit>
+            <trans-unit id="70">
+                <source>Password</source>
+                <target>Mot de passe</target>
+            </trans-unit>
+            <trans-unit id="71">
+                <source>Nom</source>
+                <target>Nom</target>
+            </trans-unit>
+            <trans-unit id="72">
+                <source>Country</source>
+                <target>Pais</target>
+            </trans-unit>
+            <trans-unit id="73">
+                <source>Password is not equal</source>
+                <target>Le mot de passe n'est pas égal</target>
+            </trans-unit>
+            <trans-unit id="74">
+                <source>Password must be min. 6 and max. 8 character length</source>
+                <target>Le mot de passe doit être min. 6 et max. 8 caractères</target>
+            </trans-unit>
+            <trans-unit id="75">
+                <source>Repeat password</source>
+                <target>Répéter le mot de passe</target>
+            </trans-unit>
+            <trans-unit id="76">
+                <source>2 Adresse de livraison</source>
+                <target>2 Adresse de livraison</target>
+            </trans-unit>
+            <trans-unit id="77">
+                <source>3 Mode de paiment</source>
+                <target>3 Mode de paiment</target>
+            </trans-unit>
+            <trans-unit id="78">
+                <source>4 Review your order</source>
+                <target>4 Vérifiez votre commande</target>
+            </trans-unit>
+            <trans-unit id="79">
+                <source>Subtotal</source>
+                <target>Subtotal</target>
+            </trans-unit>
+            <trans-unit id="80">
+                <source>Total</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="81">
+                <source>Reservieren</source>
+                <target>Réserve</target>
+            </trans-unit>
+            <trans-unit id="82">
+                <source>Daten werden bearbeitet</source>
+                <target>Les données sont en cours de traitement</target>
+            </trans-unit>
+            <trans-unit id="83">
+                <source>Sign In</source>
+                <target>Se connecter</target>
+            </trans-unit>
+            <trans-unit id="84">
+                <source>E-mail or Username</source>
+                <target>E-mail ou nom d'utilisateur</target>
+            </trans-unit>
+            <trans-unit id="85">
+                <source>Please log in</source>
+                <target>Veuillez vous connecter</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

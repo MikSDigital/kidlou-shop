@@ -10,7 +10,7 @@
     <section class="box info section-checkout">
         <div class="row">
             <div class="col-md-12">
-                {% if app.user == FALSE %}<div style="padding-bottom: 10px;">{{ 'Already registred?' | trans }} <a class="user-login" href="{{ path('user_login') }}">{{ 'Please log in' }}</a></div>{% endif %}
+                {% if app.user == FALSE %}<div style="padding-bottom: 10px;">{{ 'Already registred?' | trans }} <a class="user-login" href="{{ path('user_login') }}">{{ 'Please log in' | trans }}</a></div>{% endif %}
             </div>
         </div>
         <div class="row">
