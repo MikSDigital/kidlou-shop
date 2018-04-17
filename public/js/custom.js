@@ -166,6 +166,7 @@ $(document).ready(function () {
     }, function () {
         $(this).find('.toplink-inner').hide();
     });
+
     $(document).on('click', '.input-error-field', function (e) {
         if ($(this).children().is(':radio')) {
             $('.payment-methods .form-must-field').each(function () {
@@ -173,6 +174,15 @@ $(document).ready(function () {
             });
         }
     });
+
+    $(document).on('click', '.payment-methods input', function (e) {
+        $('.payment-methods h1').removeClass('input-error-field');
+    });
+
+    $(document).on('change', '.input-error-field', function (e) {
+        $(this).removeClass('input-error-field');
+    });
+
     $(document).on('keydown', '.input-error-field', function (e) {
         $(this).removeClass('input-error-field');
     });
@@ -183,6 +193,9 @@ $(document).ready(function () {
             $(this).removeClass('input-error-field');
         });
         $(".send-order input[name^='shipping'").each(function () {
+            $(this).removeClass('input-error-field');
+        });
+        $(".send-order select[name^='shipping'").each(function () {
             $(this).removeClass('input-error-field');
         });
         $("input[name=paymenttyp]").each(function () {
@@ -205,7 +218,18 @@ $(document).ready(function () {
                             $('.billing_email_message').hide();
                         }
                     }
-                    //console.log($(this).attr('id'));
+
+                    if ($(this).val() == '') {
+                        isSend = false;
+                        $(this).addClass('input-error-field');
+                        id = $(this).attr('id');
+                    }
+                }
+            });
+
+            $(".send-order select[name^='" + typ + "'").each(function () {
+                if ($(this).hasClass('form-must-field')) {
+                    console.log($(this).val());
                     if ($(this).val() == '') {
                         isSend = false;
                         $(this).addClass('input-error-field');
@@ -224,6 +248,11 @@ $(document).ready(function () {
                 }
             }
         });
+
+        if (!isChecked) {
+            $('.payment-methods h1').addClass('input-error-field');
+        }
+
         // springt zu den input fields, wenn Fehler
         if (id != '') {
             $('html, body').animate({
@@ -281,13 +310,13 @@ $(document).ready(function () {
             setLocation($(this).data('url'));
         });
     });
-// login form
+    // login form
     $(document).on('click', '.user-login', function (e) {
         e.preventDefault();
         $('#bodyoverlay-login').css({'background-image': 'none'});
         $('#bodyoverlay-login').fadeIn();
     });
-// login form
+    // login form
     $(document).on('click', '.close', function (e) {
         e.preventDefault();
         //$('#bodyoverlay-login').css({'background-image': 'none'});

@@ -342,6 +342,42 @@
                 <source>Please log in</source>
                 <target>Veuillez vous connecter</target>
             </trans-unit>
+            <trans-unit id="86">
+                <source>save in address</source>
+                <target>enregistrer l'adresse</target>
+            </trans-unit>
+            <trans-unit id="87">
+                <source>User Area</source>
+                <target>zone d'utilisateur</target>
+            </trans-unit>
+            <trans-unit id="88">
+                <source>Logout</source>
+                <target>Logout</target>
+            </trans-unit>
+            <trans-unit id="89">
+                <source>Street</source>
+                <target>Rue</target>
+            </trans-unit>
+            <trans-unit id="90">
+                <source>Typ</source>
+                <target>Sélection</target>
+            </trans-unit>
+            <trans-unit id="91">
+                <source>Choice</source>
+                <target>sélection</target>
+            </trans-unit>
+            <trans-unit id="92">
+                <source>Hotel</source>
+                <target>Hôtel</target>
+            </trans-unit>
+            <trans-unit id="93">
+                <source>Chalet</source>
+                <target>Chalet</target>
+            </trans-unit>
+            <trans-unit id="94">
+                <source>Private</source>
+                <target>Privé</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

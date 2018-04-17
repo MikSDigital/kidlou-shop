@@ -413,14 +413,20 @@ class Order {
         $data = $this->getRequest()->get($typ);
         if ($typ == 'billing') {
             $object->setAddressTyp($this->getBillingType());
+            $object->setName('');
+            $object->setShippingTyp('');
+            $object->setEmail($data['email']);
+            $object->setFirstName($data['firstname']);
+            $object->setLastName($data['lastname']);
         } else {
             $object->setAddressTyp($this->getShippingType());
+            $object->setName($data['name']);
+            $object->setShippingTyp($data['shipping_typ']);
+            $object->setEmail('');
+            $object->setFirstName('');
+            $object->setLastName('');
         }
-        $object->setFirstName($data['firstname']);
-        $object->setLastName($data['lastname']);
-        if ($typ == 'billing') {
-            $object->setEmail($data['email']);
-        }
+
         $object->setPhone($data['phone']);
         $street = $data['street1'];
         if ($data['street1'] != '') {
@@ -430,6 +436,7 @@ class Order {
         if ($this->getContainer()->get("security.token_storage")->getToken()) {
             $object->setUser($this->getContainer()->get("security.token_storage")->getToken()->getUser());
         }
+
         $object->setStreet($street);
         $object->setPostCode($data['post_code']);
         $object->setCity($data['city']);

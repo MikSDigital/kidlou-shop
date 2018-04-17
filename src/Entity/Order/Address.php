@@ -32,6 +32,16 @@ class Address {
     /**
      * @ORM\Column(type="string", length=200)
      */
+    private $shipping_typ;
+
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
     private $firstname;
 
     /**
@@ -142,6 +152,50 @@ class Address {
      */
     public function getUpdated() {
         return $this->updated;
+    }
+
+    /**
+     * Set typ
+     *
+     * @param string $shipping_typ
+     *
+     * @return Address
+     */
+    public function setShippingTyp($shipping_typ) {
+        $this->shipping_typ = $shipping_typ;
+
+        return $this;
+    }
+
+    /**
+     * Get shipping_typ
+     *
+     * @return string
+     */
+    public function getShippingTyp() {
+        return $this->shipping_typ;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Address
+     */
+    public function setName($name) {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
     }
 
     /**
