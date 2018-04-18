@@ -7,6 +7,7 @@ services:
     helper.cart: '@App\Service\Cart'
     helper.calendar: '@App\Service\Calendar'
     helper.image: '@App\Service\Image'
+    helper.quote: '@App\Service\Quote'
     helper.order: '@App\Service\Order'
     helper.payment: '@App\Service\Payment'
     service.language: '@App\Service\Parameter'

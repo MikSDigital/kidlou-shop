@@ -82,14 +82,6 @@ class Calendar {
     }
 
     /**
-     * check if basket is always in time
-     */
-    private function getIsBasketInTime() {
-        $quote_id = $this->container->get('session')->get('quote_id');
-        $quotes = $this->getCurrentQuote($quote_id);
-    }
-
-    /**
      *
      * @return type integer
      */
@@ -606,14 +598,6 @@ class Calendar {
                 $this->days_crossing['date_to'][$calendar->getDateTo()->format('Y-m-d')] = $calendar->getDateTo()->format('Y-m-d');
             }
         }
-    }
-
-    /**
-     *
-     * @return type $quotes
-     */
-    private function getCurrentQuote($quote_id) {
-        return $this->em->getRepository(Quote::class)->getCurrentQuote($quote_id);
     }
 
     /**
