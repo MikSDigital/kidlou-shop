@@ -110,7 +110,7 @@ class Quote extends \Doctrine\ORM\EntityRepository {
                         ->setParameter('hour', new \DateTime('-1 hour'))
                         ->setParameter('quote_id', $quote_id)
                         ->getQuery()
-                        ->getResult();
+                        ->getOneOrNullResult();
     }
 
 }

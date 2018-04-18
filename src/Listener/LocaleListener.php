@@ -31,6 +31,12 @@ class LocaleListener implements EventSubscriberInterface {
 
     /**
      *
+     * @var type string
+     */
+    private $currentLocale;
+
+    /**
+     *
      * @var type TranslatorInterface
      */
     private $translator;
@@ -42,44 +48,47 @@ class LocaleListener implements EventSubscriberInterface {
 
     //https://gist.github.com/kunicmarko20/02a42c76f638322d58b1def7d2e770d7
     public function onKernelRequest(GetResponseEvent $event) {
-        $request = $event->getRequest();
-        // wenn nicht lang und admin
-        $this->newUrl = $request->getPathInfo();
-        $this->oldUrl = $request->headers->get('referer');
-        // check if admin
-        if ($this->getIsAdmin()) {
-            return;
-        }
 
-        if ($this->getIsApi()) {
-            return;
-        }
-
-        if ($this->getIsTest()) {
-            return;
-        }
-
-        $locale = $this->checkLanguage();
-        if ($locale === null) {
-            return;
-        }
-        // check is is web_profile
-        if ($this->getIsWebProfile()) {
-            return;
-        }
-
-        $request->setLocale($locale);
-        $this->translator->setLocale($locale);
-        $pathLocale = "/" . $locale . $this->newUrl;
-
-        //We have to catch the ResourceNotFoundException
-        try {
-            $event->setResponse(new RedirectResponse($pathLocale));
-        } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
-
-        } catch (\Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
-
-        }
+//        $request = $event->getRequest();
+//        // wenn nicht lang und admin
+//        $this->newUrl = $request->getPathInfo();
+//        $this->oldUrl = $request->headers->get('referer');
+//        $this->currentLocale = $request->getLocale();
+//
+//        // check if admin
+//        if ($this->getIsAdmin()) {
+//            return;
+//        }
+//
+//        if ($this->getIsApi()) {
+//            return;
+//        }
+//
+//        if ($this->getIsTest()) {
+//            return;
+//        }
+//
+////        $locale = $this->checkLanguage();
+//        return;
+//        if ($locale === null) {
+//            return;
+//        }
+//
+//        // check is is web_profile
+//        if ($this->getIsWebProfile()) {
+//            return;
+//        }
+//        $request->setLocale($locale);
+//        $this->translator->setLocale($locale);
+//        $pathLocale = "/" . $locale . $this->newUrl;
+//        //We have to catch the ResourceNotFoundException
+//        try {
+//            $event->setResponse(new RedirectResponse($pathLocale));
+//        } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
+//
+//        } catch (\Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
+//
+//        }
     }
 
     static public function getSubscribedEvents() {
@@ -93,8 +102,9 @@ class LocaleListener implements EventSubscriberInterface {
         foreach ($this->parameter->getLanguages() as $language) {
             if (preg_match_all("/\/$language\//", $this->newUrl))
                 return null;
-            if (preg_match_all("/\/$language\//", $this->oldUrl))
+            if (preg_match_all("/\/$language\//", $this->oldUrl)) {
                 return $language;
+            }
         }
         return $this->parameter->getLocale();
     }
