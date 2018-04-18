@@ -29,7 +29,7 @@ class Quote {
         if ($quote_id) {
             $quote = $this->getCurrentQuote($quote_id);
             if (!isset($quote)) {
-                $this->container->get('session')->remove('quote_id');
+                $this->removeBasket();
             }
         }
     }
@@ -41,6 +41,16 @@ class Quote {
      */
     private function getCurrentQuote($quote_id) {
         return $this->em->getRepository(\App\Entity\Quote::class)->getCurrentQuote($quote_id);
+    }
+
+    /**
+     * remove the data of basket
+     *
+     */
+    private function removeBasket() {
+        $this->container->get('session')->remove('quote_id');
+        $this->container->get('session')->remove('basket_items');
+        $this->container->get('session')->remove('price_subtotal');
     }
 
 }
