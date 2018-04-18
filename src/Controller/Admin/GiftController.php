@@ -55,10 +55,10 @@ class GiftController extends Controller {
         }
 
         $arr_lang = array();
-        $langs = $this->getDoctrine()->getRepository(Language::class)->findAll();
+        $langs = $this->getDoctrine()->getRepository(\App\Entity\Language::class)->findAll();
         foreach ($langs as $lang) {
-            if ($this->getDoctrine()->getRepository(Gift\Text::class)->findOneBy(array('gift' => $gift, 'lang' => $this->getDoctrine()->getRepository(Language::class)->findOneBy(array('short_name' => $lang->getShortName()))))) {
-                $arr_lang[$lang->getShortName()] = $this->getDoctrine()->getRepository(Gift\Text::class)->findOneBy(array('gift' => $gift, 'lang' => $this->getDoctrine()->getRepository(Language::class)->findOneBy(array('short_name' => $lang->getShortName()))))->getDescription();
+            if ($this->getDoctrine()->getRepository(Text::class)->findOneBy(array('gift' => $gift, 'lang' => $this->getDoctrine()->getRepository(\App\Entity\Language::class)->findOneBy(array('short_name' => $lang->getShortName()))))) {
+                $arr_lang[$lang->getShortName()] = $this->getDoctrine()->getRepository(Text::class)->findOneBy(array('gift' => $gift, 'lang' => $this->getDoctrine()->getRepository(\App\Entity\Language::class)->findOneBy(array('short_name' => $lang->getShortName()))))->getDescription();
             } else {
                 $arr_lang[$lang->getShortName()] = '';
             }

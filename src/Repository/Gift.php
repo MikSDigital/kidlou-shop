@@ -10,4 +10,15 @@ namespace App\Repository;
  */
 class Gift extends \Doctrine\ORM\EntityRepository {
 
+    public function getCoupon() {
+        return $this->createQueryBuilder('ca')
+                        ->addSelect('co')
+                        ->innerJoin('ca.contents', 'co')
+                        ->where('ca.id = (:category) AND ca.status = 1')
+                        ->setParameter('category', $id)
+                        ->orderBy('co.created_at', 'DESC')
+                        ->getQuery()
+                        ->getOneOrNullResult();
+    }
+
 }

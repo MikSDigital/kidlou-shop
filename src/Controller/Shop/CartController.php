@@ -259,12 +259,13 @@ class CartController extends Controller {
     }
 
     /**
-     *
+     * @Route("/coupon/", name="add_coupon")
      * @param Request $request
      * @return type ControllerTrait
      */
-    public function couponAction(Request $request) {
-        $this->request->get('coupons');
+    public function couponAction(Request $request, ServiceCart $serviceCart) {
+        $coupon = $this->request->get('coupon');
+        $serviceCart->addCoupon($coupon);
         return $this->redirectToRoute('index_cart');
     }
 
@@ -276,12 +277,6 @@ class CartController extends Controller {
      */
     private function getProductIsInBasket($quote, $product, $dates, $serviceCalendar) {
         $serviceCalendar->setCheckCalendar($product->getId());
-        // check if is reserved
-//        $calendar = $serviceCalendar->getIsMyCalendarReserved($quote, $product);
-//        if ($calendar->getDateFrom()->format('Y-m-d') == $serviceCalendar->getConvertDate($dates->date_from) &&
-//                $calendar->getDateTo()->format('Y-m-d') == $serviceCalendar->getConvertDate($dates->date_to)) {
-//            return FALSE;
-//        }
         // check if first or last day is reserved
         $request_dates = $serviceCalendar->getRequestCalendarDates($dates);
         $current_dates = $serviceCalendar->getCurrentCalendar();

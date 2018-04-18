@@ -44,25 +44,40 @@ class Cart {
         $this->em = $entityManager;
     }
 
+    /**
+     *
+     * @return Common
+     */
     protected function getCommon() {
         return $this->common;
     }
 
+    /**
+     *
+     * @param type $product
+     * @return Common
+     */
     public function getId($product) {
         return $this->getCommon()->encrypt($this->secret_key . '__' . $product->getSku() . '__' . time() . '__' . $product->getId(), $this->key);
     }
 
-    public function getProduct1($encryptstr) {
-        $arr_decrypt = explode('__', $this->getCommon()->decrypt($encryptstr, $this->key));
-        $product_id = trim($arr_decrypt[count($arr_decrypt) - 1]);
+    /**
+     *
+     * @param type $url_key
+     * @return type
+     */
+    public function getProduct($url_key) {
         $product = $this->em
                 ->getRepository(Product::class)
-                ->findOneById($product_id);
-        //
+                ->findOneBy(array('url_key' => $url_key));
         return $product;
     }
 
-    public function getProduct($url_key) {
+    /**
+     *
+     */
+    public function addCoupon($coupon) {
+
         $product = $this->em
                 ->getRepository(Product::class)
                 ->findOneBy(array('url_key' => $url_key));
