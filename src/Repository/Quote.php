@@ -93,7 +93,20 @@ class Quote extends \Doctrine\ORM\EntityRepository {
      */
     public function getCurrentQuotes($quote_id = 0) {
         return $this->createQueryBuilder('q')
-                        ->where('q.created > :hour AND q.id != :quote_id')
+                        ->where('q.updated > :hour AND q.id != :quote_id')
+                        ->setParameter('hour', new \DateTime('-1 hour'))
+                        ->setParameter('quote_id', $quote_id)
+                        ->getQuery()
+                        ->getResult();
+    }
+
+    /**
+     *
+     * @return type quote
+     */
+    public function getCurrentQuote($quote_id) {
+        return $this->createQueryBuilder('q')
+                        ->where('q.updated > :hour AND q.id = :quote_id')
                         ->setParameter('hour', new \DateTime('-1 hour'))
                         ->setParameter('quote_id', $quote_id)
                         ->getQuery()

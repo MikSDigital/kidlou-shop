@@ -82,6 +82,14 @@ class Calendar {
     }
 
     /**
+     * check if basket is always in time
+     */
+    private function getIsBasketInTime() {
+        $quote_id = $this->container->get('session')->get('quote_id');
+        $quotes = $this->getCurrentQuote($quote_id);
+    }
+
+    /**
      *
      * @return type integer
      */
@@ -604,6 +612,14 @@ class Calendar {
      *
      * @return type $quotes
      */
+    private function getCurrentQuote($quote_id) {
+        return $this->em->getRepository(Quote::class)->getCurrentQuote($quote_id);
+    }
+
+    /**
+     *
+     * @return type $quotes
+     */
     private function getCurrentQuotes($quote_id) {
         return $this->em->getRepository(Quote::class)->getCurrentQuotes($quote_id);
     }
@@ -749,6 +765,16 @@ class Calendar {
             $date = explode('-', $date);
             return $date[2] . '.' . $date[1] . '.' . $date[0];
         }
+    }
+
+    /**
+     *
+     * @param type $product_id
+     * @param type $quote_id
+     * @return calendar
+     */
+    public function getIsMyCalendarReserved($quote, $product) {
+        return $this->em->getRepository(\App\Entity\Calendar::class)->findOneBy(array('product' => $product, 'quote' => $quote));
     }
 
 }

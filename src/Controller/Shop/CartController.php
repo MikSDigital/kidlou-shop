@@ -50,9 +50,6 @@ class CartController extends Controller {
             $quote = new Quote();
             $quote->setCreated($carttime);
             $quote->setUpdated($carttime);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($quote);
-            $em->flush();
             //$this->container->get('session')->migrate(true, $lifetime = 3600);
             $this->container->get('session')->set('quote_id', $quote->getId());
             $quote_id = $quote->getId();
@@ -61,7 +58,12 @@ class CartController extends Controller {
 //            $this->container->get('session')->remove('quote_id');
 //            $this->container->get('session')->set('quote_id', $quote_id);
             $quote = $this->getDoctrine()->getRepository(Quote::class)->findOneBy(array('id' => $quote_id));
+            $quote->setUpdated($carttime);
         }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($quote);
+        $em->flush();
+
         $product = $serviceCart->getProduct($id);
         $dates = $request->request->get('dates');
         $dates = json_decode($dates);
@@ -76,8 +78,9 @@ class CartController extends Controller {
             $arr_additionals[] = $additional;
         }
 
+        // delete calendar eintrag für dieses product
         // check ob product im warenkorb liegen
-        if ($this->getProductIsInBasket($product, $dates, $serviceCalendar)) {
+        if ($this->getProductIsInBasket($quote, $product, $dates, $serviceCalendar)) {
             $html = $this->renderView('shop/cart/productinbasket.html.twig'
                     , array(
                 'date_from' => $dates->date_from,
@@ -87,7 +90,6 @@ class CartController extends Controller {
             );
             return new JsonResponse(array('html' => $html));
         }
-        //         //
         // write in calendar
         $reposCalendar = $this->getDoctrine()->getRepository(Calendar::class);
         $calendar = $reposCalendar->findOneBy(
@@ -270,8 +272,14 @@ class CartController extends Controller {
      * @param type $quote_id
      * @param type $dates
      */
-    private function getProductIsInBasket($product, $dates, $serviceCalendar) {
+    private function getProductIsInBasket($quote, $product, $dates, $serviceCalendar) {
         $serviceCalendar->setCheckCalendar($product->getId());
+        // check if is reserved
+//        $calendar = $serviceCalendar->getIsMyCalendarReserved($quote, $product);
+//        if ($calendar->getDateFrom()->format('Y-m-d') == $serviceCalendar->getConvertDate($dates->date_from) &&
+//                $calendar->getDateTo()->format('Y-m-d') == $serviceCalendar->getConvertDate($dates->date_to)) {
+//            return FALSE;
+//        }
         // check if first or last day is reserved
         $request_dates = $serviceCalendar->getRequestCalendarDates($dates);
         $current_dates = $serviceCalendar->getCurrentCalendar();
