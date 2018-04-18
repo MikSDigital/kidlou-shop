@@ -45,11 +45,14 @@ class CartController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $carttime = new \DateTime();
         $quote_id = 0;
+        $em = $this->getDoctrine()->getManager();
         if (!$this->container->get('session')->get('quote_id')) {
             // hier eine quote erstellen
             $quote = new Quote();
             $quote->setCreated($carttime);
             $quote->setUpdated($carttime);
+            $em->persist($quote);
+            $em->flush();
             //$this->container->get('session')->migrate(true, $lifetime = 3600);
             $this->container->get('session')->set('quote_id', $quote->getId());
             $quote_id = $quote->getId();
@@ -59,10 +62,9 @@ class CartController extends Controller {
 //            $this->container->get('session')->set('quote_id', $quote_id);
             $quote = $this->getDoctrine()->getRepository(Quote::class)->findOneBy(array('id' => $quote_id));
             $quote->setUpdated($carttime);
+            $em->persist($quote);
+            $em->flush();
         }
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($quote);
-        $em->flush();
 
         $product = $serviceCart->getProduct($id);
         $dates = $request->request->get('dates');
@@ -157,7 +159,7 @@ class CartController extends Controller {
             $additionals[] = $em->getRepository(Product::class)->findOneById($additional);
         }
 
-// write in session for warenkorb
+        // write in session for warenkorb
         $basket = $serviceCommon->setBasket();
         $this->container->get('session')->set('basket_items', $basket->getBasketItems());
         $this->container->get('session')->set('price_subtotal', $basket->getSubtotal());

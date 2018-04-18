@@ -74,7 +74,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common","@router"]
 
     App\Service\Quote:
-        arguments: ["@service_container"]
+        arguments: ["@doctrine.orm.entity_manager","@service_container"]
 
     App\Service\Order:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container", "@helper.common", "@mailer"]

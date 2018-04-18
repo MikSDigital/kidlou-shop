@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 class Quote {
-
     /**
      *
      * @param EntityManager $entityManager
@@ -16,7 +15,21 @@ class Quote {
      * @param \App\Service\Common $common
      *
      */
-    public function __construct(Container $container) {
+
+    /**
+     *
+     * @var em EntityManager
+     */
+    private $em;
+
+    /**
+     *
+     * @var container $container
+     */
+    private $container;
+
+    public function __construct(EntityManager $entityManager, Container $container) {
+        $this->em = $entityManager;
         $this->container = $container;
         $this->getIsBasketInTime();
     }
