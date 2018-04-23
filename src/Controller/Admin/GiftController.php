@@ -154,7 +154,7 @@ class GiftController extends Controller {
     private function setTexts($gift, $request) {
         $em = $this->getDoctrine()->getManager();
         $texts = $request->request->get('form');
-        $langs = $this->getDoctrine()->getRepository(Language::class)->findAll();
+        $langs = $this->getDoctrine()->getRepository(\App\Entity\Language::class)->findAll();
         foreach ($langs as $lang) {
             $text = $this->getDoctrine()->getRepository(Gift\Text::class)->findOneBy(array('lang' => $lang, 'gift' => $gift));
             if (!$text) {

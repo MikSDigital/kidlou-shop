@@ -187,28 +187,6 @@ class Gift {
     }
 
     /**
-     * Set text
-     *
-     * @param string $text
-     *
-     * @return Text
-     */
-    public function setText(\App\Entity\Gift\Text $text) {
-        $this->text = $text;
-
-        return $this;
-    }
-
-    /**
-     * Get text
-     *
-     * @return string
-     */
-    public function getText() {
-        return $this->text;
-    }
-
-    /**
      * Set isActive
      *
      * @param boolean $isActive

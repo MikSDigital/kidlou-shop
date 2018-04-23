@@ -378,6 +378,10 @@
                 <source>Private</source>
                 <target>Privé</target>
             </trans-unit>
+            <trans-unit id="95">
+                <source>Leider ist dieses Produkt im Zeitraum vom %s bis %s reserviert!</source>
+                <target>Malheureusement, ce produit est réservé dans la période de %s à %s!</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

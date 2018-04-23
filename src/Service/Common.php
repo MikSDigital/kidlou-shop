@@ -332,6 +332,17 @@ class Common {
     }
 
     /**
+     *
+     * @param type $percent
+     * @return float
+     */
+    public function getGiftCost($percent) {
+        $price = $this->container->get('session')->get('price_subtotal') / 100;
+        $price = $price * $percent;
+        return number_format($price, 2);
+    }
+
+    /**
      * @return number
      */
     public function getStartLatitude() {

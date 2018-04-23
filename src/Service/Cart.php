@@ -76,12 +76,11 @@ class Cart {
     /**
      *
      */
-    public function addCoupon($coupon) {
-
-        $product = $this->em
-                ->getRepository(Product::class)
-                ->findOneBy(array('url_key' => $url_key));
-        return $product;
+    public function getCoupon($coupon, $lang) {
+        $coupon = $this->em
+                ->getRepository(\App\Entity\Gift::class)
+                ->getCoupon($coupon, $lang);
+        return $coupon;
     }
 
 }

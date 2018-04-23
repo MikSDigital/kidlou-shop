@@ -263,9 +263,17 @@ class CartController extends Controller {
      * @param Request $request
      * @return type ControllerTrait
      */
-    public function couponAction(Request $request, ServiceCart $serviceCart) {
-        $coupon = $this->request->get('coupon');
-        $serviceCart->addCoupon($coupon);
+    public function couponAction(Request $request, ServiceCart $serviceCart, ServiceCommon $serviceCommon) {
+        //$request->getLocale()
+        $lang = $serviceCommon->getLanguage();
+        $coupon = $request->request->get('coupon');
+        $coupon = $serviceCart->getCoupon($coupon, $lang);
+        if ($coupon) {
+            $price = $this->container->get('session')->get('price_subtotal') / 100;
+            $price = number_format($price * $coupon['percent'], 2);
+            $this->container->get('session')->set('amount_subtotal_cost', $price);
+            $this->container->get('session')->set('amount_description', $coupon['description']);
+        }
         return $this->redirectToRoute('index_cart');
     }
 

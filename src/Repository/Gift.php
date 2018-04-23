@@ -10,13 +10,18 @@ namespace App\Repository;
  */
 class Gift extends \Doctrine\ORM\EntityRepository {
 
-    public function getCoupon() {
-        return $this->createQueryBuilder('ca')
-                        ->addSelect('co')
-                        ->innerJoin('ca.contents', 'co')
-                        ->where('ca.id = (:category) AND ca.status = 1')
-                        ->setParameter('category', $id)
-                        ->orderBy('co.created_at', 'DESC')
+    public function getCoupon($code, $lang) {
+        $date = new \DateTime();
+        return $this->createQueryBuilder('g')
+                        ->addSelect('co.code, g.percent, te.description')
+                        ->innerJoin('g.coupons', 'co')
+                        ->innerJoin('g.texts', 'te')
+                        ->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND co.counter <= g.max_uses AND te.gift = g AND te.lang = :lang')
+                        //->where('g.date_from >= :date AND g.date_to >= :date AND g.isActive = 1')
+                        ->setParameter('date', $date)
+                        ->setParameter('date', $date)
+                        ->setParameter('code', $code)
+                        ->setParameter('lang', $lang)
                         ->getQuery()
                         ->getOneOrNullResult();
     }
