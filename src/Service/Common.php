@@ -105,18 +105,6 @@ class Common {
 
     /**
      *
-     * @var type array
-     */
-    private $arr_basket_items = array();
-
-    /**
-     *
-     * @var type number
-     */
-    private $price_subtotal;
-
-    /**
-     *
      * @var type zone
      */
     private $zone;
@@ -1072,10 +1060,9 @@ class Common {
         if (!$quote_id) {
             return FALSE;
         }
-
-        $this->arr_basket_items = $this->em->getRepository(\App\Entity\Quote::class)->getBasketItems($quote_id, 'image80', 'image80', $this->getRequest()->getLocale());
+        $basket_items = $this->em->getRepository(\App\Entity\Quote::class)->getBasketItems($quote_id, 'image80', 'image80', $this->getRequest()->getLocale());
         $price = 0;
-        foreach ($this->arr_basket_items as $items) {
+        foreach ($basket_items as $items) {
             foreach ($items['parent_price'] as $item) {
                 $price = $price + $item;
             }
@@ -1085,24 +1072,25 @@ class Common {
                 }
             }
         }
-        $this->price_subtotal = $price;
+        $this->getContainer()->set('session')->set('price_subtotal', $price);
+        $this->getContainer()->set('session')->set('basket_items', $basket_items);
         return $this;
     }
 
     /**
      *
-     * @return type price_subtotal
+     * @return float
      */
-    public function getBasketItems() {
-        return $this->arr_basket_items;
+    public function getPriceSubtotal() {
+        return $this->getContainer()->get('session')->set('price_subtotal');
     }
 
     /**
      *
-     * @return type price_subtotal
+     * @return float
      */
-    public function getSubtotal() {
-        return $this->price_subtotal;
+    public function getPriceTotal() {
+        return $this->getShippingCost() + $this->getCautionCost() + $this->getPriceSubtotal();
     }
 
     /**

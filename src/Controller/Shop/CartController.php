@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Translation\TranslatorInterface;
 use App\Entity\Quote;
 use App\Entity\Calendar;
 use App\Entity\Map\QuoteProductAdditional;
@@ -161,9 +162,6 @@ class CartController extends Controller {
 
         // write in session for warenkorb
         $basket = $serviceCommon->setBasket();
-        $this->container->get('session')->set('basket_items', $basket->getBasketItems());
-        $this->container->get('session')->set('price_subtotal', $basket->getSubtotal());
-
         $html = $this->renderView('shop/cart/add.html.twig'
                 , array(
             'date_from' => $dates->date_from,
@@ -253,8 +251,6 @@ class CartController extends Controller {
             }
         }
         $basket = $serviceCommon->setBasket();
-        $this->container->get('session')->set('basket_items', $basket->getBasketItems());
-        $this->container->get('session')->set('price_subtotal', $basket->getSubtotal());
         return $this->redirectToRoute('index_cart');
     }
 
@@ -263,16 +259,22 @@ class CartController extends Controller {
      * @param Request $request
      * @return type ControllerTrait
      */
-    public function couponAction(Request $request, ServiceCart $serviceCart, ServiceCommon $serviceCommon) {
+    public function couponAction(Request $request, ServiceCart $serviceCart, ServiceCommon $serviceCommon, TranslatorInterface $translator) {
         //$request->getLocale()
         $lang = $serviceCommon->getLanguage();
         $coupon = $request->request->get('coupon');
         $coupon = $serviceCart->getCoupon($coupon, $lang);
         if ($coupon) {
-            $price = $this->container->get('session')->get('price_subtotal') / 100;
-            $price = number_format($price * $coupon['percent'], 2);
-            $this->container->get('session')->set('amount_subtotal_cost', $price);
-            $this->container->get('session')->set('amount_description', $coupon['description']);
+            if ($coupon['max_uses'] >= $coupon['counter']) {
+                $this->addFlash("no-coupon", $translator->trans('Code is always used'));
+            } else {
+                $amount_cost = $this->container->get('session')->get('price_subtotal') / 100;
+                $price = number_format($amount_cost * $coupon['percent'], 2);
+                $this->container->get('session')->set('amount_subtotal_cost', $amount_cost);
+                $this->container->get('session')->set('amount_description', $coupon['description']);
+            }
+        } else {
+            $this->addFlash("no-coupon", $translator->trans('Code is not valid'));
         }
         return $this->redirectToRoute('index_cart');
     }

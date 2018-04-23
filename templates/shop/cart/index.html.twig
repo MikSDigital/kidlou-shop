@@ -113,30 +113,26 @@
                         </div>
                         <div class="col-xs-12 col-sm-4 col-sms-4 col-smb-12"> </div>
                         <div class="col-xs-12 col-sm-4 col-sms-4 col-smb-12">
-                            {% set shipping_cost = common.getShippingCost() %}
-                            {% set caution_cost = common.getCautionCost() %}
-                            {% set subtotal_price = app.session.get('price_subtotal') %}
-                            {% set total_price = subtotal_price + shipping_cost + caution_cost %}
                             <div class="totals">
                                 <table id="shopping-cart-totals-table">
                                     <tbody>
                                         <tr>
                                             <td class="a-left" style="" colspan="1">{{ 'Sous-total' | trans }}</td>
-                                            <td class="a-right" style=""><nobr>CHF {{ subtotal_price | number_format(2) }}</nobr></td>
+                                            <td class="a-right" style=""><nobr>CHF {{ common.getPriceSubtotal() | number_format(2) }}</nobr></td>
                                     </tr>
                                     <tr>
                                         <td class="a-left" style="" colspan="1">{{ 'Livraison' | trans }}</td>
-                                        <td class="a-right" style=""><nobr>CHF {{ shipping_cost | number_format(2) }}</nobr></td>
+                                        <td class="a-right" style=""><nobr>CHF {{ common.getShippingCost() | number_format(2) }}</nobr></td>
                                     </tr>
                                     <tr>
                                         <td class="a-left" style="" colspan="1">{{ 'Caution' | trans }}</td>
-                                        <td class="a-right" style=""><nobr>CHF {{ caution_cost | number_format(2) }}</nobr></td>
+                                        <td class="a-right" style=""><nobr>CHF {{ common.getCautionCost() | number_format(2) }}</nobr></td>
                                     </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td class="a-left" style="" colspan="1"><strong>{{ 'Montant global' | trans }}</strong></td>
-                                            <td class="a-right" style=""><nobr><strong>CHF {{ total_price | number_format(2) }} </strong></nobr></td>
+                                            <td class="a-right" style=""><nobr><strong>CHF {{ common.getPriceTotal() | number_format(2) }} </strong></nobr></td>
                                     </tr>
                                     </tfoot>
 
