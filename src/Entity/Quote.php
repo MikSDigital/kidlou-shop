@@ -44,11 +44,6 @@ class Quote {
     private $productadditionals;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Gift\Coupon", mappedBy="quote")
-     */
-    private $coupons;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Gift\Coupon\Quote", mappedBy="quote")
      */
     private $gift_coupon_quote;
@@ -56,7 +51,6 @@ class Quote {
     public function __construct() {
         $this->calendars = new ArrayCollection();
         $this->productadditionals = new ArrayCollection();
-        $this->coupons = new ArrayCollection();
     }
 
     /**
@@ -172,37 +166,6 @@ class Quote {
      */
     public function getProductadditionals() {
         return $this->productadditionals;
-    }
-
-    /**
-     * Add coupon
-     *
-     * @param \App\Entity\Gift\Coupon $coupon
-     *
-     * @return Quote
-     */
-    public function addCoupon(\App\Entity\Gift\Coupon $coupon) {
-        $this->coupons[] = $coupon;
-
-        return $this;
-    }
-
-    /**
-     * Remove coupon
-     *
-     * @param \App\Entity\Gift\Coupon $coupon
-     */
-    public function removeCoupon(\App\Entity\Gift\Coupon $coupon) {
-        $this->coupons->removeElement($coupon);
-    }
-
-    /**
-     * Get coupon
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCoupons() {
-        return $this->coupons;
     }
 
     /**

@@ -34,18 +34,6 @@ class Coupon {
     private $counter;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Quote", inversedBy="coupons")
-     * @ORM\JoinColumn(name="quote_id", referencedColumnName="id")
-     */
-    private $quote;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="coupons")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-     */
-    private $order;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Gift", inversedBy="coupons")
      * @ORM\JoinColumn(name="gift_id", referencedColumnName="id")
      */
@@ -102,50 +90,6 @@ class Coupon {
      */
     public function getCounter() {
         return $this->counter;
-    }
-
-    /**
-     * Set order
-     *
-     * @param \App\Entity\Order $order
-     *
-     * @return Coupon
-     */
-    public function setOrder(\App\Entity\Order $order = null) {
-        $this->order = $order;
-
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return \App\Entity\Order
-     */
-    public function getOrder() {
-        return $this->order;
-    }
-
-    /**
-     * Set quote
-     *
-     * @param \App\Entity\Quote $quote
-     *
-     * @return Coupon
-     */
-    public function setQuote(\App\Entity\Quote $quote = null) {
-        $this->quote = $quote;
-
-        return $this;
-    }
-
-    /**
-     * Get quote
-     *
-     * @return \App\Entity\Quote
-     */
-    public function getQuote() {
-        return $this->quote;
     }
 
     /**

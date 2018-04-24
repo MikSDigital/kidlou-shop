@@ -5,8 +5,6 @@ namespace App\Entity\Gift\Coupon;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Entity\Order;
-use App\Entity\Quote;
 
 /**
  * @ORM\Entity
@@ -23,7 +21,7 @@ class Order {
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Order")
+     * @ORM\OneToOne(targetEntity="App\Entity\Order", inversedBy="gift_coupon_order")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;

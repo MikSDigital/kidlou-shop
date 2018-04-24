@@ -61,11 +61,6 @@ class Order {
     private $addresses;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Gift\Coupon", mappedBy="order")
-     */
-    private $coupons;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language", inversedBy="orders")
      * @ORM\JoinColumn(name="lang_id", referencedColumnName="id")
      */
@@ -77,13 +72,17 @@ class Order {
     private $payment;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Gift\Coupon\Order", mappedBy="order")
+     */
+    private $gift_coupon_order;
+
+    /**
      *
      */
     public function __construct() {
         $this->calendars = new ArrayCollection();
         $this->addresses = new ArrayCollection();
         $this->productadditionals = new ArrayCollection();
-        $this->coupons = new ArrayCollection();
     }
 
     /**
@@ -321,34 +320,25 @@ class Order {
     }
 
     /**
-     * Add coupon
+     * Set gift_coupon_order
      *
-     * @param \App\Entity\Gift\Coupon $coupon
+     * @param \App\Entity\Gift\Coupon\Order $order
      *
-     * @return Quote
+     * @return Order
      */
-    public function addCoupon(\App\Entity\Gift\Coupon $coupon) {
-        $this->coupons[] = $coupon;
+    public function setGiftCouponQuote(\App\Entity\Gift\Coupon\Order $gift_coupon_order = null) {
+        $this->gift_coupon_order = $quote;
 
         return $this;
     }
 
     /**
-     * Remove coupon
+     * Get gift_coupon_order
      *
-     * @param \App\Entity\Gift\Coupon $coupon
+     * @return \App\Entity\Gift\Coupon\Order
      */
-    public function removeCoupon(\App\Entity\Gift\Coupon $coupon) {
-        $this->coupons->removeElement($coupon);
-    }
-
-    /**
-     * Get coupon
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCoupons() {
-        return $this->coupons;
+    public function getGiftCouponOrder() {
+        return $this->gift_coupon_order;
     }
 
 }
