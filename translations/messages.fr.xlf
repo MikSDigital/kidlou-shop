@@ -382,6 +382,11 @@
                 <source>Leider ist dieses Produkt im Zeitraum vom %s bis %s reserviert!</source>
                 <target>Malheureusement, ce produit est réservé dans la période de %s à %s!</target>
             </trans-unit>
+            <trans-unit id="96">
+                <source>The cart is empty</source>
+                <target>Le panier est vide</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

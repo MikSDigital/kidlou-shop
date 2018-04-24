@@ -72,9 +72,9 @@ class Order {
     private $payment;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Gift\Coupon\Order", mappedBy="order")
+     * @ORM\OneToOne(targetEntity="App\Entity\Gift\Coupon\Counter", mappedBy="order")
      */
-    private $gift_coupon_order;
+    private $coupon_counter;
 
     /**
      *
@@ -320,14 +320,14 @@ class Order {
     }
 
     /**
-     * Set gift_coupon_order
+     * Set coupon_counter
      *
-     * @param \App\Entity\Gift\Coupon\Order $order
+     * @param \App\Entity\Gift\Coupon\Counter $coupon_counter
      *
      * @return Order
      */
-    public function setGiftCouponQuote(\App\Entity\Gift\Coupon\Order $gift_coupon_order = null) {
-        $this->gift_coupon_order = $quote;
+    public function setCouponOrder(\App\Entity\Gift\Coupon\Counter $coupon_counter = null) {
+        $this->coupon_counter = $coupon_counter;
 
         return $this;
     }
@@ -335,10 +335,10 @@ class Order {
     /**
      * Get gift_coupon_order
      *
-     * @return \App\Entity\Gift\Coupon\Order
+     * @return \App\Entity\Gift\Coupon\Counter
      */
-    public function getGiftCouponOrder() {
-        return $this->gift_coupon_order;
+    public function getCouponCounter() {
+        return $this->coupon_counter;
     }
 
 }

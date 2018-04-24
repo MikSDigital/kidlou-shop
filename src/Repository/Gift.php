@@ -17,7 +17,7 @@ class Gift extends \Doctrine\ORM\EntityRepository {
                         ->innerJoin('g.coupons', 'co')
                         ->innerJoin('g.texts', 'te')
                         //->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND co.counter <= g.max_uses AND te.gift = g AND te.lang = :lang')
-                        ->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND co.counter <= g.max_uses AND te.gift = g AND te.lang = :lang')
+                        ->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND te.gift = g AND te.lang = :lang')
                         ->setParameter('date', $date)
                         ->setParameter('date', $date)
                         ->setParameter('code', $code)
