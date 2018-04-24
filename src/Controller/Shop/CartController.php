@@ -264,12 +264,15 @@ class CartController extends Controller {
         $lang = $serviceCommon->getLanguage();
         $coupon = $request->request->get('coupon');
         $coupon = $serviceCart->getCoupon($coupon, $lang);
-        if ($coupon == 1) {
-            echo "NEW ENTRY";
-        } else if ($coupon == 2) {
-            $this->addFlash("no-coupon", $translator->trans('Code is not valid'));
+        if (isset($coupon['error'])) {
+            if ($coupon['error'] == 'not_valid') {
+                $this->addFlash("no-coupon", $translator->trans('Code is not valid'));
+            } else if ($coupon['error'] == 'max_uses') {
+                $this->addFlash("no-coupon", $translator->trans('Code is always used'));
+            }
         } else {
-            $this->addFlash("no-coupon", $translator->trans('Code is always used'));
+            $serviceCart->setAmount($coupon['percent'], $coupon['description']);
+            $serviceCart->setCouponCounter($coupon['code']);
         }
 ////        echo $coupon['code'] . ' - ' . $coupon['counter_id'];
 ////        exit;

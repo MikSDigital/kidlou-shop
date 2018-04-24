@@ -62,7 +62,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@helper.common"]
 
     App\Service\Cart:
-        arguments: ["@doctrine.orm.entity_manager","@helper.common"]
+        arguments: ["@doctrine.orm.entity_manager","@helper.common","@service_container"]
 
     App\Service\Calendar:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container"]
