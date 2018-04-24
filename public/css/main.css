@@ -9803,4 +9803,7 @@ html body div.order-overlay p {
 .billing_email_message {
   display: none; }
 
+.error-message {
+  color: #cc0000; }
+
 /*# sourceMappingURL=main.css.map */

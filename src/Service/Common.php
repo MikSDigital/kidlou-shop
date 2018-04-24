@@ -1072,8 +1072,8 @@ class Common {
                 }
             }
         }
-        $this->getContainer()->set('session')->set('price_subtotal', $price);
-        $this->getContainer()->set('session')->set('basket_items', $basket_items);
+        $this->getContainer()->get('session')->set('price_subtotal', $price);
+        $this->getContainer()->get('session')->set('basket_items', $basket_items);
         return $this;
     }
 
@@ -1081,8 +1081,32 @@ class Common {
      *
      * @return float
      */
+    public function getAmountSubtotal() {
+        $amount_subtotal = $this->getContainer()->get('session')->get('amount_subtotal_cost');
+        if (isset($amount_subtotal)) {
+            return $amount_subtotal;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getAmountDescription() {
+        $amount_subtotal = $this->getContainer()->get('session')->get('amount_subtotal_cost');
+        if (isset($amount_subtotal)) {
+            return $this->getContainer()->get('session')->get('amount_description');
+        }
+    }
+
+    /**
+     *
+     * @return float
+     */
     public function getPriceSubtotal() {
-        return $this->getContainer()->get('session')->set('price_subtotal');
+        return $this->getContainer()->get('session')->get('price_subtotal');
     }
 
     /**
@@ -1090,7 +1114,7 @@ class Common {
      * @return float
      */
     public function getPriceTotal() {
-        return $this->getShippingCost() + $this->getCautionCost() + $this->getPriceSubtotal();
+        return $this->getShippingCost() + $this->getCautionCost() + ($this->getPriceSubtotal() - $this->getAmountSubtotal());
     }
 
     /**

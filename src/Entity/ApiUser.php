@@ -154,7 +154,7 @@ class ApiUser implements UserInterface {
     }
 
     /**
-     * Set updatetAt
+     * Set createdAt
      *
      * @param \DateTime $createdAt
      *

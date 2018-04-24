@@ -265,11 +265,14 @@ class CartController extends Controller {
         $coupon = $request->request->get('coupon');
         $coupon = $serviceCart->getCoupon($coupon, $lang);
         if ($coupon) {
-            if ($coupon['max_uses'] >= $coupon['counter']) {
+            if ($coupon['counter'] >= $coupon['max_uses']) {
                 $this->addFlash("no-coupon", $translator->trans('Code is always used'));
             } else {
+//                $em = $this->getDoctrine()->getManager();
+//                $quote_id = $this->container->get('session')->get('quote_id');
+//                $quote = $em->getRepository(\App\Entity\Quote::class)->findOneById($quote_id);
                 $amount_cost = $this->container->get('session')->get('price_subtotal') / 100;
-                $price = number_format($amount_cost * $coupon['percent'], 2);
+                $amount_cost = number_format($amount_cost * $coupon['percent'], 2);
                 $this->container->get('session')->set('amount_subtotal_cost', $amount_cost);
                 $this->container->get('session')->set('amount_description', $coupon['description']);
             }

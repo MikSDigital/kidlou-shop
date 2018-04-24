@@ -97,6 +97,11 @@
                 <div class="cart-collaterals">
                     <div class="row">
                         <div class="col-xs-12 col-sm-4 col-sms-4 col-smb-12">
+                            {% for message in app.flashes('no-coupon') %}
+                                <div class="error-message">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
                             <form action="{{ path('add_coupon') }}" method="POST">
                                 <div class="form-group">
                                     <label for="coupons">{{ 'Coupons' | trans }}</label>
@@ -120,6 +125,12 @@
                                             <td class="a-left" style="" colspan="1">{{ 'Sous-total' | trans }}</td>
                                             <td class="a-right" style=""><nobr>CHF {{ common.getPriceSubtotal() | number_format(2) }}</nobr></td>
                                     </tr>
+                                    {% if common.getAmountSubtotal() > 0 %}
+                                        <tr>
+                                            <td class="a-left" style="" colspan="1">{{ common.getAmountDescription() }}</td>
+                                            <td class="a-right" style=""><nobr>CHF {{ common.getAmountSubtotal() | number_format(2) }}</nobr></td>
+                                        </tr>
+                                    {% endif %}
                                     <tr>
                                         <td class="a-left" style="" colspan="1">{{ 'Livraison' | trans }}</td>
                                         <td class="a-right" style=""><nobr>CHF {{ common.getShippingCost() | number_format(2) }}</nobr></td>

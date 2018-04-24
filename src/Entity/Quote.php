@@ -48,6 +48,11 @@ class Quote {
      */
     private $coupons;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Gift\Coupon\Quote", mappedBy="quote")
+     */
+    private $gift_coupon_quote;
+
     public function __construct() {
         $this->calendars = new ArrayCollection();
         $this->productadditionals = new ArrayCollection();
@@ -198,6 +203,28 @@ class Quote {
      */
     public function getCoupons() {
         return $this->coupons;
+    }
+
+    /**
+     * Set gift_coupon_quote
+     *
+     * @param \App\Entity\Gift\Coupon\Quote $quote
+     *
+     * @return Quote
+     */
+    public function setGiftCouponQuote(\App\Entity\Gift\Coupon\Quote $gift_coupon_quote = null) {
+        $this->gift_coupon_quote = $quote;
+
+        return $this;
+    }
+
+    /**
+     * Get gift_coupon_quote
+     *
+     * @return \App\Entity\Gift\Coupon\Quote
+     */
+    public function getGiftCouponQuote() {
+        return $this->gift_coupon_quote;
     }
 
 }
