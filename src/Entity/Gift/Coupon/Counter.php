@@ -38,7 +38,7 @@ class Counter {
     private $order;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Gift\Coupon", inversedBy="coupon_counters")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Gift\Coupon", inversedBy="counters")
      * @ORM\JoinColumn(name="coupon_id", referencedColumnName="id")
      */
     private $coupon;
@@ -139,6 +139,28 @@ class Counter {
      */
     public function setIsActive($is_active) {
         $this->is_active = $is_active;
+
+        return $this;
+    }
+
+    /**
+     * Get coupon
+     *
+     * @return \App\Entity\Gift\Coupon
+     */
+    public function getCoupon() {
+        return $this->coupon;
+    }
+
+    /**
+     * Set coupon
+     *
+     * @param \App\Entity\Gift\Coupon $order
+     *
+     * @return Counter
+     */
+    public function setCoupon(\App\Entity\Gift\Coupon $coupon = null) {
+        $this->coupon = $coupon;
 
         return $this;
     }

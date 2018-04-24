@@ -37,7 +37,7 @@ class Coupon {
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Gift\Coupon\Counter", mappedBy="coupon")
      */
-    private $coupon_counters;
+    private $counters;
 
     public function __construct() {
         $this->coupon_counters = new ArrayCollection();
@@ -75,28 +75,6 @@ class Coupon {
     }
 
     /**
-     * Set counter
-     *
-     * @param string $counter
-     *
-     * @return Coupon
-     */
-    public function setCounter($counter) {
-        $this->counter = $counter;
-
-        return $this;
-    }
-
-    /**
-     * Get counter
-     *
-     * @return integer
-     */
-    public function getCounter() {
-        return $this->counter;
-    }
-
-    /**
      * Set gift
      *
      * @param \App\Entity\Gift $gift
@@ -119,25 +97,25 @@ class Coupon {
     }
 
     /**
-     * Add couponCounter
+     * Add counter
      *
-     * @param \App\Entity\Gift\Coupon\Counter $couponCounter
+     * @param \App\Entity\Gift\Coupon\Counter $counter
      *
      * @return Coupon
      */
-    public function addCouponCounters(\App\Entity\Gift\Coupon\Counter $couponCounter) {
-        $this->coupon_counters[] = $couponCounter;
+    public function addCouponCounters(\App\Entity\Gift\Coupon\Counter $counter) {
+        $this->counters[] = $counter;
 
         return $this;
     }
 
     /**
-     * Remove couponCounter
+     * Remove counter
      *
-     * @param \App\Entity\Gift\Coupon\Counter $couponCounter
+     * @param \App\Entity\Gift\Coupon\Counter $counter
      */
-    public function removeCouponCounters(\App\Entity\Gift\Coupon\Counter $couponCounter) {
-        $this->coupon_counters->removeElement($couponCounter);
+    public function removeCouponCounters(\App\Entity\Gift\Coupon\Counter $counter) {
+        $this->counters->removeElement($counter);
     }
 
     /**
@@ -145,8 +123,8 @@ class Coupon {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCouponCounters() {
-        return $this->coupon_counters;
+    public function getCounters() {
+        return $this->counters;
     }
 
 }

@@ -10,20 +10,50 @@ namespace App\Repository;
  */
 class Gift extends \Doctrine\ORM\EntityRepository {
 
-    public function getCoupon($code, $lang) {
+    public function getCoupon($code, $lang): int {
         $date = new \DateTime();
-        return $this->createQueryBuilder('g')
-                        ->addSelect('co.code, g.percent, te.description, g.max_uses, co.counter')
+// check if has relation from order or quote
+        $gift = $this->createQueryBuilder('g')
+                ->addSelect('co.code, g.percent, te.description, g.max_uses, ct.id AS counter_id')
+                ->innerJoin('g.coupons', 'co')
+                ->innerJoin('g.texts', 'te')
+                ->leftJoin('co.counters', 'ct')
+                ->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND te.gift = g AND te.lang = :lang')
+                ->setParameter('date', $date)
+                ->setParameter('date', $date)
+                ->setParameter('code', $code)
+                ->setParameter('lang', $lang)
+                ->getQuery()
+                ->getResult();
+
+        if ($gift) {
+            if (!isset($gift['counter_id'])) {
+                return 1;
+            } else {
+                $gifts = $this->createQueryBuilder('g')
+                        ->addSelect('co.code, g.percent, te.description, g.max_uses, qt.id AS quote_id')
                         ->innerJoin('g.coupons', 'co')
                         ->innerJoin('g.texts', 'te')
-                        //->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND co.counter <= g.max_uses AND te.gift = g AND te.lang = :lang')
-                        ->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND te.gift = g AND te.lang = :lang')
+                        ->leftJoin('co.counters', 'ct')
+                        ->leftJoin('ct.quote', 'qt')
+                        ->leftJoin('ct.order', 'or')
+                        ->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND te.gift = g AND te.lang = :lang AND qt.updated > :hour')
                         ->setParameter('date', $date)
                         ->setParameter('date', $date)
                         ->setParameter('code', $code)
                         ->setParameter('lang', $lang)
+                        ->setParameter('hour', new \DateTime('-1 hour'))
                         ->getQuery()
-                        ->getOneOrNullResult();
+                        ->getResult();
+                if ($gifts[0]['max_uses'] >= count($gifts)) {
+                    return 1;
+                } else {
+                    return 3;
+                }
+            }
+        } else {
+            return 2;
+        }
     }
 
 }
