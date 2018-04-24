@@ -30,17 +30,15 @@ class Group {
     private $product_groups;
 
     public function __construct() {
-        $this->$product_groups = new ArrayCollection();
+        $this->product_groups = new ArrayCollection();
     }
-
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -51,8 +49,7 @@ class Group {
      *
      * @return Group
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -63,8 +60,7 @@ class Group {
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -75,8 +71,7 @@ class Group {
      *
      * @return Group
      */
-    public function addProductGroup(\App\Entity\Map\ProductGroup $productGroup)
-    {
+    public function addProductGroup(\App\Entity\Map\ProductGroup $productGroup) {
         $this->product_groups[] = $productGroup;
 
         return $this;
@@ -87,8 +82,7 @@ class Group {
      *
      * @param \App\Entity\Map\ProductGroup $productGroup
      */
-    public function removeProductGroup(\App\Entity\Map\ProductGroup $productGroup)
-    {
+    public function removeProductGroup(\App\Entity\Map\ProductGroup $productGroup) {
         $this->product_groups->removeElement($productGroup);
     }
 
@@ -97,8 +91,8 @@ class Group {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProductGroups()
-    {
+    public function getProductGroups() {
         return $this->product_groups;
     }
+
 }

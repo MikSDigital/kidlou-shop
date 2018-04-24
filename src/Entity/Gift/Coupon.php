@@ -29,15 +29,25 @@ class Coupon {
     private $code;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $counter;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Gift", inversedBy="coupons")
      * @ORM\JoinColumn(name="gift_id", referencedColumnName="id")
      */
     private $gift;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Gift\Coupon\Quote", mappedBy="coupon")
+     */
+    private $gift_coupon_quotes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Gift\Coupon\Order", mappedBy="coupon")
+     */
+    private $gift_coupon_orders;
+
+    public function __construct() {
+        $this->gift_coupon_quotes = new ArrayCollection();
+        $this->gift_coupon_orders = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -112,6 +122,68 @@ class Coupon {
      */
     public function getGift() {
         return $this->gift;
+    }
+
+    /**
+     * Add giftCouponQuote
+     *
+     * @param \App\Entity\Gift\Coupon\Quote $giftCouponQuote
+     *
+     * @return Coupon
+     */
+    public function addGiftCouponQuote(\App\Entity\Gift\Coupon\Quote $giftCouponQuote) {
+        $this->gift_coupon_quotes[] = $giftCouponQuote;
+
+        return $this;
+    }
+
+    /**
+     * Remove giftCouponQuote
+     *
+     * @param \App\Entity\Gift\Coupon\Quote $giftCouponQuote
+     */
+    public function removeGiftCouponQuote(\App\Entity\Gift\Coupon\Quote $giftCouponQuote) {
+        $this->gift_coupon_quotes->removeElement($giftCouponQuote);
+    }
+
+    /**
+     * Get giftCouponQuotes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGiftCouponQuote() {
+        return $this->gift_coupon_quotes;
+    }
+
+    /**
+     * Add giftCouponOrder
+     *
+     * @param \App\Entity\Gift\Coupon\Order $giftCouponOrder
+     *
+     * @return Coupon
+     */
+    public function addGiftCouponOrder(\App\Entity\Gift\Coupon\Order $giftCouponQuote) {
+        $this->gift_coupon_orders[] = $giftCouponQuote;
+
+        return $this;
+    }
+
+    /**
+     * Remove giftCouponOrder
+     *
+     * @param \App\Entity\Gift\Coupon\Order $giftCouponOrder
+     */
+    public function removeGiftCouponOrder(\App\Entity\Gift\Coupon\Order $giftCouponQuote) {
+        $this->gift_coupon_orders->removeElement($giftCouponQuote);
+    }
+
+    /**
+     * Get giftCouponQuotes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGiftCouponOrder() {
+        return $this->gift_coupon_orders;
     }
 
 }

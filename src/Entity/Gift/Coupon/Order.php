@@ -32,6 +32,11 @@ class Order {
     protected $created_at;
 
     /**
+     * @ORM\Column(type="boolean", options={"default":true})
+     */
+    private $is_active;
+
+    /**
      * Get id
      *
      * @return integer
@@ -82,6 +87,26 @@ class Order {
      */
     public function getCreatedAt() {
         return $this->created_at;
+    }
+
+    /**
+     * Get is_active
+     *
+     * @return type $is_active
+     */
+    public function getIsActive() {
+        return $this->is_active;
+    }
+
+    /**
+     *
+     * @param type $is_active
+     * @return Order
+     */
+    public function setIsActive($is_active) {
+        $this->is_active = $is_active;
+
+        return $this;
     }
 
 }
