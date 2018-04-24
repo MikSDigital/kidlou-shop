@@ -1103,6 +1103,17 @@ class Common {
 
     /**
      *
+     * @return string
+     */
+    public function getAmountCode() {
+        $amount_code = $this->getContainer()->get('session')->get('amount_code');
+        if (isset($amount_code)) {
+            return $amount_code;
+        }
+    }
+
+    /**
+     *
      * @return float
      */
     public function getPriceSubtotal() {

@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="gift_coupon_counter")
- * @ORM\Entity(repositoryClass="App\Repository\Gift\Coupon\Quote")
  */
 class Counter {
 

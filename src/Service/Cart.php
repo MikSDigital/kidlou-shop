@@ -88,9 +88,10 @@ class Cart {
      * @return type
      */
     public function getCoupon($coupon, $lang) {
+        $quote_id = $this->container->get('session')->get('quote_id');
         $coupon = $this->em
                 ->getRepository(\App\Entity\Gift::class)
-                ->getCoupon($coupon, $lang);
+                ->getCoupon($coupon, $lang, $quote_id);
         return $coupon;
     }
 
@@ -103,7 +104,7 @@ class Cart {
     public function setCouponCounter($code, $is_active = TRUE) {
         $quote_id = $this->container->get('session')->get('quote_id');
         $order_id = $this->container->get('session')->get('order_id');
-        $coupon = $this->em->getRepository(\App\Entity\Gift\Coupon::class)->findOneById($code);
+        $coupon = $this->em->getRepository(\App\Entity\Gift\Coupon::class)->findOneBy(array('code' => $code));
         $quote = $this->em->getRepository(\App\Entity\Quote::class)->findOneById($quote_id);
         $order = $this->em->getRepository(\App\Entity\Order::class)->findOneById($order_id);
         $counter = new \App\Entity\Gift\Coupon\Counter();
@@ -119,14 +120,41 @@ class Cart {
 
     /**
      *
+     * @param type $coupon
+     * @param type $lang
+     * @return counter
+     */
+    public function removeCouponCounter() {
+        $quote_id = $this->container->get('session')->get('quote_id');
+        $quote = $this->em->getRepository(\App\Entity\Quote::class)->findOneById($quote_id);
+        $code = $this->container->get('session')->get('amount_code');
+        $coupon = $this->em->getRepository(\App\Entity\Gift\Coupon::class)->findOneBy(array('code' => $code));
+        $counter = $this->em->getRepository(\App\Entity\Gift\Coupon\Counter::class)->findOneBy(array('coupon' => $coupon, 'quote' => $quote));
+        $this->em->remove($counter);
+        $this->em->flush();
+        return $counter;
+    }
+
+    /**
+     *
      * @param type $percent
      * @param type $description
      */
-    public function setAmount($percent, $description) {
+    public function setAmount($percent, $description, $code) {
         $amount_cost = $this->container->get('session')->get('price_subtotal') / 100;
         $amount_cost = number_format($amount_cost * $percent, 2);
         $this->container->get('session')->set('amount_subtotal_cost', $amount_cost);
         $this->container->get('session')->set('amount_description', $description);
+        $this->container->get('session')->set('amount_code', $code);
+    }
+
+    /**
+     * remove amount
+     */
+    public function removeAmount() {
+        $this->container->get('session')->remove('amount_subtotal_cost');
+        $this->container->get('session')->remove('amount_description');
+        $this->container->get('session')->remove('amount_code');
     }
 
 }

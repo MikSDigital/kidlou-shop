@@ -255,11 +255,11 @@ class CartController extends Controller {
     }
 
     /**
-     * @Route("/coupon/", name="add_coupon")
+     * @Route("/coupon/add/", name="add_coupon")
      * @param Request $request
      * @return type ControllerTrait
      */
-    public function couponAction(Request $request, ServiceCart $serviceCart, ServiceCommon $serviceCommon, TranslatorInterface $translator) {
+    public function couponAddAction(Request $request, ServiceCart $serviceCart, ServiceCommon $serviceCommon, TranslatorInterface $translator) {
         //$request->getLocale()
         $lang = $serviceCommon->getLanguage();
         $coupon = $request->request->get('coupon');
@@ -271,30 +271,22 @@ class CartController extends Controller {
                 $this->addFlash("no-coupon", $translator->trans('Code is always used'));
             }
         } else {
-            $serviceCart->setAmount($coupon['percent'], $coupon['description']);
-            $serviceCart->setCouponCounter($coupon['code']);
+            if (!isset($coupon['is_user'])) {
+                $serviceCart->setAmount($coupon['percent'], $coupon['description'], $coupon['code']);
+                $serviceCart->setCouponCounter($coupon['code']);
+            }
         }
-////        echo $coupon['code'] . ' - ' . $coupon['counter_id'];
-////        exit;
-//        if ($coupon) {
-//            if (!isset($coupon['counter_id'])) {
-//
-//            }
-//            exit;
-//            if ($coupon['counter'] >= $coupon['max_uses']) {
-//                $this->addFlash("no-coupon", $translator->trans('Code is always used'));
-//            } else {
-////                $em = $this->getDoctrine()->getManager();
-////                $quote_id = $this->container->get('session')->get('quote_id');
-////                $quote = $em->getRepository(\App\Entity\Quote::class)->findOneById($quote_id);
-//                $amount_cost = $this->container->get('session')->get('price_subtotal') / 100;
-//                $amount_cost = number_format($amount_cost * $coupon['percent'], 2);
-//                $this->container->get('session')->set('amount_subtotal_cost', $amount_cost);
-//                $this->container->get('session')->set('amount_description', $coupon['description']);
-//            }
-//        } else {
-//            $this->addFlash("no-coupon", $translator->trans('Code is not valid'));
-//        }
+        return $this->redirectToRoute('index_cart');
+    }
+
+    /**
+     * @Route("/coupon/remove/", name="remove_coupon")
+     * @param Request $request
+     * @return type ControllerTrait
+     */
+    public function couponRemoveAction(ServiceCart $serviceCart) {
+        $serviceCart->removeCouponCounter();
+        $serviceCart->removeAmount();
         return $this->redirectToRoute('index_cart');
     }
 

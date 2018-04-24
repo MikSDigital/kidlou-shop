@@ -10,9 +10,9 @@ namespace App\Repository;
  */
 class Gift extends \Doctrine\ORM\EntityRepository {
 
-    public function getCoupon($code, $lang): array {
+    public function getCoupon($code, $lang, $quote_id): array {
         $date = new \DateTime();
-// check if has relation from order or quote
+        // check if has relation from order or quote
         $gift = $this->createQueryBuilder('g')
                 ->addSelect('co.code, g.percent, te.description, g.max_uses, ct.id AS counter_id')
                 ->innerJoin('g.coupons', 'co')
@@ -25,9 +25,8 @@ class Gift extends \Doctrine\ORM\EntityRepository {
                 ->setParameter('lang', $lang)
                 ->getQuery()
                 ->getResult();
-
         if ($gift) {
-            if (!isset($gift['counter_id'])) {
+            if (!isset($gift[0]['counter_id'])) {
                 return $gift[0];
             } else {
                 $gifts = $this->createQueryBuilder('g')
@@ -36,8 +35,8 @@ class Gift extends \Doctrine\ORM\EntityRepository {
                         ->innerJoin('g.texts', 'te')
                         ->leftJoin('co.counters', 'ct')
                         ->leftJoin('ct.quote', 'qt')
-                        ->leftJoin('ct.order', 'or')
-                        ->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND te.gift = g AND te.lang = :lang AND qt.updated > :hour AND or.id = ct.order')
+                        ->leftJoin('ct.order', 'ord')
+                        ->where(':date >= g.date_from AND :date <= g.date_to AND g.isActive = 1 AND co.code = :code AND te.gift = g AND te.lang = :lang AND qt.updated > :hour OR ord.id = ct.order')
                         ->setParameter('date', $date)
                         ->setParameter('date', $date)
                         ->setParameter('code', $code)
@@ -45,9 +44,16 @@ class Gift extends \Doctrine\ORM\EntityRepository {
                         ->setParameter('hour', new \DateTime('-1 hour'))
                         ->getQuery()
                         ->getResult();
-
-                if ($gifts[0]['max_uses'] >= count($gifts)) {
+                if (!$gifts) {
                     return $gift[0];
+                }
+                if ($gifts[0]['max_uses'] >= count($gifts)) {
+                    foreach ($gifts as $gift) {
+                        if ($gift['quote_id'] == $quote_id) {
+                            return array('is_user' => $quote_id);
+                        }
+                    }
+                    return $gifts[0];
                 } else {
                     return array('error' => 'max_uses');
                 }
