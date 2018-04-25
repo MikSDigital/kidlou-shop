@@ -79,7 +79,7 @@ class Order extends \Doctrine\ORM\EntityRepository {
     public function getOrderData($id) {
         $query = $this->getEntityManager()
                 ->createQuery(
-                        'SELECT o.id, o.order_number, l.name AS lang, l.short_name AS local_code, o.created, os.name AS status,  op.caution_cost + op.subtotal_cost + op.shipping_cost AS cost, op.subtotal_cost, op.shipping_cost, op.caution_cost, op.cash_cost, op.additional_information, op.payment_name,'
+                        'SELECT o.id, o.order_number, l.name AS lang, l.short_name AS local_code, o.created, os.name AS status,  op.caution_cost + op.subtotal_cost + op.shipping_cost AS cost, op.subtotal_cost, op.amount_subtotal_cost, op.amount_subtotal_description, op.amount_subtotal_code, op.shipping_cost, op.caution_cost, op.cash_cost, op.additional_information, op.payment_name,'
                         . ' (SELECT GROUP_CONCAT(DISTINCT oia_item.parent_product , \'|\', oia_item.children_product, \'|\', DATE_FORMAT(c_item.date_from,\'%d-%m-%Y\'), \'|\', DATE_FORMAT(c_item.date_to,\'%d-%m-%Y\'), \'|\', DATE_DIFF(c_item.date_to, c_item.date_from),\'|\', oi_item.name, \'|\', oi_item.sku, \'|\', oi_item.product_id, \'|\', oi_item.price '
                         . ' ORDER BY c_item.date_from,oi_item.id SEPARATOR \',\')'
                         . ' FROM App\Entity\Order o_item'

@@ -46,6 +46,12 @@
         <td style="line-height:30px;" colspan="4" class="mcnTextContent"><b>{{ 'Subtotal' | trans }}</b></td>
         <td style="text-align: right; line-height:30px;" class="mcnTextContent"><b>{{ order.subtotal_cost | number_format(2) }}</b></td>
     </tr>
+    {% if order.amount_subtotal_cost > 0 %}
+        <tr>
+            <td style="line-height:30px;" colspan="4" class="mcnTextContent"><b>{{ order.amount_subtotal_description }}</b> ({{ order.amount_subtotal_code }})</td>
+            <td style="text-align: right; line-height:30px;" class="mcnTextContent"><b>{{ order.amount_subtotal_cost | number_format(2) }}</b></td>
+        </tr>
+    {% endif %}
     <tr>
         <td style="line-height:30px;" colspan="4" class="mcnTextContent"><b>{{ 'Lieferkosten' | trans }}</b></td>
         <td  style="text-align: right; line-height:30px;" class="mcnTextContent"><b>{{ order.shipping_cost | number_format(2) }}</b></td>
@@ -63,9 +69,9 @@
     <tr>
         {% set total = 0 %}
         {% if order.cash_cost == 0 %}
-            {% set total = order.subtotal_cost + order.shipping_cost + order.caution_cost %}
+            {% set total = (order.subtotal_cost - order.amount_subtotal_cost) + order.shipping_cost + order.caution_cost %}
         {% else %}
-            {% set total = order.subtotal_cost + order.shipping_cost + order.caution_cost + order.cash_cost%}
+            {% set total = (order.subtotal_cost - order.amount_subtotal_cost) + order.shipping_cost + order.caution_cost + order.cash_cost %}
         {% endif %}
         <td style="line-height:30px; font-size: 16px;" colspan="4" class="mcnTextContent"><b>{{ 'Total' | trans }}</b></td>
         <td style="text-align: right; line-height:30px; font-size: 16px;" class="mcnTextContent"><b>{{ total | number_format(2) }}</b></td>
