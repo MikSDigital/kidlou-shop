@@ -464,8 +464,10 @@ class Order {
         $orderPayment->setShippingCost($this->getCommon()->getShippingCost());
         $orderPayment->setCautionCost($this->getCommon()->getCautionCost());
         $orderPayment->setCashCost($this->getContainer()->get('session')->get('cash_cost'));
-        $orderPayment->setAmountSubtotalCost(0);
+        $orderPayment->setAmountSubtotalCost($this->getContainer()->get('session')->get('amount_subtotal_cost'));
         $orderPayment->setAmountShippingCost(0);
+        $orderPayment->setAmountSubtotalDescription($this->getContainer()->get('session')->get('amount_subtotal_description'));
+        $orderPayment->setAmountSubtotalCode($this->getContainer()->get('session')->get('amount_subtotal_code'));
         $orderPayment->setPaymentAdditionalInformation($paymentAdditional);
         $orderPayment->setOrder($this->getCurrentOrder());
         $orderPayment->setPaymentName($paymenttyp->getName());

@@ -162,6 +162,7 @@ class CartController extends Controller {
 
         // write in session for warenkorb
         $basket = $serviceCommon->setBasket();
+        $serviceCart->setSubtotalAmountCost();
         $html = $this->renderView('shop/cart/add.html.twig'
                 , array(
             'date_from' => $dates->date_from,
@@ -181,7 +182,7 @@ class CartController extends Controller {
      * @Route("/remove/{id}/", defaults={"id" = ""}, name="remove_cart")
      * @Route("/remove/{id}/{additional_id}", defaults={"additional_id" = ""}, name="remove_cart")
      */
-    public function removeAction($id = "", $additional_id = "", ServiceProduct $serviceProduct, ServiceCommon $serviceCommon) {
+    public function removeAction($id = "", $additional_id = "", ServiceProduct $serviceProduct, ServiceCommon $serviceCommon, ServiceCart $serviceCart) {
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
             return $this->render('shop/cart/empty.html.twig');
@@ -251,6 +252,7 @@ class CartController extends Controller {
             }
         }
         $basket = $serviceCommon->setBasket();
+        $serviceCart->setSubtotalAmountCost();
         return $this->redirectToRoute('index_cart');
     }
 
@@ -272,7 +274,7 @@ class CartController extends Controller {
             }
         } else {
             if (!isset($coupon['is_user'])) {
-                $serviceCart->setAmount($coupon['percent'], $coupon['description'], $coupon['code']);
+                $serviceCart->setSubtotalAmount($coupon['percent'], $coupon['description'], $coupon['code']);
                 $serviceCart->setCouponCounter($coupon['code']);
             }
         }
@@ -286,7 +288,7 @@ class CartController extends Controller {
      */
     public function couponRemoveAction(ServiceCart $serviceCart) {
         $serviceCart->removeCouponCounter();
-        $serviceCart->removeAmount();
+        $serviceCart->removeSubtotalAmount();
         return $this->redirectToRoute('index_cart');
     }
 

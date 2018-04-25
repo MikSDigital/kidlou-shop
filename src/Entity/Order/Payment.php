@@ -50,6 +50,16 @@ class Payment {
     private $amount_subtotal_cost;
 
     /**
+     * @ORM\Column(type="string", length=300, nullable=true)
+     */
+    private $amount_subtotal_description = null;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $amount_subtotal_code = null;
+
+    /**
      * @ORM\Column(type="decimal", precision=12, scale=4, options={"default":0})
      */
     private $amount_shipping_cost;
@@ -209,6 +219,50 @@ class Payment {
      */
     public function getAmountShippingCost() {
         return $this->amount_shipping_cost;
+    }
+
+    /**
+     * Set amountSubtotalDescription
+     *
+     * @param string $amountSubtotalDescription
+     *
+     * @return Payment
+     */
+    public function setAmountSubtotalDescription($amountSubtotalDescription) {
+        $this->amount_subtotal_description = $amountSubtotalDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get amountSubtotalDescription
+     *
+     * @return string
+     */
+    public function getAmountSubtotalDescription() {
+        return $this->amount_subtotal_description;
+    }
+
+    /**
+     * Set amountSubtotalCode
+     *
+     * @param string $amountSubtotalCode
+     *
+     * @return Payment
+     */
+    public function setAmountSubtotalCode($amountSubtotalCode) {
+        $this->amount_subtotal_code = $amountSubtotalCode;
+
+        return $this;
+    }
+
+    /**
+     * Get amountSubtotalCode
+     *
+     * @return string
+     */
+    public function getAmountSubtotalCode() {
+        return $this->amount_subtotal_code;
     }
 
     /**

@@ -386,7 +386,10 @@
                 <source>The cart is empty</source>
                 <target>Le panier est vide</target>
             </trans-unit>
-
+            <trans-unit id="97">
+                <source>Coupon löschen</source>
+                <target>Supprimer le coupon</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

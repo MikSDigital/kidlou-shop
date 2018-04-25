@@ -127,7 +127,7 @@ class Cart {
     public function removeCouponCounter() {
         $quote_id = $this->container->get('session')->get('quote_id');
         $quote = $this->em->getRepository(\App\Entity\Quote::class)->findOneById($quote_id);
-        $code = $this->container->get('session')->get('amount_code');
+        $code = $this->container->get('session')->get('amount_subtotal_code');
         $coupon = $this->em->getRepository(\App\Entity\Gift\Coupon::class)->findOneBy(array('code' => $code));
         $counter = $this->em->getRepository(\App\Entity\Gift\Coupon\Counter::class)->findOneBy(array('coupon' => $coupon, 'quote' => $quote));
         $this->em->remove($counter);
@@ -140,21 +140,31 @@ class Cart {
      * @param type $percent
      * @param type $description
      */
-    public function setAmount($percent, $description, $code) {
+    public function setSubtotalAmount($percent, $description, $code) {
+        $this->container->get('session')->set('amount_subtotal_percent', $percent);
+        $this->container->get('session')->set('amount_subtotal_description', $description);
+        $this->container->get('session')->set('amount_subtotal_code', $code);
+        $this->setSubtotalAmountCost();
+    }
+
+    /**
+     * Set Amount cost
+     */
+    public function setSubtotalAmountCost() {
+        $percent = $this->container->get('session')->get('amount_subtotal_percent');
         $amount_cost = $this->container->get('session')->get('price_subtotal') / 100;
         $amount_cost = number_format($amount_cost * $percent, 2);
         $this->container->get('session')->set('amount_subtotal_cost', $amount_cost);
-        $this->container->get('session')->set('amount_description', $description);
-        $this->container->get('session')->set('amount_code', $code);
     }
 
     /**
      * remove amount
      */
-    public function removeAmount() {
+    public function removeSubtotalAmount() {
+        $this->container->get('session')->remove('amount_subtotal_percent');
         $this->container->get('session')->remove('amount_subtotal_cost');
-        $this->container->get('session')->remove('amount_description');
-        $this->container->get('session')->remove('amount_code');
+        $this->container->get('session')->remove('amount_subtotal_description');
+        $this->container->get('session')->remove('amount_subtotal_code');
     }
 
 }

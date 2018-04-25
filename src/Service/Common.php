@@ -1097,7 +1097,7 @@ class Common {
     public function getAmountDescription() {
         $amount_subtotal = $this->getContainer()->get('session')->get('amount_subtotal_cost');
         if (isset($amount_subtotal)) {
-            return $this->getContainer()->get('session')->get('amount_description');
+            return $this->getContainer()->get('session')->get('amount_subtotal_description');
         }
     }
 
@@ -1106,7 +1106,7 @@ class Common {
      * @return string
      */
     public function getAmountCode() {
-        $amount_code = $this->getContainer()->get('session')->get('amount_code');
+        $amount_code = $this->getContainer()->get('session')->get('amount_subtotal_code');
         if (isset($amount_code)) {
             return $amount_code;
         }
