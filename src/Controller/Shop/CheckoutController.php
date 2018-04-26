@@ -58,8 +58,6 @@ class CheckoutController extends Controller {
      * @Route("/order/", name="checkout_order")
      */
     public function orderAction(Request $request, ServiceOrder $serviceOrder) {
-        echo "OK";
-        exit;
         //first save order
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
@@ -93,8 +91,8 @@ class CheckoutController extends Controller {
                         'url' => $post->getPaymentTyp()->getFormularUrl()));
         } else if ($serviceOrder->getPaymentName() == 'Bank') {
             return $this->redirectToRoute('checkout_order_bank_success');
-        } else {
-            return array();
+        } else if ($serviceOrder->getPaymentName() == 'Cash') {
+            return $this->redirectToRoute('checkout_order_cash_success');
         }
     }
 
@@ -125,6 +123,27 @@ class CheckoutController extends Controller {
         $serviceOrder->setOrderStatus('complete');
         // additional information
         $serviceOrder->setAdditionalInformation($serviceOrder->getInstitutPaymentAsArray('Bank'));
+        // remove sessions
+        $this->removeSessions($serviceOrder, $serviceCart);
+
+        $serviceOrder->sendEmailMessage($order, $mailer);
+
+        return array(
+            'order' => $order
+        );
+    }
+
+    /**
+     * @Template("shop/checkout/cashSuccess.html.twig")
+     * @Route("/bank/success", name="checkout_order_cash_success")
+     */
+    public function cashSuccessAction(Request $request, ServiceOrder $serviceOrder, ServiceCart $serviceCart, \Swift_Mailer $mailer) {
+
+        $order = $serviceOrder->getCurrentOrder();
+        // status order
+        $serviceOrder->setOrderStatus('complete');
+        // additional information
+        $serviceOrder->setAdditionalInformation($serviceOrder->getInstitutPaymentAsArray('Cash'));
         // remove sessions
         $this->removeSessions($serviceOrder, $serviceCart);
 

@@ -302,7 +302,7 @@ $(document).ready(function () {
             var message = $('#bodyoverlay').data('iframe-message');
             $('#overlay-iframe').contents().find('body').html('<div style="text-align:center;">' + message + '</div>');
             $('#overlay-iframe').css({'width': '80%', 'height': '60%', 'margin-left': 'auto', 'margin-right': 'auto', 'text-align': 'center', 'padding-top': '20px'});
-            $('#bodyoverlay').css({'background-image': 'none'});
+            //$('#bodyoverlay').css({'background-image': 'none'});
             $('.send-order').submit();
         }
     });
