@@ -303,10 +303,10 @@ class Order {
             $this->saveOrderAddress();
             // save order payment
             $this->saveOrderPayment($paymenttyp_id);
+            // save gift
+            $this->saveOrderGift();
             // save calendar
             $this->saveOrderCalendar();
-            // save order additional
-            //$this->saveOrderAdditional();
             // save order item
             $this->saveOrderItem();
             // save new user
@@ -444,6 +444,20 @@ class Order {
         $object->setUpdated($this->getNowTime());
         $this->getEm()->persist($object);
         $this->getEm()->flush();
+    }
+
+    /**
+     * Save Gift
+     */
+    private function saveOrderGift() {
+        $code = $this->getContainer()->get('session')->get('amount_subtotal_code');
+        if (isset($code)) {
+            $quote = $this->getCurrentQuote();
+            $coupon = $this->getEm()->getRepository(\App\Entity\Gift\Coupon::class)->findOneBy(array('quote' => $quote));
+            $coupon->setOrder($this->getCurrentOrder());
+            $this->getEm()->persist($coupon);
+            $this->getEm()->flush();
+        }
     }
 
     /**

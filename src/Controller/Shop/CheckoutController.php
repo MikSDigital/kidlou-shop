@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Service\Payment As ServicePayment;
 use App\Service\Order As ServiceOrder;
+use App\Service\Cart As ServiceCart;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -98,11 +99,13 @@ class CheckoutController extends Controller {
     /**
      * remove sessions
      */
-    private function removeSessions($serviceOrder) {
+    private function removeSessions($serviceOrder, $serviceCart) {
         // remove quote session
         $serviceOrder->removeQuoteSession();
         // remove order session
         $serviceOrder->removeOrderSession();
+        // remove subtotal amount
+        $serviceCart->removeSubtotalAmount();
         // remove basket items
         $serviceOrder->removeBasketItemsSession();
         // remove paypal session
@@ -113,7 +116,7 @@ class CheckoutController extends Controller {
      * @Template("shop/checkout/bankSuccess.html.twig")
      * @Route("/bank/success", name="checkout_order_bank_success")
      */
-    public function bankSuccessAction(Request $request, ServiceOrder $serviceOrder, \Swift_Mailer $mailer) {
+    public function bankSuccessAction(Request $request, ServiceOrder $serviceOrder, ServiceCart $serviceCart, \Swift_Mailer $mailer) {
 
         $order = $serviceOrder->getCurrentOrder();
         // status order
@@ -121,7 +124,7 @@ class CheckoutController extends Controller {
         // additional information
         $serviceOrder->setAdditionalInformation($serviceOrder->getInstitutPaymentAsArray('Bank'));
         // remove sessions
-        $this->removeSessions($serviceOrder);
+        $this->removeSessions($serviceOrder, $serviceCart);
 
         $serviceOrder->sendEmailMessage($order, $mailer);
 

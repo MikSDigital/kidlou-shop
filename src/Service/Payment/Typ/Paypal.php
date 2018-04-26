@@ -142,7 +142,7 @@ class Paypal {
      * @return type $priceTotal
      */
     private function getPriceTotal() {
-        return $this->getTotalPriceItems() + $this->getShippingPrice() + $this->getCautionCost();
+        return ($this->getTotalPriceItems() - $this->getCommon()->getAmountSubtotal()) + $this->getShippingPrice() + $this->getCautionCost();
     }
 
     /**
@@ -205,10 +205,13 @@ class Paypal {
         $arr_data['redirect_urls']['cancel_url'] = $this->getContainer()->get('router')->generate('checkout_order_paypal_cancel', array(), UrlGeneratorInterface::ABSOLUTE_URL);
         $arr_data['payer']['payment_method'] = 'paypal';
 
-        $arr_data['transactions'][0]['amount']['total'] = number_format($this->getPriceTotal(), 2);
+        //$arr_data['transactions'][0]['amount']['total'] = number_format($this->getPriceTotal(), 2);
+        $arr_data['transactions'][0]['amount']['total'] = number_format($this->getCommon()->getPriceTotal(), 2);
         $arr_data['transactions'][0]['amount']['currency'] = $this->getCommon()->getCurrencyCode();
-        $arr_data['transactions'][0]['amount']['details']['subtotal'] = number_format($this->getTotalPriceItems(), 2);
-        $arr_data['transactions'][0]['amount']['details']['shipping'] = number_format($this->getShippingPrice() + $this->getCautionCost(), 2);
+        //$arr_data['transactions'][0]['amount']['details']['subtotal'] = number_format($this->getTotalPriceItems(), 2);
+        $arr_data['transactions'][0]['amount']['details']['subtotal'] = number_format($this->getCommon()->getPriceSubtotal() - $this->getCommon()->getAmountSubtotal(), 2);
+        //$arr_data['transactions'][0]['amount']['details']['shipping'] = number_format($this->getShippingPrice() + $this->getCautionCost(), 2);
+        $arr_data['transactions'][0]['amount']['details']['shipping'] = number_format($this->getCommon()->getShippingCost() + $this->getCommon()->getCautionCost(), 2);
 
 
         foreach ($this->getItems() as $item) {
