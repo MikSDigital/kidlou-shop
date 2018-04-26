@@ -172,7 +172,7 @@
                 </div>
                 <div class="col-md-4 checkout-box payment-methods">
                     <div class="checkout-title"><h1>{{ '3 Mode de paiment' | trans }}*</h1></div>
-                            {% for payment in payments %}
+                    {% for payment in payments %}
                         <div class="radio">
                             <label>
                                 <input type="radio" name="paymenttyp" data-short-name="{{ payment.paymentShortName }}" data-cash-url="{{ path('payment_typ', {'typ' : payment.paymentShortName}) }}" value="{{ payment.paymentId }}" class="form-must-field">
@@ -205,25 +205,27 @@
                 <div class="checkout-title"><h1>{{ '4 Review your order' | trans }}</h1></div>
                 <table id="shopping-cart-table" class="data-table cart-table">
                     {% include 'shop/checkout/cart/body.html.twig' %}
-                    {% set shipping_cost = common.getShippingCost() %}
-                    {% set caution_cost = common.getCautionCost() %}
-                    {% set price_total = app.session.get('price_subtotal') %}
-                    {% set total = price_total + shipping_cost + caution_cost %}
                     <tr>
                         <td class="a-left" style="border-right:0; border-bottom:0" colspan="3"><div style="padding-left:30px">{{ 'Subtotal' | trans }}</div></td>
-                        <td class="a-right" style="border-left:0; border-bottom:0">{{ common.getCurrencyCode() }} {{ price_total | number_format(2) }}</td>
+                        <td class="a-right" style="border-left:0; border-bottom:0">{{ common.getCurrencyCode() }} {{ common.getPriceSubtotal() | number_format(2) }}</td>
                     </tr>
+                    {% if common.getAmountSubtotal() > 0 %}
+                        <tr>
+                            <td class="a-left" style="border-right:0; border-bottom:0" colspan="3"><div style="padding-left:30px">{{ common.getAmountDescription() }}</div></td>
+                            <td class="a-right" style="border-left:0; border-bottom:0">{{ common.getCurrencyCode() }} {{ common.getAmountSubtotal() | number_format(2) }}</td>
+                        </tr>
+                    {% endif %}
                     <tr id="livraison-cost">
                         <td class="a-left" style="border-right:0; border-bottom:0" colspan="3"><div style="padding-left:30px">{{ 'Livraison' | trans }}</div></td>
-                        <td class="a-right" style="border-left:0; border-bottom:0">{{ common.getCurrencyCode() }} {{ shipping_cost | number_format(2) }}</td>
+                        <td class="a-right" style="border-left:0; border-bottom:0">{{ common.getCurrencyCode() }} {{ common.getShippingCost() | number_format(2) }}</td>
                     </tr>
                     <tr id="caution-cost">
                         <td class="a-left" style="border-right:0; border-bottom:0" colspan="3"><div style="padding-left:30px">{{ 'Caution' | trans }}</div></td>
-                        <td class="a-right" style="border-left:0;  border-bottom:0">{{ common.getCurrencyCode() }} {{ caution_cost | number_format(2) }}</td>
+                        <td class="a-right" style="border-left:0;  border-bottom:0">{{ common.getCurrencyCode() }} {{ common.getCautionCost() | number_format(2) }}</td>
                     </tr>
                     <tr id="total-cost">
                         <td class="a-left" style="border-right:0;" colspan="3"><strong><div style="padding-left:30px; font-size:16px;">{{ 'Total' | trans }}</div></strong></td>
-                        <td class="a-right" style="border-left:0; font-size:16px;" id="txt-total-price"><strong>{{ common.getCurrencyCode() }} {{ total | number_format(2) }}</strong></td>
+                        <td class="a-right" style="border-left:0; font-size:16px;" id="txt-total-price"><strong>{{ common.getCurrencyCode() }} {{ common.getPriceTotal() | number_format(2) }}</strong></td>
                     </tr>
                     <tfoot>
                         <tr class="first last">

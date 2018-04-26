@@ -260,6 +260,13 @@ class UserController extends Controller {
             return $this->render('shop/cart/empty.html.twig');
         }
         $user = $this->get('security.token_storage')->getToken()->getUser();
+//        echo $user->getId();
+//        exit;
+//        if (!$user) {
+//            echo "OK";
+//            exit;
+//            return $this->redirectToRoute('checkout_cart');
+//        }
         $_personal = '';
         foreach ($user->getPersonals() as $personal) {
             if ($personal->getStandard()) {
