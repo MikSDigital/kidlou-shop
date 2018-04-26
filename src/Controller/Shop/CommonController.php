@@ -75,7 +75,7 @@ class CommonController extends Controller {
         }
         $this->container->get('session')->set('cash_cost', $cash_cost);
         // total
-        $total_price = $serviceCommon->getShippingCost() + $serviceCommon->getCautionCost() + $cash_cost + $this->container->get('session')->get('price_subtotal');
+        $total_price = $serviceCommon->getShippingCost() + $serviceCommon->getCautionCost() + $cash_cost + ($this->container->get('session')->get('price_subtotal') - $this->container->get('session')->get('amount_subtotal_cost'));
         $txt_total_price = $serviceCommon->getCurrencyCode() . ' ' . number_format($total_price, 2);
         if ($cash_cost) {
             $html_cash_cost = $this->renderView('shop/common/paymentCash.html.twig');

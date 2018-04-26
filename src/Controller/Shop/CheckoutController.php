@@ -58,6 +58,8 @@ class CheckoutController extends Controller {
      * @Route("/order/", name="checkout_order")
      */
     public function orderAction(Request $request, ServiceOrder $serviceOrder) {
+        echo "OK";
+        exit;
         //first save order
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
