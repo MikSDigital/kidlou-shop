@@ -18,6 +18,7 @@ use App\Service\Payment As ServicePayment;
 use App\Service\Order As ServiceOrder;
 use App\Service\Cart As ServiceCart;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Http\HttpUtils;
 
 /**
  * @Route("/checkout")
@@ -28,7 +29,14 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/cart/", name="checkout_cart")
      */
-    public function cartAction(Request $request, ServicePayment $servicePayment) {
+    public function cartAction(Request $request, ServicePayment $servicePayment, HttpUtils $httpUtils) {
+//        $this->redirectToRoute('user_checkout_cart');
+//        $targetUrl = '/user/checkout/cart/';
+//        if (!$httpUtils->checkRequestPath($request, $targetUrl)) {
+//            echo "OK";
+//        }
+//
+//        exit;
         $locale = $request->getLocale();
         $payments = $servicePayment->getPayments();
         $quote_id = $this->container->get('session')->get('quote_id');
