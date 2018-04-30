@@ -45,7 +45,16 @@ class UserController extends Controller {
      * @Template()
      * @Route("/login/", name="user_login")
      */
-    public function loginAction() {
+    public function loginAction(Request $request) {
+//        $referer = $request->headers->get('referer');
+//        $pos = strpos($referer, '/common/zone/');
+//        if ($pos !== FALSE) {
+//            return $this->redirectToRoute('checkout_cart');
+//            $user = $this->get('security.token_storage')->getToken()->getUser();
+//            if (!$user) {
+//                return $this->redirectToRoute('checkout_cart');
+//            }
+//        }
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one

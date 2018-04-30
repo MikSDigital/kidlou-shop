@@ -29,7 +29,17 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/cart/", name="checkout_cart")
      */
-    public function cartAction(Request $request, ServicePayment $servicePayment, HttpUtils $httpUtils) {
+    public function cartAction(Request $request, ServicePayment $servicePayment) {
+
+        $auth_checker = $this->get('security.authorization_checker');
+        $isRoleAdmin = $auth_checker->isGranted('ROLE_USER');
+
+        if ($isRoleAdmin) {
+            echo "OK";
+        } else {
+            echo "NOK";
+        }
+        exit;
 //        $this->redirectToRoute('user_checkout_cart');
 //        $targetUrl = '/user/checkout/cart/';
 //        if (!$httpUtils->checkRequestPath($request, $targetUrl)) {
