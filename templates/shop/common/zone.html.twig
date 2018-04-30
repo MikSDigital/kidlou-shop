@@ -11,7 +11,7 @@
         <h5>{{ 'Vérifier si votre lieu de séjour est desservi par kidlou :' | trans  }}</h5>
         <div class="row">
             <div class="col-md-4">
-                <form action="{{ path('user_checkout_cart') }}" method="post" id="zone_shipping_post">
+                <form action="{{ path('checkout_cart') }}" method="post" id="zone_shipping_post">
                     <input id="zone_shipping" type="text" title="Code postal / Ville" name="autocomplete"  value="" class="form-control" placeholder="{{ 'Enter postalcode' | trans }}" />
                     <input type="hidden" name="zone-plz" />
                     <input type="hidden" name="zone-city" />

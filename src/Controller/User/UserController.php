@@ -46,15 +46,6 @@ class UserController extends Controller {
      * @Route("/login/", name="user_login")
      */
     public function loginAction(Request $request) {
-//        $referer = $request->headers->get('referer');
-//        $pos = strpos($referer, '/common/zone/');
-//        if ($pos !== FALSE) {
-//            return $this->redirectToRoute('checkout_cart');
-//            $user = $this->get('security.token_storage')->getToken()->getUser();
-//            if (!$user) {
-//                return $this->redirectToRoute('checkout_cart');
-//            }
-//        }
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one
@@ -72,7 +63,7 @@ class UserController extends Controller {
     /**
      * @Route("/logout/", name="user_logout")
      */
-    public function logoutAction() {
+    public function logoutAction(Request $request) {
 
     }
 
@@ -257,45 +248,6 @@ class UserController extends Controller {
         }
 
         return array('form' => $form->createView());
-    }
-
-    /**
-     * @Template()
-     * @Route("/checkout/cart/", name="user_checkout_cart")
-     */
-    public function cartAction(Request $request, ServicePayment $servicePayment) {
-        $quote_id = $this->container->get('session')->get('quote_id');
-        if (!$quote_id) {
-            return $this->render('shop/cart/empty.html.twig');
-        }
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-//        echo $user->getId();
-//        exit;
-//        if (!$user) {
-//            echo "OK";
-//            exit;
-//            return $this->redirectToRoute('checkout_cart');
-//        }
-        $_personal = '';
-        foreach ($user->getPersonals() as $personal) {
-            if ($personal->getStandard()) {
-                $_personal = $personal;
-                $_user = $user;
-            }
-        }
-        if ($_personal == '') {
-            foreach ($user->getPersonals() as $personal) {
-                $_personal = $personal;
-                $_user = $user;
-                break;
-            }
-        }
-        $payments = $servicePayment->getPayments();
-        return array(
-            'payments' => $payments,
-            'personal' => $_personal,
-            'user' => $_user
-        );
     }
 
 }

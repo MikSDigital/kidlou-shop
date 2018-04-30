@@ -30,24 +30,7 @@ class CheckoutController extends Controller {
      * @Route("/cart/", name="checkout_cart")
      */
     public function cartAction(Request $request, ServicePayment $servicePayment) {
-
-        $auth_checker = $this->get('security.authorization_checker');
-        $isRoleAdmin = $auth_checker->isGranted('ROLE_USER');
-
-        if ($isRoleAdmin) {
-            echo "OK";
-        } else {
-            echo "NOK";
-        }
-        exit;
-//        $this->redirectToRoute('user_checkout_cart');
-//        $targetUrl = '/user/checkout/cart/';
-//        if (!$httpUtils->checkRequestPath($request, $targetUrl)) {
-//            echo "OK";
-//        }
-//
-//        exit;
-        $locale = $request->getLocale();
+        $this->setZonePlzCity($request);
         $payments = $servicePayment->getPayments();
         $quote_id = $this->container->get('session')->get('quote_id');
         if (!$quote_id) {
@@ -58,17 +41,57 @@ class CheckoutController extends Controller {
             return array(
                 'payments' => $payments,
                 'zoneplz' => $this->container->get('session')->get('zone-plz'),
-                'zonecity' => $this->container->get('session')->get('zone-city')
+                'zonecity' => $this->container->get('session')->get('zone-city'),
+                'personal' => '',
+                'user' => ''
             );
         }
-        if ($request->request->get('zone-plz') == '' && $request->request->get('zone-city') == '') {
+
+        if ($this->container->get('session')->get('zone-plz') == '' && $this->container->get('session')->get('zone-city') == '') {
             return new RedirectResponse($this->generateUrl('index_cart'));
+        }
+//        if ($request->request->get('zone-plz') == '' && $request->request->get('zone-city') == '') {
+//            return new RedirectResponse($this->generateUrl('index_cart'));
+//        }
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $_personal = '';
+        $_user = '';
+        if (!is_string($user)) {
+            foreach ($user->getPersonals() as $personal) {
+                if ($personal->getStandard()) {
+                    $_personal = $personal;
+                    $_user = $user;
+                }
+            }
+            if ($_personal == '') {
+                foreach ($user->getPersonals() as $personal) {
+                    $_personal = $personal;
+                    $_user = $user;
+                    break;
+                }
+            }
         }
         return array(
             'payments' => $payments,
-            'zoneplz' => $request->request->get('zone-plz'),
-            'zonecity' => $request->request->get('zone-city')
+            'zoneplz' => $this->container->get('session')->get('zone-plz'),
+            'zonecity' => $this->container->get('session')->get('zone-city'),
+            'personal' => $_personal,
+            'user' => $_user
         );
+    }
+
+    /**
+     *
+     * @param Request $request
+     */
+    private function setZonePlzCity($request) {
+        $plz = $request->request->get('zone-plz');
+        $city = $request->request->get('zone-city');
+        if ($plz && $city) {
+            $this->container->get('session')->set('zone-plz', $plz);
+            $this->container->get('session')->set('zone-city', $city);
+        }
     }
 
     /**

@@ -53,9 +53,8 @@ security:
                 target: admin_login
                 invalidate_session: false
             logout_on_user_change: true
-        #pattern: ^/%locale%/user
         frontendlogin:
-            pattern: ^/%locale%/user
+            pattern: ^/%locale%
             anonymous: ~
             form_login:
                 login_path: user_login
@@ -64,9 +63,10 @@ security:
                 default_target_path: user_index
                 failure_handler: authentication_handler
                 success_handler: authentication_handler
+                #logout_handler: authentication_handler
             logout:
                 path:   user_logout
-                target: user_login
+                success_handler: authentication_handler
                 invalidate_session: false
             logout_on_user_change: true
         main:

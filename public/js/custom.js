@@ -341,6 +341,10 @@ $(document).ready(function () {
 
     });
 
+    $(document).on('click', '.login-closed', function (e) {
+        $('#bodyoverlay-login').hide();
+    });
+
     $(document).on('change', '.pagelimit-select', function (e) {
         var url = window.location.href;
         var pos = url.indexOf('?page=');

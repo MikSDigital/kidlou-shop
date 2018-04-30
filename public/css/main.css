@@ -9806,4 +9806,7 @@ html body div.order-overlay p {
 .error-message {
   color: #cc0000; }
 
+.login-closed {
+  cursor: pointer; }
+
 /*# sourceMappingURL=main.css.map */
