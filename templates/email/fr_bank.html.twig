@@ -825,276 +825,282 @@
                                                                                                 Dès réception de votre paiement, votre réservation sera définitive et nous vous enverrons un courriel de confirmation avec l’heure de livraison prévue.
                                                                                                 <br /><br />
                                                                                                 Nous vous rappelons que le paiement doit être effectué au moins 5 jours ouvrés avant la date de mise à disposition du matériel.
-                                                                                                <br /><br >
-                                                                                                    {{'Le détail de votre commande N° %s' | format(order.order_number) }} ({{ 'datant du %s' | format(order.created | date('d-m-Y H:i:s')) }})
-                                                                                                    <br /><br />
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody></table>
-                                                                                <!--[if mso]>
-                                                                                </td>
-                                                                                <![endif]-->
+                                                                                                {% if order.billing.username != 'NULL' %}
+                                                                                                    <br /><br >
+                                                                                                        Vous pouvez consulter votre commande à tout moment en vous connectant à <a href="{{ url('user_login') }}">votre compte</a>.
+                                                                                                    {% endif %}
+                                                                                                    <br /><br >
+                                                                                                        Si vous avez des questions au sujet de votre réservation, n'hésitez pas à nous contacter sur <a href="mailto:info@kidlou.com">info@kidlou.com</a>.
+                                                                                                        <br /><br >
+                                                                                                            {{'Le détail de votre commande N° %s' | format(order.order_number) }} ({{ 'datant du %s' | format(order.created | date('d-m-Y H:i:s')) }})
+                                                                                                            <br /><br />
+                                                                                                            </td>
+                                                                                                            </tr>
+                                                                                                            </tbody></table>
+                                                                                                            <!--[if mso]>
+                                                                                                            </td>
+                                                                                                            <![endif]-->
 
-                                                                                <!--[if mso]>
-                                                                                </tr>
-                                                                                </table>
-                                                                                <![endif]-->
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table></td>
-                                                        </tr>
-                                                    </table>
-                                                    <!-- // END UPPER BODY -->
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td align="center" valign="top">
-                                                    <!-- BEGIN COLUMNS // -->
-                                                    <table border="0" cellpadding="10" cellspacing="10" width="800" id="templateColumns">
-                                                        <tr>
-                                                            <td align="left" valign="top" width="50%" class="columnsContainer">
-                                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateColumn">
-                                                                    <tr>
-                                                                        <td valign="top" class="leftColumnContainer">
-                                                                            <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                <tbody class="mcnButtonBlockOuter">
-                                                                                    <tr>
-                                                                                        <td style="padding-top:0; padding-right:0px; padding-bottom:18px; padding-left:0px;" class="mcnButtonBlockInner" valign="top" align="center">
-                                                                                            <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #aecc08;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px;" valign="middle" align="center">
-                                                                                                            <span class="mcnButton " title="Purchase" href="" target="_self" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #606060;">Information Facturation:</span>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
+                                                                                                            <!--[if mso]>
+                                                                                                            </tr>
+                                                                                                            </table>
+                                                                                                            <![endif]-->
+                                                                                                            </td>
+                                                                                                            </tr>
+                                                                                                            </tbody>
+                                                                                                            </table></td>
+                                                                                                            </tr>
+                                                                                                            </table>
+                                                                                                            <!-- // END UPPER BODY -->
+                                                                                                            </td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td align="center" valign="top">
+                                                                                                                    <!-- BEGIN COLUMNS // -->
+                                                                                                                    <table border="0" cellpadding="10" cellspacing="10" width="800" id="templateColumns">
+                                                                                                                        <tr>
+                                                                                                                            <td align="left" valign="top" width="50%" class="columnsContainer">
+                                                                                                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateColumn">
+                                                                                                                                    <tr>
+                                                                                                                                        <td valign="top" class="leftColumnContainer">
+                                                                                                                                            <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                <tbody class="mcnButtonBlockOuter">
+                                                                                                                                                    <tr>
+                                                                                                                                                        <td style="padding-top:0; padding-right:0px; padding-bottom:18px; padding-left:0px;" class="mcnButtonBlockInner" valign="top" align="center">
+                                                                                                                                                            <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #aecc08;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                                <tbody>
+                                                                                                                                                                    <tr>
+                                                                                                                                                                        <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px;" valign="middle" align="center">
+                                                                                                                                                                            <span class="mcnButton " title="Purchase" href="" target="_self" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #606060;">Information Facturation:</span>
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </td>
+                                                                                                                                                    </tr>
+                                                                                                                                                </tbody>
+                                                                                                                                            </table>
 
-                                                                            <table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                <tbody class="mcnImageBlockOuter">
-                                                                                    <tr>
-                                                                                        <td style="padding:9px" class="mcnImageBlockInner" valign="top">
-                                                                                            <table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
-                                                                                                <tbody><tr>
-                                                                                                        <td class="mcnTextContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:left;" valign="top">
-                                                                                                            {% include 'email/include/address_billing.html.twig' %}
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                            <td align="left" valign="top" width="50%" class="columnsContainer">
-                                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateColumn">
-                                                                    <tr>
-                                                                        <td valign="top" class="leftColumnContainer">
-                                                                            <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                <tbody class="mcnButtonBlockOuter">
-                                                                                    <tr>
-                                                                                        <td style="padding-top:0; padding-right:0px; padding-bottom:18px; padding-left:0px;" class="mcnButtonBlockInner" valign="top" align="center">
-                                                                                            <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #aecc08;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px;" valign="middle" align="center">
-                                                                                                            <span class="mcnButton " title="Purchase" href="" target="_self" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #606060;">Adresse Livraison:</span>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                            <table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                <tbody class="mcnImageBlockOuter">
-                                                                                    <tr>
-                                                                                        <td style="padding:9px" class="mcnImageBlockInner" valign="top">
-                                                                                            <table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
-                                                                                                <tbody><tr>
-                                                                                                        <td class="mcnTextContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:left;" valign="top">
-                                                                                                            {% include 'email/include/address_shipping.html.twig' %}
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                    <table border="0" cellpadding="10" cellspacing="10" width="800" id="templateColumns">
-                                                        <tr>
-                                                            <td align="left" valign="top" width="50%" class="columnsContainer">
-                                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateColumn">
-                                                                    <tr>
-                                                                        <td valign="top" class="rightColumnContainer">
-                                                                            <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                <tbody class="mcnButtonBlockOuter">
-                                                                                    <tr>
-                                                                                        <td style="padding-top:0; padding-right:0px; padding-bottom:18px; padding-left:0px;" class="mcnButtonBlockInner" valign="top" align="center">
-                                                                                            <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #aecc08;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px;" valign="middle" align="center">
-                                                                                                            <span class="mcnButton " title="Purchase" href="http://" target="_self" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #606060;">Mode de Paiement:</span>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                            <table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                <tbody class="mcnImageBlockOuter">
-                                                                                    <tr>
-                                                                                        <td style="padding:9px" class="mcnImageBlockInner" valign="top">
-                                                                                            <table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td class="mcnTextContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:left;" valign="top">
-                                                                                                            {% if order.status == 'canceled' %}
-                                                                                                                {{ order.additional_information }}
-                                                                                                            {% else %}
-                                                                                                                {% for name,additional in order.additional_information %}
-                                                                                                                    {% if name != 'formular_url' and name != 'status' and name != 'id' %}
-                                                                                                                        {{ name |replace({'_': ' '})| capitalize }}: {{ additional }}<br />
-                                                                                                                    {% endif %}
-                                                                                                                {% endfor %}
-                                                                                                            {% endif %}
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                            <td align="left" valign="top" width="50%" class="columnsContainer">
-                                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateColumn">
-                                                                    <tr>
-                                                                        <td valign="top" class="rightColumnContainer">
-                                                                            <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                <tbody class="mcnButtonBlockOuter">
-                                                                                    <tr>
-                                                                                        <td style="padding-top:0; padding-right:0px; padding-bottom:18px; padding-left:0px;" class="mcnButtonBlockInner" valign="top" align="center">
-                                                                                            <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #aecc08;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px;" valign="middle" align="center">
-                                                                                                            <span class="mcnButton " title="Purchase" href="http://" target="_self" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #606060;">Information Livraison:</span>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                            <table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                                <tbody class="mcnImageBlockOuter">
-                                                                                    <tr>
-                                                                                        <td style="padding:9px" class="mcnImageBlockInner" valign="top">
-                                                                                            <table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td class="mcnTextContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:left;" valign="top">
-                                                                                                            {% include 'email/include/deliver_dates.html.twig' %}
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
+                                                                                                                                            <table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                <tbody class="mcnImageBlockOuter">
+                                                                                                                                                    <tr>
+                                                                                                                                                        <td style="padding:9px" class="mcnImageBlockInner" valign="top">
+                                                                                                                                                            <table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                                                                                                                                <tbody><tr>
+                                                                                                                                                                        <td class="mcnTextContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:left;" valign="top">
+                                                                                                                                                                            {% include 'email/include/address_billing.html.twig' %}
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </td>
+                                                                                                                                                    </tr>
+                                                                                                                                                </tbody>
+                                                                                                                                            </table>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                </table>
+                                                                                                                            </td>
+                                                                                                                            <td align="left" valign="top" width="50%" class="columnsContainer">
+                                                                                                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateColumn">
+                                                                                                                                    <tr>
+                                                                                                                                        <td valign="top" class="leftColumnContainer">
+                                                                                                                                            <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                <tbody class="mcnButtonBlockOuter">
+                                                                                                                                                    <tr>
+                                                                                                                                                        <td style="padding-top:0; padding-right:0px; padding-bottom:18px; padding-left:0px;" class="mcnButtonBlockInner" valign="top" align="center">
+                                                                                                                                                            <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #aecc08;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                                <tbody>
+                                                                                                                                                                    <tr>
+                                                                                                                                                                        <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px;" valign="middle" align="center">
+                                                                                                                                                                            <span class="mcnButton " title="Purchase" href="" target="_self" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #606060;">Adresse Livraison:</span>
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </td>
+                                                                                                                                                    </tr>
+                                                                                                                                                </tbody>
+                                                                                                                                            </table>
+                                                                                                                                            <table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                <tbody class="mcnImageBlockOuter">
+                                                                                                                                                    <tr>
+                                                                                                                                                        <td style="padding:9px" class="mcnImageBlockInner" valign="top">
+                                                                                                                                                            <table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                                                                                                                                <tbody><tr>
+                                                                                                                                                                        <td class="mcnTextContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:left;" valign="top">
+                                                                                                                                                                            {% include 'email/include/address_shipping.html.twig' %}
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </td>
+                                                                                                                                                    </tr>
+                                                                                                                                                </tbody>
+                                                                                                                                            </table>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                </table>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                    <table border="0" cellpadding="10" cellspacing="10" width="800" id="templateColumns">
+                                                                                                                        <tr>
+                                                                                                                            <td align="left" valign="top" width="50%" class="columnsContainer">
+                                                                                                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateColumn">
+                                                                                                                                    <tr>
+                                                                                                                                        <td valign="top" class="rightColumnContainer">
+                                                                                                                                            <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                <tbody class="mcnButtonBlockOuter">
+                                                                                                                                                    <tr>
+                                                                                                                                                        <td style="padding-top:0; padding-right:0px; padding-bottom:18px; padding-left:0px;" class="mcnButtonBlockInner" valign="top" align="center">
+                                                                                                                                                            <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #aecc08;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                                <tbody>
+                                                                                                                                                                    <tr>
+                                                                                                                                                                        <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px;" valign="middle" align="center">
+                                                                                                                                                                            <span class="mcnButton " title="Purchase" href="http://" target="_self" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #606060;">Mode de Paiement:</span>
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </td>
+                                                                                                                                                    </tr>
+                                                                                                                                                </tbody>
+                                                                                                                                            </table>
+                                                                                                                                            <table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                <tbody class="mcnImageBlockOuter">
+                                                                                                                                                    <tr>
+                                                                                                                                                        <td style="padding:9px" class="mcnImageBlockInner" valign="top">
+                                                                                                                                                            <table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                                                                                                                                <tbody>
+                                                                                                                                                                    <tr>
+                                                                                                                                                                        <td class="mcnTextContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:left;" valign="top">
+                                                                                                                                                                            {% if order.status == 'canceled' %}
+                                                                                                                                                                                {{ order.additional_information }}
+                                                                                                                                                                            {% else %}
+                                                                                                                                                                                {% for name,additional in order.additional_information %}
+                                                                                                                                                                                    {% if name != 'formular_url' and name != 'status' and name != 'id' %}
+                                                                                                                                                                                        {{ name |replace({'_': ' '})| capitalize }}: {{ additional }}<br />
+                                                                                                                                                                                    {% endif %}
+                                                                                                                                                                                {% endfor %}
+                                                                                                                                                                            {% endif %}
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </td>
+                                                                                                                                                    </tr>
+                                                                                                                                                </tbody>
+                                                                                                                                            </table>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                </table>
+                                                                                                                            </td>
+                                                                                                                            <td align="left" valign="top" width="50%" class="columnsContainer">
+                                                                                                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateColumn">
+                                                                                                                                    <tr>
+                                                                                                                                        <td valign="top" class="rightColumnContainer">
+                                                                                                                                            <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                <tbody class="mcnButtonBlockOuter">
+                                                                                                                                                    <tr>
+                                                                                                                                                        <td style="padding-top:0; padding-right:0px; padding-bottom:18px; padding-left:0px;" class="mcnButtonBlockInner" valign="top" align="center">
+                                                                                                                                                            <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #aecc08;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                                <tbody>
+                                                                                                                                                                    <tr>
+                                                                                                                                                                        <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px;" valign="middle" align="center">
+                                                                                                                                                                            <span class="mcnButton " title="Purchase" href="http://" target="_self" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #606060;">Information Livraison:</span>
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </td>
+                                                                                                                                                    </tr>
+                                                                                                                                                </tbody>
+                                                                                                                                            </table>
+                                                                                                                                            <table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                                <tbody class="mcnImageBlockOuter">
+                                                                                                                                                    <tr>
+                                                                                                                                                        <td style="padding:9px" class="mcnImageBlockInner" valign="top">
+                                                                                                                                                            <table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                                                                                                                                <tbody>
+                                                                                                                                                                    <tr>
+                                                                                                                                                                        <td class="mcnTextContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:left;" valign="top">
+                                                                                                                                                                            {% include 'email/include/deliver_dates.html.twig' %}
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </td>
+                                                                                                                                                    </tr>
+                                                                                                                                                </tbody>
+                                                                                                                                            </table>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                </table>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
 
-                                                    <table border="0" cellpadding="10" cellspacing="10" width="800" id="templateColumns">
-                                                        <tr>
-                                                            <td align="left" valign="top" width="100%" class="columnsContainer">
-                                                                {% include 'email/include/items.html.twig' %}
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                    <!-- // END COLUMNS -->
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td align="center" valign="top">
-                                                    <!-- BEGIN FOOTER // -->
-                                                    <table border="0" cellpadding="0" cellspacing="0" width="800" id="templateFooter">
-                                                        <tr>
-                                                            <td valign="top" class="footerContainer" style="padding-top:9px; padding-bottom:9px;"><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                    <tbody class="mcnTextBlockOuter">
-                                                                        <tr>
-                                                                            <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top">
-                                                                                <!--[if mso]>
-                                                                                                <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
-                                                                                                <tr>
-                                                                                                <![endif]-->
+                                                                                                                    <table border="0" cellpadding="10" cellspacing="10" width="800" id="templateColumns">
+                                                                                                                        <tr>
+                                                                                                                            <td align="left" valign="top" width="100%" class="columnsContainer">
+                                                                                                                                {% include 'email/include/items.html.twig' %}
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                    <!-- // END COLUMNS -->
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td align="center" valign="top">
+                                                                                                                    <!-- BEGIN FOOTER // -->
+                                                                                                                    <table border="0" cellpadding="0" cellspacing="0" width="800" id="templateFooter">
+                                                                                                                        <tr>
+                                                                                                                            <td valign="top" class="footerContainer" style="padding-top:9px; padding-bottom:9px;"><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                                                                    <tbody class="mcnTextBlockOuter">
+                                                                                                                                        <tr>
+                                                                                                                                            <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top">
+                                                                                                                                                <!--[if mso]>
+                                                                                                                                                                <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+                                                                                                                                                                <tr>
+                                                                                                                                                                <![endif]-->
 
-                                                                                <!--[if mso]>
-                                                                                <td valign="top" width="800" style="width:800px;">
-                                                                                <![endif]-->
-                                                                                <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
-                                                                                                {{ 'Bien a vous Kidlou' | trans }}<br />
-                                                                                                {{'Voyager léger !' | trans}}
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                                <!--[if mso]>
-                                                                                </td>
-                                                                                <![endif]-->
+                                                                                                                                                <!--[if mso]>
+                                                                                                                                                <td valign="top" width="800" style="width:800px;">
+                                                                                                                                                <![endif]-->
+                                                                                                                                                <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                                                                                                                    <tbody>
+                                                                                                                                                        <tr>
+                                                                                                                                                            <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
+                                                                                                                                                                {{ 'Bien a vous Kidlou' | trans }}<br />
+                                                                                                                                                                {{'Voyager léger !' | trans}}
+                                                                                                                                                            </td>
+                                                                                                                                                        </tr>
+                                                                                                                                                    </tbody>
+                                                                                                                                                </table>
+                                                                                                                                                <!--[if mso]>
+                                                                                                                                                </td>
+                                                                                                                                                <![endif]-->
 
-                                                                                <!--[if mso]>
-                                                                                </tr>
-                                                                                </table>
-                                                                                <![endif]-->
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table></td>
-                                                        </tr>
-                                                    </table>
-                                                    <!-- // END FOOTER -->
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <!-- // END TEMPLATE -->
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
-                    </body>
-                    </html>
+                                                                                                                                                <!--[if mso]>
+                                                                                                                                                </tr>
+                                                                                                                                                </table>
+                                                                                                                                                <![endif]-->
+                                                                                                                                            </td>
+                                                                                                                                        </tr>
+                                                                                                                                    </tbody>
+                                                                                                                                </table></td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                    <!-- // END FOOTER -->
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            </table>
+                                                                                                            <!-- // END TEMPLATE -->
+                                                                                                            </td>
+                                                                                                            </tr>
+                                                                                                            </table>
+                                                                                                            </center>
+                                                                                                            </body>
+                                                                                                            </html>
 

@@ -63,7 +63,7 @@
                                     </tr>
                                     <tr>
                                         <td>{{ 'Registred User ?' | trans }}</td>
-                                        <td></td>
+                                        <td>{% if order.billing.username != 'NULL' %}{{ order.billing.username }}{% else %}{{ 'no' | trans }}{% endif %}</td>
                                     </tr>
                                 </table>
                             </div>

@@ -883,6 +883,7 @@ class Order {
                     $arr_order[$adress_typ]['phone'] = $order_data[5];
                     $arr_order[$adress_typ]['mobile'] = $order_data[6];
                     $arr_order[$adress_typ]['email'] = $order_data[7];
+                    $arr_order[$adress_typ]['username'] = $order_data[9];
                 }
             }
         }
