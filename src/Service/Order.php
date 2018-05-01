@@ -23,6 +23,7 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class Order {
 
@@ -100,18 +101,25 @@ class Order {
 
     /**
      *
+     * @var type $translator
+     */
+    private $translator;
+
+    /**
+     *
      * @param EntityManager $entityManager
      * @param RequestStack $requestStack
      * @param Container $container
      * @param \App\Service\Common $common
      *
      */
-    public function __construct(EntityManager $entityManager, RequestStack $requestStack, Container $container, Common $common) {
+    public function __construct(EntityManager $entityManager, RequestStack $requestStack, Container $container, Common $common, TranslatorInterface $translator) {
         $this->em = $entityManager;
         $this->requestStack = $requestStack;
         $this->setCurrentRequest();
         $this->container = $container;
         $this->common = $common;
+        $this->translator = $translator;
         $this->setNowTime();
     }
 
@@ -882,7 +890,7 @@ class Order {
                     if ($adress_typ != 'shipping') {
                         $arr_order[$adress_typ]['name'] = $order_data[0];
                     } else {
-                        $arr_order[$adress_typ]['name'] = $order_data[11] . ' ' . $order_data[10];
+                        $arr_order[$adress_typ]['name'] = $this->translator->trans($order_data[11]) . ' ' . $order_data[10];
                     }
                     $arr_order[$adress_typ]['street'] = $order_data[1];
                     $arr_order[$adress_typ]['postcode'] = $order_data[2];

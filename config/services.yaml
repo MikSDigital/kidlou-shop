@@ -77,7 +77,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@service_container"]
 
     App\Service\Order:
-        arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container", "@helper.common", "@mailer"]
+        arguments: ["@doctrine.orm.entity_manager","@request_stack","@service_container", "@helper.common", "@translator"]
 
     App\Service\Parameter:
         arguments: ["%locale%", "%languages%", "%admin_path_name%", "%api_path_name%", "%test_path_name%"]

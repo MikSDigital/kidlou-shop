@@ -390,6 +390,10 @@
                 <source>Coupon löschen</source>
                 <target>Supprimer le coupon</target>
             </trans-unit>
+            <trans-unit id="98">
+                <source>hotel</source>
+                <target>Hôtel</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
