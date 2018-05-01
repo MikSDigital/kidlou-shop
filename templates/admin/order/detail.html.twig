@@ -307,6 +307,12 @@
                                         <td style="text-align: left;"><strong>{{ 'Lieferkosten' | trans }}</strong></td>
                                         <td style="text-align: right;" colspan="5"><strong>{{ order.shipping_cost | number_format(2) }}</strong></td>
                                     </tr>
+                                    {% if order.cash_cost > 0%}
+                                        <tr>
+                                            <td style="text-align: left;"><strong>{{ 'Barzahlung' | trans }}</strong></td>
+                                            <td style="text-align: right;" colspan="5"><strong>{{ order.cash_cost | number_format(2) }}</strong></td>
+                                        </tr>
+                                    {% endif %}
                                     <tr>
                                         <td style="text-align: left;"><strong>{{ 'Depotkosten' | trans }}</strong></td>
                                         <td style="text-align: right;" colspan="5"><strong>{{ order.caution_cost | number_format(2) }}</strong></td>
@@ -314,9 +320,9 @@
                                     <tr>
                                         <td style="text-align: left; font-size:16px;"><strong>{{ 'Total' | trans }}</strong></td>
                                                 {% if order.amount_subtotal_cost > 0 %}
-                                            <td style="text-align: right; font-size:16px;" colspan="5"><strong>{{ ((order.subtotal_cost - order.amount_subtotal_cost) + order.shipping_cost + order.caution_cost) | number_format(2) }}</strong></td>
+                                            <td style="text-align: right; font-size:16px;" colspan="5"><strong>{{ ((order.subtotal_cost - order.amount_subtotal_cost) + order.shipping_cost + order.caution_cost + order.cash_cost) | number_format(2) }}</strong></td>
                                                 {% else %}
-                                            <td style="text-align: right; font-size:16px;" colspan="5"><strong>{{ (order.subtotal_cost + order.shipping_cost + order.caution_cost) | number_format(2) }}</strong></td>
+                                            <td style="text-align: right; font-size:16px;" colspan="5"><strong>{{ (order.subtotal_cost + order.shipping_cost + order.caution_cost + order.cash_cost) | number_format(2) }}</strong></td>
                                                 {% endif %}
                                     </tr>
                                 </table>

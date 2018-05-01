@@ -63,7 +63,6 @@ security:
                 default_target_path: user_index
                 failure_handler: authentication_handler
                 success_handler: authentication_handler
-                #logout_handler: authentication_handler
             logout:
                 path:   user_logout
                 success_handler: authentication_handler

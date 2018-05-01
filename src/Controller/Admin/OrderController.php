@@ -54,7 +54,6 @@ class OrderController extends Controller {
                 $message = $this->get('translator')->trans('Email is not send successfull');
             }
         }
-
         return array(
             'order' => $arr_order,
             'message' => $message,

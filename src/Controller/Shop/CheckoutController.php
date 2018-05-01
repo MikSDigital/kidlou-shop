@@ -176,7 +176,7 @@ class CheckoutController extends Controller {
 
     /**
      * @Template("shop/checkout/cashSuccess.html.twig")
-     * @Route("/bank/success", name="checkout_order_cash_success")
+     * @Route("/cash/success", name="checkout_order_cash_success")
      */
     public function cashSuccessAction(Request $request, ServiceOrder $serviceOrder, ServiceCart $serviceCart, \Swift_Mailer $mailer) {
 

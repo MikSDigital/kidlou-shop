@@ -908,48 +908,57 @@ class Order {
         foreach ($arr_data as $datas) {
             $data = explode('|', $datas);
             // prüfe ob parent product
-            if (!isset($data[7])) {
+            if (!isset($data[0])) {
                 continue;
             }
             if ($data[0] == $data[7]) {
-                if (!isset($arr_date[$data[7]]['date_next'])) {
-                    $arr_date[$data[7]]['date_from'] = $data[2];
-                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['sku'] = $data[6];
-                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['name'] = $data[5];
-                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['date_to'] = $data[3];
-                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['date_back_deliver'] = $data[3];
-                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['price'] = $data[8];
-                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['subtotal_price'] = $data[8] * $data[4];
-                    $arr_date[$data[7]]['date_next'] = $this->getNextDate($data);
+                if (!isset($arr_date[$data[0]]['date_next'])) {
+                    $arr_date[$data[0]]['date_from'] = $data[2];
+                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['sku'] = $data[6];
+                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['name'] = $data[5];
+                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['date_to'] = $data[3];
+                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['date_back_deliver'] = $data[3];
+                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['price'] = $data[8];
+                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['subtotal_price'] = $data[8] * $data[4];
+                    $arr_date[$data[0]]['date_next'] = $this->getNextDate($data);
                 }
 
                 // prüfe ob datum bereits gesetzt ist
-                if ($arr_date[$data[7]]['date_next'] == $data[2]) {
-                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['price'] = $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['price'] + $data[8];
-                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['date_to'] = $data[3];
-                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['date_back_deliver'] = $data[3];
-                    $arr_date[$data[7]]['date_next'] = $this->getNextDate($data);
+                if ($arr_date[$data[0]]['date_next'] == $data[2]) {
+                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['price'] = $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['price'] + $data[8];
+                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['date_to'] = $data[3];
+                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['date_back_deliver'] = $data[3];
+                    $arr_date[$data[0]]['date_next'] = $this->getNextDate($data);
                 } else {
                     // check if wiederholen
-                    if (!$arr_order['item_data'][$arr_date[$data[7]]['date_from']]) {
-                        $arr_date[$data[7]]['date_from'] = $data[2];
-                        $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['sku'] = $data[6];
-                        $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['name'] = $data[5];
-                        $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['price'] = $data[8];
-                        $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['subtotal_price'] = $data[8] * $data[4];
-                        $arr_date[$data[7]]['date_next'] = $this->getNextDate($data);
+                    if (!$arr_order['item_data'][$arr_date[$data[0]]['date_from']]) {
+                        $arr_date[$data[0]]['date_from'] = $data[2];
+                        $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['sku'] = $data[6];
+                        $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['name'] = $data[5];
+                        $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['price'] = $data[8];
+                        $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['subtotal_price'] = $data[8] * $data[4];
+                        $arr_date[$data[0]]['date_next'] = $this->getNextDate($data);
                     }
                 }
-            } else if ($data[0] != $data[7]) {
-                $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['children'][$data[7]]['sku'] = $data[6];
-                $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['children'][$data[7]]['name'] = $data[5];
-                if (!isset($arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['children'][$data[7]]['price'])) {
-                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['children'][$data[7]]['price'] = $data[8];
-                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['children'][$data[7]]['subtotal_price'] = $data[8] * $data[4];
+            } else if ($data[0] != $data[7] && $data[7] != 'NULL') {
+                $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['children'][$data[7]]['sku'] = $data[6];
+                $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['children'][$data[7]]['name'] = $data[5];
+                if (!isset($arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['children'][$data[0]]['price'])) {
+                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['children'][$data[7]]['price'] = $data[8];
+                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['children'][$data[7]]['subtotal_price'] = $data[8] * $data[4];
                 } else {
-                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['children'][$data[7]]['price'] = $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['children'][$data[7]]['price'] + $data[8];
-                    $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['children'][$data[7]]['subtotal_price'] = $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['children'][$data[7]]['subtotal_price'] + ($data[8] * $data[4]);
+                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['children'][$data[7]]['price'] = $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['children'][$data[7]]['price'] + $data[8];
+                    $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['children'][$data[7]]['subtotal_price'] = $arr_order['item_data'][$arr_date[$data[7]]['date_from']][$data[7]]['children'][$data[7]]['subtotal_price'] + ($data[8] * $data[4]);
                 }
+            } else if ($data[0] != $data[7] && $data[7] == 'NULL') {
+                $arr_date[$data[0]]['date_from'] = $data[2];
+                $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['sku'] = $data[6];
+                $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['name'] = $data[5];
+                $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['date_to'] = $data[3];
+                $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['date_back_deliver'] = $data[3];
+                $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['price'] = $data[8];
+                $arr_order['item_data'][$arr_date[$data[0]]['date_from']][$data[0]]['subtotal_price'] = $data[8] * $data[4];
+                $arr_date[$data[0]]['date_next'] = $this->getNextDate($data);
             }
         }
         return $arr_order;
