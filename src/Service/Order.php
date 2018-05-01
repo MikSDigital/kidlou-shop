@@ -754,7 +754,11 @@ class Order {
                 ->setBcc($arr_bcc_mails)
                 ->setTo($order['billing']['email'])
                 ->setBody($html, 'text/html');
-        return $mailer->send($message);
+        try {
+            return $mailer->send($message);
+        } catch (Exception $ex) {
+            return NULL;
+        }
     }
 
     public function getOrderData($product) {
@@ -875,7 +879,11 @@ class Order {
 
                 if (isset($order_data[8]) && $order_data[8] == $adress_typ && $isFound == 0) {
                     $isFound = 1;
-                    $arr_order[$adress_typ]['name'] = $order_data[0];
+                    if ($adress_typ != 'shipping') {
+                        $arr_order[$adress_typ]['name'] = $order_data[0];
+                    } else {
+                        $arr_order[$adress_typ]['name'] = $order_data[11] . ' ' . $order_data[10];
+                    }
                     $arr_order[$adress_typ]['street'] = $order_data[1];
                     $arr_order[$adress_typ]['postcode'] = $order_data[2];
                     $arr_order[$adress_typ]['city'] = $order_data[3];

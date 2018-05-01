@@ -159,7 +159,6 @@ class AdminController extends Controller {
         $reposLanguage = $this->getDoctrine()->getRepository(\App\Entity\Language::class);
         $languages = $reposLanguage->findAll();
         $navigation = $serviceCommon->getNavigation('category');
-
         return array(
             'product' => $product,
             'lang' => $lang,

@@ -88,7 +88,7 @@ class Order extends \Doctrine\ORM\EntityRepository {
                         . ' LEFT JOIN App\Entity\Map\OrderItemAdditional oia_item WITH oi_item.id=oia_item.children OR oi_item.id=oia_item.parent'
                         . ' WHERE o_item.id=o.id) AS item,'
                         . ' GROUP_CONCAT(DISTINCT oa.firstname, \' \', oa.lastname, \'|\', oa.street, \'|\', oa.post_code, \'|\', oa.city, \'|\', oa.country_code, '
-                        . ' \'|\', IFNULL(oa.phone,\'NULL\'), \'|\', IFNULL(oa.mobile,\'NULL\'), \'|\', IFNULL(oa.email,\'NULL\'), \'|\', IFNULL(oa.address_typ,\'NULL\'), \'|\', IFNULL(u.username,\'NULL\')  SEPARATOR \',\') AS address_name '
+                        . ' \'|\', IFNULL(oa.phone,\'NULL\'), \'|\', IFNULL(oa.mobile,\'NULL\'), \'|\', IFNULL(oa.email,\'NULL\'), \'|\', IFNULL(oa.address_typ,\'NULL\'), \'|\', IFNULL(u.username,\'NULL\'),  \'|\', IFNULL(oa.name,\'NULL\'), \'|\', IFNULL(oa.shipping_typ,\'NULL\')  SEPARATOR \',\') AS address_name '
                         . ' FROM App\Entity\Order o'
                         . ' INNER JOIN App\Entity\Calendar c WITH o.id = c.order AND o.id = :id'
                         . ' INNER JOIN App\Entity\Order\Item oi WITH oi.calendar = c.id'
@@ -101,7 +101,6 @@ class Order extends \Doctrine\ORM\EntityRepository {
                         . ' GROUP BY o.id'
                 )
                 ->setParameter('id', $id);
-        //->setParameter('day', 1);
         return $query->getOneOrNullResult();
     }
 
