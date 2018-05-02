@@ -716,6 +716,7 @@ class Calendar {
         if (isset($this->days_crossing['date_to'][$dateFrom->format('Y-m-d')])) {
             $this->days[] = $new_date->format('Y-m-d');
         }
+
         while (!$isDate) {
             $new_date->add(new \DateInterval('P1D'));
             if ($new_date->format('Y-m-d') != $dateTo->format('Y-m-d')) {
@@ -727,41 +728,46 @@ class Calendar {
         if (isset($this->days_crossing['date_from'][$dateTo->format('Y-m-d')])) {
             $this->days[] = $dateTo->format('Y-m-d');
         }
-//        echo $this->getDeliverStandard()->getSaturday();
-//        exit;
-//        foreach ($this->days_crossing['date_from'] as $date_from) {
-//
-//            $date = new \DateTime($date_from);
-//            echo $date->format('N');
-//            exit;
-//        }
-//        $date = new \DateTime($this->getDate());
-//        return $date->format('N');
-        // check if before or after is no deliver
-//        foreach ($this->getDeliverException() as $deliver) {
-//            echo $deliver->getDate()->format('Y-m-d');
-//        }
-//        $new_date->sub(new \DateInterval('P1D'));
-//        exit;
     }
 
-    public function checkBeforeAfterEmpty() {
+    public function getDayBeforeAfterEmpty($day, $action) {
         $arr_reseved_days = array();
-        foreach ($this->days as $day) {
-            $arr_reseved_days[$day] = $day;
-        }
-        foreach ($arr_reseved_days as $day) {
-            $date = new \DateTime($day);
+        $date = new \DateTime($day->format('Y-m-d'));
+        if ($action == 'add') {
+            $date->add(new \DateInterval('P1D'));
+        } else {
             $date->sub(new \DateInterval('P1D'));
-            $weekday = $date->format('N');
-            if (!$this->getDeliverStandard()->getMonday()) {
-                if ($weekday == '01') {
-                    if (!$this->getIsExceptionDay($date->format('Y-m-d'))) {
-                        $arr_reseved_days[$date->format('Y-m-d')] = $date->format('Y-m-d');
-                    }
-                }
+        }
+        if (!$this->getDeliverStandard()->getMonday()) {
+            if ($date->format('N') == '1' && !$this->getIsExceptionDay($date->format('Y-m-d'))) {
+                return $day->format('Y-m-d');
+            }
+        } else if (!$this->getDeliverStandard()->getTuesday()) {
+            if ($date->format('N') == '2' && !$this->getIsExceptionDay($date->format('Y-m-d'))) {
+                return $day->format('Y-m-d');
+            }
+        } else if (!$this->getDeliverStandard()->getWednesday()) {
+            if ($date->format('N') == '3' && !$this->getIsExceptionDay($date->format('Y-m-d'))) {
+                return $day->format('Y-m-d');
+            }
+        } else if (!$this->getDeliverStandard()->getThursday()) {
+            if ($date->format('N') == '4' && !$this->getIsExceptionDay($date->format('Y-m-d'))) {
+                return $day->format('Y-m-d');
+            }
+        } else if (!$this->getDeliverStandard()->getFriday()) {
+            if ($date->format('N') == '5' && !$this->getIsExceptionDay($date->format('Y-m-d'))) {
+                return $day->format('Y-m-d');
+            }
+        } else if (!$this->getDeliverStandard()->getSaturday()) {
+            if ($date->format('N') == '6' && !$this->getIsExceptionDay($date->format('Y-m-d'))) {
+                return $day->format('Y-m-d');
+            }
+        } else if (!$this->getDeliverStandard()->getSunday()) {
+            if ($date->format('N') == '7' && !$this->getIsExceptionDay($date->format('Y-m-d'))) {
+                return $day->format('Y-m-d');
             }
         }
+        return false;
     }
 
     private function getIsExceptionDay($day) {
