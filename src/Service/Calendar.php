@@ -648,6 +648,8 @@ class Calendar {
                 $this->setCalendarDatesFromTo($calendar->getDateFrom(), $calendar->getDateTo());
             }
         }
+
+        // check if before and after are no deliver
     }
 
     /**
@@ -725,10 +727,51 @@ class Calendar {
         if (isset($this->days_crossing['date_from'][$dateTo->format('Y-m-d')])) {
             $this->days[] = $dateTo->format('Y-m-d');
         }
-
-        // check if before or after is no deliver
-//        print_r($this->getDeliverException());
+//        echo $this->getDeliverStandard()->getSaturday();
 //        exit;
+//        foreach ($this->days_crossing['date_from'] as $date_from) {
+//
+//            $date = new \DateTime($date_from);
+//            echo $date->format('N');
+//            exit;
+//        }
+//        $date = new \DateTime($this->getDate());
+//        return $date->format('N');
+        // check if before or after is no deliver
+//        foreach ($this->getDeliverException() as $deliver) {
+//            echo $deliver->getDate()->format('Y-m-d');
+//        }
+//        $new_date->sub(new \DateInterval('P1D'));
+//        exit;
+    }
+
+    public function checkBeforeAfterEmpty() {
+        $arr_reseved_days = array();
+        foreach ($this->days as $day) {
+            $arr_reseved_days[$day] = $day;
+        }
+        foreach ($arr_reseved_days as $day) {
+            $date = new \DateTime($day);
+            $date->sub(new \DateInterval('P1D'));
+            $weekday = $date->format('N');
+            if (!$this->getDeliverStandard()->getMonday()) {
+                if ($weekday == '01') {
+                    if (!$this->getIsExceptionDay($date->format('Y-m-d'))) {
+                        $arr_reseved_days[$date->format('Y-m-d')] = $date->format('Y-m-d');
+                    }
+                }
+            }
+        }
+    }
+
+    private function getIsExceptionDay($day) {
+        $isException = false;
+        foreach ($this->getDeliverException() as $deliver) {
+            if ($day == $deliver->getDate()->format('Y-m-d')) {
+                $isException = true;
+            }
+        }
+        return $isException;
     }
 
     /**
