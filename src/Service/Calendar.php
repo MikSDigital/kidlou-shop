@@ -372,7 +372,9 @@ class Calendar {
      * @return string
      */
     public function getHtmlCalendar($product_id = '') {
-        $this->setCheckCalendar($product_id);
+        if ($product_id) {
+            $this->setCheckCalendar($product_id);
+        }
         $engine = $this->container->get('templating');
         return $engine->render('shop/calendar/index.html.twig'
                         , array(
@@ -723,6 +725,10 @@ class Calendar {
         if (isset($this->days_crossing['date_from'][$dateTo->format('Y-m-d')])) {
             $this->days[] = $dateTo->format('Y-m-d');
         }
+
+        // check if before or after is no deliver
+//        print_r($this->getDeliverException());
+//        exit;
     }
 
     /**

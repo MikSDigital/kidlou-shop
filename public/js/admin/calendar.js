@@ -21,6 +21,12 @@ jQuery(function () {
     });
 
 
+    $(document).on('click', '.calendar-url-next-before', function (e) {
+        e.preventDefault();
+        var calendarurl = $(this).attr('href');
+        getCalendarUrl(calendarurl);
+    });
+
     function updateDate(datum, isdeliver) {
         var url = $('#admin-deliver-update').data('url') + datum + '/' + isdeliver + '/';
         $('#bodyoverlay').fadeIn();
@@ -36,6 +42,26 @@ jQuery(function () {
             }
         });
     }
+
+    function getCalendarUrl(url) {
+        showAjaxLoader();
+        $.get(url, function (data) {
+            var html = jQuery.parseHTML(data);
+            $('.calendar-dates-show').html(html);
+            hideAjaxLoader();
+        });
+    }
+
+    function showAjaxLoader() {
+        $('#bodyoverlay').fadeIn();
+        //$('td.calendar-title img').show();
+    }
+
+    function hideAjaxLoader() {
+        $('#bodyoverlay').fadeOut();
+        //$('td.calendar-title img').hide();
+    }
+
 
 });
 

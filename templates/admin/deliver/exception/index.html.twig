@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6" id="admin-deliver-update" data-url="{{ path('admin_deliver_exception_update') }}">
-                <div class="calendar-dates-show">{{ calendar.getHtmlCalendar() | raw }}</div>
+                <div class="calendar-dates-show">{{ calendar.getHtmlCalendar(0) | raw }}</div>
             </div>
             <div class="col-md-3"></div>
         </div>
@@ -23,6 +23,5 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('js/calendar.js') }}"></script>
     <script src="{{ asset('js/admin/calendar.js') }}"></script>
 {% endblock %}
