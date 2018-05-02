@@ -89,7 +89,6 @@ class CategoryController extends Controller {
 
         // get order
         $calendarorders = $serviceOrder->getOrderData($product);
-
         return $this->render('shop/category/detail.html.twig', array(
                     'product' => $product,
                     'arr_route_name' => $arr_route_name,

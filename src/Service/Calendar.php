@@ -639,7 +639,6 @@ class Calendar {
                 }
             }
         }
-
         // order
         $orders = $this->getCurrentOrders($product_id);
         foreach ($orders as $order) {
