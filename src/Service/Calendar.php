@@ -733,19 +733,23 @@ class Calendar {
         $isDate = false;
         $new_date = new \DateTime($dateFrom->format('Y-m-d'));
         if (isset($this->days_crossing['date_to'][$dateFrom->format('Y-m-d')])) {
-            $this->days[] = $new_date->format('Y-m-d');
+            $this->days['day'][] = $new_date->format('Y-m-d');
+        } else {
+            $this->days['to'][] = $dateFrom->format('Y-m-d');
         }
 
         while (!$isDate) {
             $new_date->add(new \DateInterval('P1D'));
             if ($new_date->format('Y-m-d') != $dateTo->format('Y-m-d')) {
-                $this->days[] = $new_date->format('Y-m-d');
+                $this->days['day'][] = $new_date->format('Y-m-d');
             } else {
                 $isDate = true;
             }
         }
         if (isset($this->days_crossing['date_from'][$dateTo->format('Y-m-d')])) {
-            $this->days[] = $dateTo->format('Y-m-d');
+            $this->days['day'][] = $dateTo->format('Y-m-d');
+        } else {
+            $this->days['from'][] = $dateTo->format('Y-m-d');
         }
     }
 

@@ -44,7 +44,7 @@ class Day {
      *
      * @var type quote calendar
      */
-    private $current_quote_calendar;
+    private $current_calendar;
 
     /**
      *
@@ -70,14 +70,14 @@ class Day {
      */
     private $css_empty_deliver = 'emptydeliver';
 
-    public function __construct($day, $month, $year, $request, $deliver_standard, $deliver_exception, $current_quote_calendar) {
+    public function __construct($day, $month, $year, $request, $deliver_standard, $deliver_exception, $current_calendar) {
         $this->day = $day;
         $this->month = $month;
         $this->year = $year;
         $this->request = $request;
         $this->deliver_standard = $deliver_standard;
         $this->deliver_exception = $deliver_exception;
-        $this->current_quote_calendar = $current_quote_calendar;
+        $this->current_calendar = $current_calendar;
     }
 
     /**
@@ -136,8 +136,24 @@ class Day {
      *
      * @return type array
      */
-    private function getCurrentQuoteCalendar() {
-        return $this->current_quote_calendar;
+    private function getCurrentFromCalendar() {
+        return $this->current_calendar['from'];
+    }
+
+    /**
+     *
+     * @return type array
+     */
+    private function getCurrentDayCalendar() {
+        return $this->current_calendar['day'];
+    }
+
+    /**
+     *
+     * @return type array
+     */
+    private function getCurrentToCalendar() {
+        return $this->current_calendar['to'];
     }
 
     /**
@@ -173,6 +189,30 @@ class Day {
      *
      * @return type string
      */
+    public function getFromCss() {
+        foreach ($this->getCurrentFromCalendar() as $currentFromDate) {
+            if ($this->getDate() == $currentFromDate) {
+                return $this->getCssReserved();
+            }
+        }
+    }
+
+    /**
+     *
+     * @return type string
+     */
+    public function getToCss() {
+        foreach ($this->getCurrentToCalendar() as $currentToDate) {
+            if ($this->getDate() == $currentToDate) {
+                return $this->getCssReserved();
+            }
+        }
+    }
+
+    /**
+     *
+     * @return type string
+     */
     public function getCss() {
         // check if date is past
         $date = new \DateTime($this->getDate());
@@ -181,8 +221,8 @@ class Day {
             return $this->getEmptyDeliver();
         }
 
-        foreach ($this->getCurrentQuoteCalendar() as $currentQuoteDate) {
-            if ($this->getDate() == $currentQuoteDate) {
+        foreach ($this->getCurrentDayCalendar() as $currentDate) {
+            if ($this->getDate() == $currentDate) {
                 return $this->getCssReserved();
             }
         }
