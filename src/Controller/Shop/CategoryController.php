@@ -70,8 +70,6 @@ class CategoryController extends Controller {
      */
     private function getDetail($id, $arr_route_name, $request, ServiceProduct $serviceProduct, ServiceOrder $serviceOrder) {
         $product = $this->getDoctrine()->getRepository(\App\Entity\Product::class)->getDetailProduct($id, $request->getLocale(), '800', '80');
-        //$product = $serviceProduct->getProduct($id);
-        //$children = $serviceProduct->getChildrenByParent($id);
         $arr_additionals_select = array();
         if (!is_null($request->query->get('additionals'))) {
             $arr_additionals_select = explode(',', $request->query->get('additionals'));
@@ -88,12 +86,10 @@ class CategoryController extends Controller {
         }
 
         // get order
-        $calendarorders = $serviceOrder->getOrderData($product);
         return $this->render('shop/category/detail.html.twig', array(
                     'product' => $product,
                     'arr_route_name' => $arr_route_name,
-                    'additionalsselect' => $arr_additionals_select,
-                    'calendarorders' => $calendarorders
+                    'additionalsselect' => $arr_additionals_select
                         )
         );
     }
