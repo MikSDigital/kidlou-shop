@@ -85,8 +85,26 @@ class Calendar {
      *
      * @return type integer
      */
+    private function getCountBeforeDays() {
+        $date = new \DateTime($this->getYearBefore() . '-' . $this->getMonthBefore() . '-' . '01');
+        return $date->format('t');
+    }
+
+    /**
+     *
+     * @return type integer
+     */
     private function getCountDays() {
         $date = new \DateTime($this->getYearCurrent() . '-' . $this->getMonthCurrent() . '-' . '01');
+        return $date->format('t');
+    }
+
+    /**
+     *
+     * @return type integer
+     */
+    private function getCountAfterDays() {
+        $date = new \DateTime($this->getYearAfter() . '-' . $this->getMonthAfter() . '-' . '01');
         return $date->format('t');
     }
 
@@ -624,7 +642,8 @@ class Calendar {
             }
         }
         $product = $this->em->getRepository(Product::class)->findOneById($product_id);
-        return $this->em->getRepository(Order::class)->getOrderDates($product, $this->getMonthCurrent(), $this->getYearCurrent(), $this->getCountDays(), $arr_status);
+        return $this->em->getRepository(Order::class)->getOrderDatesAll($product, $this->getMonthBefore(), $this->getYearBefore(), $this->getCountBeforeDays(), $this->getMonthAfter(), $this->getYearAfter(), $this->getCountAfterDays(), $arr_status);
+        //return $this->em->getRepository(Order::class)->getOrderDates($product, $this->getMonthCurrent(), $this->getYearCurrent(), $this->getCountDays(), $arr_status);
     }
 
     /**

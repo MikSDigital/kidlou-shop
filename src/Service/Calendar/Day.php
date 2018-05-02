@@ -90,6 +90,18 @@ class Day {
 
     /**
      *
+     * @return type array
+     */
+    public function getArrDay() {
+        $day = ($this->day < 10) ? '0' . $this->day : $this->day;
+        $arr_day = array();
+        $arr_day[0] = substr($day, 0, 1);
+        $arr_day[1] = substr($day, 1, 1);
+        return $arr_day;
+    }
+
+    /**
+     *
      * @return type integer
      */
     public function getDayId() {

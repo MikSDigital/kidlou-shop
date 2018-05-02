@@ -131,4 +131,31 @@ class Order extends \Doctrine\ORM\EntityRepository {
                         ->getResult();
     }
 
+    /**
+     *
+     * @param type $product
+     * @param type $month
+     * @param type $year
+     * @param type $days
+     * @param type $arr_status
+     * @return type order
+     */
+    public function getOrderDatesAll($product, $monthBefore, $yearBefore, $daysBefore, $monthAfter, $yearAfter, $daysAfter, $arr_status) {
+
+        return $this->createQueryBuilder('o')
+                        ->addSelect('ca')
+                        //->addSelect('s')
+                        ->innerJoin('o.calendars', 'ca')
+                        ->innerJoin('o.status', 's')
+                        ->where('ca.date_from >= :date_from AND ca.date_to <= :date_to')
+                        ->andWhere('ca.product = :product')
+                        ->andWhere('s.name IN (:statusname)')
+                        ->setParameter('date_from', new \DateTime($yearBefore . '-' . $monthBefore . '-01'))
+                        ->setParameter('date_to', new \DateTime($yearAfter . '-' . $monthAfter . '-' . $daysAfter))
+                        ->setParameter('product', $product)
+                        ->setParameter('statusname', array_values($arr_status))
+                        ->getQuery()
+                        ->getResult();
+    }
+
 }

@@ -34,9 +34,13 @@
                     {% endfor %}
                 {% endif %}
                 {% for day in calendar.Days %}
-                    <td id="{{ day.Date }}" class="{{ day.Css }}">{{ day.Day }}</td>
+                    <td id="{{ day.Date }}" class="{{ day.Css }}" style="padding:0px;">
+                        <div style="float:left; width:50%; padding: 8px 0 8px 8px; text-align:right;">{{ day.getArrDay()[0] }}</div>
+                        <div style="float:left; width:50%; padding: 8px 8px 8px 0; text-align:left;" >{{ day.getArrDay()[1] }}</div>
+                    </td>
                     {% if day.DayId % countDayWeek == moduloWeek %}
-                    </tr><tr>
+                    </tr>
+                    <tr>
                     {% endif %}
                 {% endfor %}
                 {% if lastDays > 0 %}
