@@ -168,10 +168,7 @@ class CheckoutController extends Controller {
         $this->removeSessions($serviceOrder, $serviceCart);
 
         $serviceOrder->sendEmailMessage($order, $mailer);
-
-        return array(
-            'order' => $order
-        );
+        return $this->render('shop/checkout/success.html.twig', array('order' => $order));
     }
 
     /**
@@ -189,10 +186,7 @@ class CheckoutController extends Controller {
         $this->removeSessions($serviceOrder, $serviceCart);
 
         $serviceOrder->sendEmailMessage($order, $mailer);
-
-        return array(
-            'order' => $order
-        );
+        return $this->render('shop/checkout/success.html.twig', array('order' => $order));
     }
 
     /**
@@ -215,7 +209,7 @@ class CheckoutController extends Controller {
         $serviceOrder->setAdditionalInformation($post->getParamsForHashCodeOut());
         $this->removeSessions($serviceOrder);
         if ($status) {
-            return $this->render('shop/checkout/postSuccess.html.twig', array('order' => $order));
+            return $this->render('shop/checkout/success.html.twig', array('order' => $order));
         } else {
             return $this->render('shop/checkout/postCancel.html.twig', array('order' => $order));
         }

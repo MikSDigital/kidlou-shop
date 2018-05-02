@@ -440,8 +440,7 @@ class Order {
         if ($data['street1'] != '') {
             $street = $data['street1'] . ' ' . $data['street2'];
         }
-
-        if ($this->getContainer()->get("security.token_storage")->getToken()) {
+        if (!is_string($this->getContainer()->get("security.token_storage")->getToken()->getUser())) {
             $object->setUser($this->getContainer()->get("security.token_storage")->getToken()->getUser());
         }
 

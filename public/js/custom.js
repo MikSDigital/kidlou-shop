@@ -300,12 +300,14 @@ $(document).ready(function () {
         if (isSend) {
             $('#bodyoverlay').fadeIn();
             var message = $('#bodyoverlay').data('iframe-message');
-            $('#overlay-iframe').contents().find('body').html('<div style="text-align:center;">' + message + '</div>');
+            $('#overlay-iframe').contents().find('body').html('<div style="text-align:center;">' + message + ' <img src="/media/icons/ajax-loader-16x16.gif"></div>');
             $('#overlay-iframe').css({'width': '80%', 'height': '60%', 'margin-left': 'auto', 'margin-right': 'auto', 'text-align': 'center', 'padding-top': '20px'});
-            //$('#bodyoverlay').css({'background-image': 'none'});
+            $('#bodyoverlay').css({'background-image': 'none'});
             $('.send-order').submit();
         }
     });
+
+    // In iframe wenn weiter geklickt wird
     var css = '<link href="/css/main.css" rel="stylesheet" />';
     $('#overlay-iframe').load(function () {
         var overlay_iframe = $('#overlay-iframe').contents();

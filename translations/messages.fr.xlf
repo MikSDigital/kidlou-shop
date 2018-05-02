@@ -394,6 +394,10 @@
                 <source>hotel</source>
                 <target>Hôtel</target>
             </trans-unit>
+            <trans-unit id="99">
+                <source>Bestellung %s war erfolgreich</source>
+                <target>Commande %s réussie</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
