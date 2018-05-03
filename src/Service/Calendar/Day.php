@@ -225,18 +225,23 @@ class Day {
      *
      * @return type string
      */
-    public function getCss() {
+    public function getCss($daystatus = '') {
         // check if date is past
         $date = new \DateTime($this->getDate());
         $today = new \DateTime('now');
-        if ($date <= $today) {
-            return $this->getEmptyDeliver();
+
+        if ($daystatus == '') {
+            if ($date <= $today) {
+                return $this->getEmptyDeliver();
+            }
         }
+
         foreach ($this->getCurrentDayCalendar() as $currentDate) {
             if ($this->getDate() == $currentDate) {
                 return $this->getCssReserved();
             }
         }
+
         $isException = $this->getIsDateOfException();
         if ($this->getWeekdayId() == 1) {
             if ($this->getDeliverStandard()->getMonday()) {

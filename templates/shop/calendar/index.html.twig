@@ -28,51 +28,68 @@
         </thead>
         <tbody>
             <tr>
-        <script type="text/javascript">
-            var days = new Array();
-            {% set daystatus = '' %}
-            {% for day in calendar.getBeforeDays() %}
-                {% if day.getFromCss != '' %}
-                    {% set daystatus = 'from-reserved' %}
-                {% elseif day.getToCss != '' %}
-                    {% set daystatus = 'to-reserved' %}
-                {% else %}
-                    {% if daystatus == 'from-reserved' %}
-
+                <!--
+                <script type="text/javascript">
+                    var days = new Array();
+                {# comment twig
+                {% set daystatus = '' %}
+                {% for day in calendar.getBeforeDays() %}
+                    {% if day.getFromCss != '' %}
+                        {% set daystatus = 'from-reserved' %}
+                    {% elseif day.getToCss != '' %}
+                        {% set daystatus = 'to-reserved' %}
+                    {% else %}
+                        {% set daystatus = day.getCss('daybefore') %}
                     {% endif %}
-                    {% set daystatus = day.getCss() %}
-                {% endif %}
-                    days[{{ day.getDate() }}] = {{ daystatus }};
-            {% endfor %}
-            {% for day in calendar.getDays() %}
-                days[{{ day.getDate() }}] = {{ day.getCss() }}-{{ day.getToCss() }}-{{ day.getFromCss() }};
-            {% endfor %}
-            {% for day in calendar.getAfterDays() %}
-                days[{{ day.getDate() }}] = {{ day.getCss() }}-{{ day.getToCss() }}-{{ day.getFromCss() }};
-            {% endfor %}
-        </script>
-        {% if beginDays > 0 %}
-            {% for i in 1..beginDays %}
-                <td class="emptydeliver">&nbsp;</td>
-            {% endfor %}
-        {% endif %}
-        {% for day in calendar.getDays() %}
-            <td id="{{ day.getDate() }}" class="{{ day.getCss() }}" style="padding:0px;">
-                <div class="{{ day.getToCss() }} reserved-from" style="float:left; width:50%; padding: 8px 0 8px 8px; text-align:right;">{{ day.getArrDay()[0] }}</div>
-                <div class="{{ day.getFromCss() }} reserved-to" style="float:left; width:50%; padding: 8px 8px 8px 0; text-align:left;" >{{ day.getArrDay()[1] }}</div>
-            </td>
-            {% if day.DayId % countDayWeek == moduloWeek %}
-                </tr>
-                <tr>
-                {% endif %}
-            {% endfor %}
-            {% if lastDays > 0 %}
-                {% for i in 1..lastDays %}
-                    <td class="emptydeliver">&nbsp;</td>
+                        days[{{ day.getDate() }}] = {{ daystatus }};
                 {% endfor %}
-            {% endif %}
 
-        </tr>
+                {% for day in calendar.getDays() %}
+                    {% if day.getFromCss != '' %}
+                        {% set daystatus = 'from-reserved' %}
+                    {% elseif day.getToCss != '' %}
+                        {% set daystatus = 'to-reserved' %}
+                    {% else %}
+                        {% set daystatus = day.getCss() %}
+                    {% endif %}
+                        days[{{ day.getDate() }}] = {{ daystatus }};
+                {% endfor %}
+
+                {% for day in calendar.getAfterDays() %}
+                    {% if day.getFromCss != '' %}
+                        {% set daystatus = 'from-reserved' %}
+                    {% elseif day.getToCss != '' %}
+                        {% set daystatus = 'to-reserved' %}
+                    {% else %}
+                        {% set daystatus = day.getCss('dayafter') %}
+                    {% endif %}
+                        days[{{ day.getDate() }}] = {{ daystatus }};
+                {% endfor %}
+            #}
+            </script>
+                -->
+                {% if beginDays > 0 %}
+                    {% for i in 1..beginDays %}
+                        <td class="emptydeliver">&nbsp;</td>
+                    {% endfor %}
+                {% endif %}
+                {% for day in calendar.getDays() %}
+                    <td id="{{ day.getDate() }}" class="{{ day.getCss() }}" style="padding:0px;">
+                        <div class="{{ day.getToCss() }} reserved-from" style="float:left; width:50%; padding: 8px 0 8px 8px; text-align:right;">{{ day.getArrDay()[0] }}</div>
+                        <div class="{{ day.getFromCss() }} reserved-to" style="float:left; width:50%; padding: 8px 8px 8px 0; text-align:left;" >{{ day.getArrDay()[1] }}</div>
+                    </td>
+                    {% if day.DayId % countDayWeek == moduloWeek %}
+                    </tr>
+                    <tr>
+                    {% endif %}
+                {% endfor %}
+                {% if lastDays > 0 %}
+                    {% for i in 1..lastDays %}
+                        <td class="emptydeliver">&nbsp;</td>
+                    {% endfor %}
+                {% endif %}
+
+            </tr>
         </tbody>
     </table>
     <div id="bodyoverlay-calendar">
