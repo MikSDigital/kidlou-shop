@@ -9809,4 +9809,12 @@ html body div.order-overlay p {
 .login-closed {
   cursor: pointer; }
 
+.ui-autocomplete {
+  max-height: 300px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+  /* add padding to account for vertical scrollbar */
+  padding-right: 20px; }
+
 /*# sourceMappingURL=main.css.map */
