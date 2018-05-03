@@ -193,7 +193,7 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/post/success", name="checkout_order_post_success")
      */
-    public function postSuccessAction(ServiceOrder $serviceOrder) {
+    public function postSuccessAction(ServiceOrder $serviceOrder, \Swift_Mailer $mailer) {
         $order = $serviceOrder->getCurrentOrder();
         $post = $serviceOrder->setPost()->getPost();
         $status = true;
@@ -209,6 +209,7 @@ class CheckoutController extends Controller {
         $serviceOrder->setAdditionalInformation($post->getParamsForHashCodeOut());
         $this->removeSessions($serviceOrder);
         if ($status) {
+            $serviceOrder->sendEmailMessage($order, $mailer);
             return $this->render('shop/checkout/success.html.twig', array('order' => $order));
         } else {
             return $this->render('shop/checkout/postCancel.html.twig', array('order' => $order));

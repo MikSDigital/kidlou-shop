@@ -50,6 +50,390 @@
                 <source>Dieses Produkt %sku% existiert bereits</source>
                 <target>Dieses Produkt %sku% existiert bereits</target>
             </trans-unit>
+            <trans-unit id="13">
+                <source>day</source>
+                <target>Tag</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>read more...</source>
+                <target>mehr erfahren...</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>Read more</source>
+                <target>mehr erfahren</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>Commander</source>
+                <target>Bestellen</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>Commander</source>
+                <target>Bestellen</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>Mon panier</source>
+                <target>Mein Warenkorb</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Blog</source>
+                <target>Blog</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>Mon panier</source>
+                <target>Mein Warenkorb</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>Login</source>
+                <target>Login</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>Supprimer cet élément</source>
+                <target>Element löschen</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>Sous-total</source>
+                <target>Zwischentotal</target>
+            </trans-unit>
+            <trans-unit id="24">
+                <source>shop now</source>
+                <target>jetzt kaufen</target>
+            </trans-unit>
+            <trans-unit id="25">
+                <source>Etape 1 : Zone de livraison</source>
+                <target>Schritt 1: Lieferzone</target>
+            </trans-unit>
+            <trans-unit id="26">
+                <source>Vérifiez si votre lieu de séjour est desservi par kidlou</source>
+                <target>Prüfen Sie, ob Ihr Aufenthalt durch kidlou beliefert wird</target>
+            </trans-unit>
+            <trans-unit id="27">
+                <source>Code postal / Ville</source>
+                <target>Plz / Stadt</target>
+            </trans-unit>
+            <trans-unit id="28">
+                <source>Cette localité est desservie par kidlou</source>
+                <target>Dieser Ort wird durch kidlou beliefert, gehen Sie zu Schritt zwei</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>Etape 2 : Choix de produits</source>
+                <target>Schritt 2: Produkte wählen</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>Choisissez les articles qui correspondent à vos besoins et réservez les directement online dans le calendrier selon la durée de votre séjour.</source>
+                <target>Wählen Sie die Artikel aus die Ihren Bedürfnissen entsprechen und reservieren Sie diese online im Kalender entsprechend der Länge Ihres Aufenthaltes.</target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>Etape 3 : Paiment et livraison</source>
+                <target>Etape 3: Zahlung & Lieferung</target>
+            </trans-unit>
+            <trans-unit id="32">
+                <source>Payez simplement online et rendez-vous le jour de votre arrivée sur votre lieu de séjour pour la livraison de tout l’équipement choisi pour votre enfant.</source>
+                <target>Zahlen Sie einfach online und geben den Tag der Ankunft Ihren Aufenthaltes an, damit wir Ihre ausgewählte Ausrüstung liefern können.</target>
+            </trans-unit>
+            <trans-unit id="33">
+                <source>Follow us</source>
+                <target>Folgen sie uns</target>
+            </trans-unit>
+            <trans-unit id="34">
+                <source>Cette localité n'est pas desservie par kidlou</source>
+                <target>Dieser Ort wird leider von kidlou nicht beliefert</target>
+            </trans-unit>
+            <trans-unit id="35">
+                <source>from date</source>
+                <target>von</target>
+            </trans-unit>
+            <trans-unit id="36">
+                <source>to date</source>
+                <target>bis</target>
+            </trans-unit>
+            <trans-unit id="37">
+                <source>Gesamtsumme</source>
+                <target>Gesamtsumme</target>
+            </trans-unit>
+            <trans-unit id="38">
+                <source>Resevierung anfragen</source>
+                <target>Resevierung anfragen</target>
+            </trans-unit>
+            <trans-unit id="39">
+                <source>Panier</source>
+                <target>Warenkorb</target>
+            </trans-unit>
+            <trans-unit id="40">
+                <source>Remove</source>
+                <target>löschen</target>
+            </trans-unit>
+            <trans-unit id="41">
+                <source>Name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="42">
+                <source>Price per day</source>
+                <target>Preis pro Tag</target>
+            </trans-unit>
+            <trans-unit id="43">
+                <source>Période de location</source>
+                <target>Mietdauer</target>
+            </trans-unit>
+            <trans-unit id="44">
+                <source>days</source>
+                <target>Tage</target>
+            </trans-unit>
+            <trans-unit id="45">
+                <source>Continuer vos achats</source>
+                <target>Weiterfahren</target>
+            </trans-unit>
+            <trans-unit id="46">
+                <source>Clear Shopping Cart</source>
+                <target>Warenkorb löschen</target>
+            </trans-unit>
+            <trans-unit id="47">
+                <source>Coupons</source>
+                <target>Gutscheine</target>
+            </trans-unit>
+            <trans-unit id="48">
+                <source>Coupon einlösen</source>
+                <target>Gutschein einlösen</target>
+            </trans-unit>
+            <trans-unit id="49">
+                <source>Livraison</source>
+                <target>Liefern</target>
+            </trans-unit>
+            <trans-unit id="50">
+                <source>Caution</source>
+                <target>Depot</target>
+            </trans-unit>
+            <trans-unit id="51">
+                <source>Montant global</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="52">
+                <source>Images</source>
+                <target>Bilder</target>
+            </trans-unit>
+            <trans-unit id="53">
+                <source>Zone</source>
+                <target>Zone</target>
+            </trans-unit>
+            <trans-unit id="54">
+                <source>Vérifier si votre lieu de séjour est desservi par kidlou :</source>
+                <target>Prüfen Sie ob Ihr Ort in der Lieferzone ist:</target>
+            </trans-unit>
+            <trans-unit id="55">
+                <source>Enter postalcode</source>
+                <target>Plz eingeben</target>
+            </trans-unit>
+            <trans-unit id="56">
+                <source>Découvrez la zone de livraison :</source>
+                <target>Entdecken Sie den Zustellbereich:</target>
+            </trans-unit>
+            <trans-unit id="57">
+                <source>Votre panier est vide</source>
+                <target>Ihr Warenkorb ist leer</target>
+            </trans-unit>
+            <trans-unit id="58">
+                <source>Checkout</source>
+                <target>Auschecken</target>
+            </trans-unit>
+            <trans-unit id="59">
+                <source>Already registred?</source>
+                <target>Schon registriert ?</target>
+            </trans-unit>
+            <trans-unit id="60">
+                <source>1 Adresse de facturation</source>
+                <target>1 Rechungsadresse</target>
+            </trans-unit>
+            <trans-unit id="61">
+                <source>Prenom</source>
+                <target>Vorname</target>
+            </trans-unit>
+            <trans-unit id="62">
+                <source>Adresse</source>
+                <target>Adresse</target>
+            </trans-unit>
+            <trans-unit id="63">
+                <source>Adresse1</source>
+                <target>Adresse1</target>
+            </trans-unit>
+            <trans-unit id="64">
+                <source>Adresse2</source>
+                <target>Adresse2</target>
+            </trans-unit>
+            <trans-unit id="65">
+                <source>Zip/Postal</source>
+                <target>Plz</target>
+            </trans-unit>
+            <trans-unit id="66">
+                <source>City</source>
+                <target>Stadt</target>
+            </trans-unit>
+            <trans-unit id="67">
+                <source>Email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="68">
+                <source>Telephone</source>
+                <target>Telefon</target>
+            </trans-unit>
+            <trans-unit id="69">
+                <source>save as new user</source>
+                <target>Speichern als neuer Benutzer</target>
+            </trans-unit>
+            <trans-unit id="70">
+                <source>Password</source>
+                <target>Passwort</target>
+            </trans-unit>
+            <trans-unit id="71">
+                <source>Nom</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="72">
+                <source>Country</source>
+                <target>Land</target>
+            </trans-unit>
+            <trans-unit id="73">
+                <source>Password is not equal</source>
+                <target>Das Passwort ist nicht gleich</target>
+            </trans-unit>
+            <trans-unit id="74">
+                <source>Password must be min. 6 and max. 8 character length</source>
+                <target>Das Passwort muss min. 6 und max. 8 Zeichen haben</target>
+            </trans-unit>
+            <trans-unit id="75">
+                <source>Repeat password</source>
+                <target>Passwort wiederholen</target>
+            </trans-unit>
+            <trans-unit id="76">
+                <source>2 Adresse de livraison</source>
+                <target>2 Lieferadresse</target>
+            </trans-unit>
+            <trans-unit id="77">
+                <source>3 Mode de paiment</source>
+                <target>3 Zahlungsmethode</target>
+            </trans-unit>
+            <trans-unit id="78">
+                <source>4 Review your order</source>
+                <target>4 Überprüfen Sie ihre Bestellung</target>
+            </trans-unit>
+            <trans-unit id="79">
+                <source>Subtotal</source>
+                <target>Zwischentotal</target>
+            </trans-unit>
+            <trans-unit id="80">
+                <source>Total</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="81">
+                <source>Reservieren</source>
+                <target>Reservieren</target>
+            </trans-unit>
+            <trans-unit id="82">
+                <source>Daten werden bearbeitet</source>
+                <target>Daten werden bearbeitet</target>
+            </trans-unit>
+            <trans-unit id="83">
+                <source>Sign In</source>
+                <target>Anmelden</target>
+            </trans-unit>
+            <trans-unit id="84">
+                <source>E-mail or Username</source>
+                <target>Email oder Benutzername</target>
+            </trans-unit>
+            <trans-unit id="85">
+                <source>Please log in</source>
+                <target>Bitte einloggen</target>
+            </trans-unit>
+            <trans-unit id="86">
+                <source>save in address</source>
+                <target>Adresse speichern</target>
+            </trans-unit>
+            <trans-unit id="87">
+                <source>User Area</source>
+                <target>Benutzer Zone</target>
+            </trans-unit>
+            <trans-unit id="88">
+                <source>Logout</source>
+                <target>Logout</target>
+            </trans-unit>
+            <trans-unit id="89">
+                <source>Street</source>
+                <target>Strasse</target>
+            </trans-unit>
+            <trans-unit id="90">
+                <source>Typ</source>
+                <target>Typ</target>
+            </trans-unit>
+            <trans-unit id="91">
+                <source>Choice</source>
+                <target>Auswahl</target>
+            </trans-unit>
+            <trans-unit id="92">
+                <source>Hotel</source>
+                <target>Hotel</target>
+            </trans-unit>
+            <trans-unit id="93">
+                <source>Chalet</source>
+                <target>Chalet</target>
+            </trans-unit>
+            <trans-unit id="94">
+                <source>Private</source>
+                <target>Privat</target>
+            </trans-unit>
+            <trans-unit id="95">
+                <source>Leider ist dieses Produkt im Zeitraum vom %s bis %s reserviert!</source>
+                <target>Leider ist dieses Produkt im Zeitraum vom %s bis %s reserviert!</target>
+            </trans-unit>
+            <trans-unit id="96">
+                <source>The cart is empty</source>
+                <target>Der warenkorb ist leer</target>
+            </trans-unit>
+            <trans-unit id="97">
+                <source>Coupon löschen</source>
+                <target>Gutschein löschen</target>
+            </trans-unit>
+            <trans-unit id="98">
+                <source>hotel</source>
+                <target>Hotel</target>
+            </trans-unit>
+            <trans-unit id="99">
+                <source>Bestellung %s war erfolgreich</source>
+                <target>Bestellung %s war erfolgreich</target>
+            </trans-unit>
+            <trans-unit id="100">
+                <source>Le détail de votre commande N° %s</source>
+                <target>Ihre Bestellung Nr. %s</target>
+            </trans-unit>
+            <trans-unit id="101">
+                <source>datant du %s</source>
+                <target>datiert von %s</target>
+            </trans-unit>
+            <trans-unit id="102">
+                <source>Bien a vous Kidlou</source>
+                <target>Bien a vous kidlou</target>
+            </trans-unit>
+            <trans-unit id="103">
+                <source>Voyager léger !</source>
+                <target>Voyager léger !</target>
+            </trans-unit>
+            <trans-unit id="104">
+                <source>Lieferung</source>
+                <target>Lieferung</target>
+            </trans-unit>
+            <trans-unit id="105">
+                <source>Rückgabe</source>
+                <target>Rückgabe</target>
+            </trans-unit>
+            <trans-unit id="106">
+                <source>From</source>
+                <target>Von</target>
+            </trans-unit>
+            <trans-unit id="107">
+                <source>To</source>
+                <target>Bis</target>
+            </trans-unit>
+            <trans-unit id="108">
+                <source>Price (CHF)</source>
+                <target>Preis (CHF)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -398,6 +398,42 @@
                 <source>Bestellung %s war erfolgreich</source>
                 <target>Commande %s réussie</target>
             </trans-unit>
+            <trans-unit id="100">
+                <source>Le détail de votre commande N° %s</source>
+                <target>Le détail de votre commande N° %s</target>
+            </trans-unit>
+            <trans-unit id="101">
+                <source>datant du %s</source>
+                <target>datant du %s</target>
+            </trans-unit>
+            <trans-unit id="102">
+                <source>Bien a vous Kidlou</source>
+                <target>Bien a vous kidlou</target>
+            </trans-unit>
+            <trans-unit id="103">
+                <source>Voyager léger !</source>
+                <target>Voyager léger !</target>
+            </trans-unit>
+            <trans-unit id="104">
+                <source>Lieferung</source>
+                <target>Livraison</target>
+            </trans-unit>
+            <trans-unit id="105">
+                <source>Rückgabe</source>
+                <target>Retour</target>
+            </trans-unit>
+            <trans-unit id="106">
+                <source>From</source>
+                <target>de</target>
+            </trans-unit>
+            <trans-unit id="107">
+                <source>To</source>
+                <target>à</target>
+            </trans-unit>
+            <trans-unit id="108">
+                <source>Price (CHF)</source>
+                <target>Prix (CHF)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
