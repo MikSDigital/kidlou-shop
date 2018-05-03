@@ -24,6 +24,11 @@ closas_shop:
         _locale: fr|de|en|es
     defaults: {_locale: fr}
 
+closas_start:
+    resource: ../src/Controller/Start/
+    type:     annotation
+    prefix:   /
+
 closas_test:
     resource: ../src/Controller/Test/
     type:     annotation

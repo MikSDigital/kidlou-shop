@@ -82,13 +82,6 @@ services:
     App\Service\Parameter:
         arguments: ["%locale%", "%languages%", "%admin_path_name%", "%api_path_name%", "%test_path_name%"]
 
-
-    App\Listener\LocalListener:
-        class: App\Listener\LocaleListener
-        arguments: ["@translator", "@service.language"]
-        tags:
-          - { name: kernel.event_subscriber }
-
     App\Handler\AuthenticationHandler:
         arguments: ["@service_container","@router"]
 
