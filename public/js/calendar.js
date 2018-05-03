@@ -114,10 +114,22 @@ $(document).ready(function () {
 
     $(document).on('click', '.calendar-dates .deliver', function (e) {
         e.preventDefault();
-
         if ($(this).hasClass('calendar-reserved-from')) {
             return;
         }
+        // check if is date from then check if has occuped from
+        if (typ_date == 'date-from') {
+            if ($(this).children('.reserved.reserved-from').length > 0) {
+                return;
+            }
+        }
+
+        if (typ_date == 'date-to') {
+            if ($(this).children('.reserved.reserved-to').length > 0) {
+                return;
+            }
+        }
+
         $('.calendar-dates .calendar-kidlou-table tbody tr td.deliver').removeClass('calendar-reserved');
         $(this).addClass('calendar-reserved');
         var url = window.location.pathname;

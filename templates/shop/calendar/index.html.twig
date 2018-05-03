@@ -75,8 +75,8 @@
                 {% endif %}
                 {% for day in calendar.getDays() %}
                     <td id="{{ day.getDate() }}" class="{{ day.getCss() }}" style="padding:0px;">
-                        <div class="{{ day.getToCss() }} reserved-from" style="float:left; width:50%; padding: 8px 0 8px 8px; text-align:right;">{{ day.getArrDay()[0] }}</div>
-                        <div class="{{ day.getFromCss() }} reserved-to" style="float:left; width:50%; padding: 8px 8px 8px 0; text-align:left;" >{{ day.getArrDay()[1] }}</div>
+                        <div class="{{ day.getToCss() }} reserved-to" style="float:left; width:50%; padding: 8px 0 8px 8px; text-align:right;">{{ day.getArrDay()[0] }}</div>
+                        <div class="{{ day.getFromCss() }} reserved-from" style="float:left; width:50%; padding: 8px 8px 8px 0; text-align:left;" >{{ day.getArrDay()[1] }}</div>
                     </td>
                     {% if day.DayId % countDayWeek == moduloWeek %}
                     </tr>
