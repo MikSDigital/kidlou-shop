@@ -44,7 +44,7 @@ class Day {
      *
      * @var type quote calendar
      */
-    private $current_calendar;
+    private $current_calendar = array();
 
     /**
      *
@@ -137,7 +137,11 @@ class Day {
      * @return type array
      */
     private function getCurrentFromCalendar() {
-        return $this->current_calendar['from'];
+        if (!isset($this->current_calendar['from'])) {
+            return array();
+        } else {
+            return $this->current_calendar['from'];
+        }
     }
 
     /**
@@ -145,7 +149,11 @@ class Day {
      * @return type array
      */
     private function getCurrentDayCalendar() {
-        return $this->current_calendar['day'];
+        if (!isset($this->current_calendar['day'])) {
+            return array();
+        } else {
+            return $this->current_calendar['day'];
+        }
     }
 
     /**
@@ -153,7 +161,11 @@ class Day {
      * @return type array
      */
     private function getCurrentToCalendar() {
-        return $this->current_calendar['to'];
+        if (!isset($this->current_calendar['to'])) {
+            return array();
+        } else {
+            return $this->current_calendar['to'];
+        }
     }
 
     /**
@@ -220,7 +232,6 @@ class Day {
         if ($date <= $today) {
             return $this->getEmptyDeliver();
         }
-
         foreach ($this->getCurrentDayCalendar() as $currentDate) {
             if ($this->getDate() == $currentDate) {
                 return $this->getCssReserved();

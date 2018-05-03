@@ -109,7 +109,23 @@ class Calendar {
     }
 
     /**
-     * set days
+     *
+     * @return Days
+     */
+    public function getBeforeDays() {
+        $deliverStandard = $this->getDeliverStandard();
+        $deliverException = $this->getDeliverException();
+        $days = $this->getCountBeforeDays();
+        $all_days = array();
+        for ($day = 1; $day <= $days; $day++) {
+            $all_days[] = new Day($day, $this->getMonthBefore(), $this->getYearBefore(), $this->getRequest(), $deliverStandard, $deliverException, $this->getCurrentCalendar());
+        }
+        return $all_days;
+    }
+
+    /**
+     *
+     * @return Days
      */
     public function getDays() {
         $deliverStandard = $this->getDeliverStandard();
@@ -118,6 +134,21 @@ class Calendar {
         $all_days = array();
         for ($day = 1; $day <= $days; $day++) {
             $all_days[] = new Day($day, $this->getMonthCurrent(), $this->getYearCurrent(), $this->getRequest(), $deliverStandard, $deliverException, $this->getCurrentCalendar());
+        }
+        return $all_days;
+    }
+
+    /**
+     *
+     * @return Days
+     */
+    public function getAfterDays() {
+        $deliverStandard = $this->getDeliverStandard();
+        $deliverException = $this->getDeliverException();
+        $days = $this->getCountAfterDays();
+        $all_days = array();
+        for ($day = 1; $day <= $days; $day++) {
+            $all_days[] = new Day($day, $this->getMonthAfter(), $this->getYearAfter(), $this->getRequest(), $deliverStandard, $deliverException, $this->getCurrentCalendar());
         }
         return $all_days;
     }
@@ -342,7 +373,7 @@ class Calendar {
      * @return type deliver_exception
      */
     private function getDeliverException() {
-        return $this->em->getRepository(Deliver::class)->findByMonthYear($this->getMonthCurrent(), $this->getYearCurrent(), $this->getMonthAfter(), $this->getYearAfter());
+        return $this->em->getRepository(Deliver::class)->findByMonthYear($this->getMonthBefore(), $this->getYearBefore(), $this->getMonthAfter(), $this->getYearAfter());
     }
 
     /**
@@ -735,7 +766,7 @@ class Calendar {
         if (isset($this->days_crossing['date_to'][$dateFrom->format('Y-m-d')])) {
             $this->days['day'][] = $new_date->format('Y-m-d');
         } else {
-            $this->days['to'][] = $dateFrom->format('Y-m-d');
+            $this->days['from'][] = $dateFrom->format('Y-m-d');
         }
 
         while (!$isDate) {
@@ -749,7 +780,7 @@ class Calendar {
         if (isset($this->days_crossing['date_from'][$dateTo->format('Y-m-d')])) {
             $this->days['day'][] = $dateTo->format('Y-m-d');
         } else {
-            $this->days['from'][] = $dateTo->format('Y-m-d');
+            $this->days['to'][] = $dateTo->format('Y-m-d');
         }
     }
 

@@ -38,7 +38,6 @@ $(document).ready(function () {
         }
 
         typ_date = $(this).attr('id');
-
         // if date-from is not empty, wieder zurück zum alten stand
         if ($(this).val() != '') {
             $('.calendar-dates').fadeIn();
