@@ -434,6 +434,14 @@
                 <source>Price (CHF)</source>
                 <target>Prix (CHF)</target>
             </trans-unit>
+            <trans-unit id="109">
+                <source>Zahlung wurde erfolgreich ausgeführt</source>
+                <target>Le paiement a été réussi</target>
+            </trans-unit>
+            <trans-unit id="110">
+                <source>Zahlung wurde abgebrochen</source>
+                <target>Le paiement a été annulé</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

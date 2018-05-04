@@ -193,7 +193,7 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/post/success", name="checkout_order_post_success")
      */
-    public function postSuccessAction(ServiceOrder $serviceOrder, \Swift_Mailer $mailer) {
+    public function postSuccessAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart, \Swift_Mailer $mailer) {
         $order = $serviceOrder->getCurrentOrder();
         $post = $serviceOrder->setPost()->getPost();
         $status = true;
@@ -207,7 +207,7 @@ class CheckoutController extends Controller {
 
         // additional information
         $serviceOrder->setAdditionalInformation($post->getParamsForHashCodeOut());
-        $this->removeSessions($serviceOrder);
+        $this->removeSessions($serviceOrder, $serviceCart);
         if ($status) {
             $serviceOrder->sendEmailMessage($order, $mailer);
             return $this->render('shop/checkout/success.html.twig', array('order' => $order));
@@ -220,11 +220,11 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/post/cancel", name="checkout_order_post_cancel")
      */
-    public function postCancelAction(ServiceOrder $serviceOrder) {
+    public function postCancelAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart) {
         $order = $serviceOrder->getCurrentOrder();
         $serviceOrder->setOrderStatus('canceled');
         $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-        $this->removeSessions($serviceOrder);
+        $this->removeSessions($serviceOrder, $serviceCart);
         return array(
             'order' => $order
         );
@@ -234,9 +234,9 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/payment/post/back", name="checkout_order_post_back")
      */
-    public function postBackAction(ServiceOrder $serviceOrder) {
+    public function postBackAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart) {
         $order = $serviceOrder->getCurrentOrder();
-        $this->removeSessions($serviceOrder);
+        $this->removeSessions($serviceOrder, $serviceCart);
         return array();
     }
 
@@ -244,11 +244,11 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/post/decline", name="checkout_order_post_decline")
      */
-    public function postDeclineAction(ServiceOrder $serviceOrder) {
+    public function postDeclineAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart) {
         $order = $serviceOrder->getCurrentOrder();
         $serviceOrder->setOrderStatus('canceled');
         $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
-        $this->removeSessions($serviceOrder);
+        $this->removeSessions($serviceOrder, $serviceCart);
         return array();
     }
 
@@ -256,17 +256,18 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/post/exception", name="checkout_order_post_exception")
      */
-    public function postExceptionAction(ServiceOrder $serviceOrder) {
+    public function postExceptionAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart) {
         $order_id = $this->container->get('session')->get('order_id');
         $serviceOrder->setOrderStatus('canceled');
         $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
+        $this->removeSessions($serviceOrder, $serviceCart);
         return array();
     }
 
     /**
      * @Route("/paypal/return/", name="checkout_order_paypal_return")
      */
-    public function paypalReturnAction(ServiceOrder $serviceOrder, Request $request, \Swift_Mailer $mailer) {
+    public function paypalReturnAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart, Request $request, \Swift_Mailer $mailer) {
         $order = $serviceOrder->getCurrentOrder();
         $serviceOrder->setOrderStatus('complete');
         $arr_data['typ'] = $this->get('translator')->trans('Paypal');
@@ -274,7 +275,7 @@ class CheckoutController extends Controller {
         $arr_data['token'] = $request->query->get('token');
         $arr_data['paymentID'] = $request->query->get('paymentID');
         $serviceOrder->setAdditionalInformation($arr_data);
-        $this->removeSessions($serviceOrder);
+        $this->removeSessions($serviceOrder, $serviceCart);
         $serviceOrder->sendEmailMessage($order, $mailer);
         return $this->render('shop/checkout/paypalSuccess.html.twig', array('order' => $order));
     }
@@ -283,7 +284,7 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/paypal/cancel/", name="checkout_order_paypal_cancel")
      */
-    public function paypalCancelAction(ServiceOrder $serviceOrder, Request $request) {
+    public function paypalCancelAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart, Request $request) {
         $order = $serviceOrder->getCurrentOrder();
         $serviceOrder->setOrderStatus('canceled');
         $arr_data['typ'] = $this->get('translator')->trans('Paypal');
@@ -291,7 +292,7 @@ class CheckoutController extends Controller {
         $arr_data['token'] = $request->query->get('token');
         $arr_data['paymentID'] = $request->query->get('paymentID');
         $serviceOrder->setAdditionalInformation($arr_data);
-        $this->removeSessions($serviceOrder);
+        $this->removeSessions($serviceOrder, $serviceCart);
         return $this->render('shop/checkout/paypalCancel.html.twig', array('order' => $order));
     }
 
