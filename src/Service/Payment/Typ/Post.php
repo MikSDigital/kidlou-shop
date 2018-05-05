@@ -233,7 +233,8 @@ class Post {
      * @return type $params
      */
     private function setParamsForHashCodeOut() {
-        $params = $this->getRequest()->request->all();
+        //$params = $this->getRequest()->request->all();
+        $params = $this->getRequest()->query->all();
         foreach ($params as $name => $data) {
             if ($name != 'SHASIGN' && $data != '') {
                 $this->data_params_hash[strtoupper($name)] = $data;
