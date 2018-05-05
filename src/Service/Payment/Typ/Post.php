@@ -111,7 +111,7 @@ class Post {
      */
     private function getCurrentOrder() {
         $order_id = $this->getContainer()->get('session')->get('order_id');
-        return $this->getEm()->getRepository(Order::class)->findOneById($order_id);
+        return $this->getEm()->getRepository(\App\Entity\Order::class)->findOneById($order_id);
     }
 
     /**
@@ -119,7 +119,7 @@ class Post {
      * @return type $number
      */
     private function getTotalPriceItems() {
-        return $this->getEm()->getRepository(Order::class)->getTotalPriceItems($this->getCurrentOrder())['price'];
+        return $this->getEm()->getRepository(\App\Entity\Order::class)->getTotalPriceItems($this->getCurrentOrder())['price'];
     }
 
     /**
@@ -151,8 +151,8 @@ class Post {
      * @return type Payment
      */
     private function setPaymentTyp() {
-        $payment = $this->getEm()->getRepository(Payment::class)->findOneBy(array('name' => 'Post'));
-        $this->payment_typ = $this->getEm()->getRepository(Payment\Post::class)->findOneBy(array('payment' => $payment));
+        $payment = $this->getEm()->getRepository(\App\Entity\Payment::class)->findOneBy(array('name' => 'Post'));
+        $this->payment_typ = $this->getEm()->getRepository(\App\Entity\Payment\Post::class)->findOneBy(array('payment' => $payment));
     }
 
     /**
@@ -168,7 +168,8 @@ class Post {
      * @param type $order
      */
     private function setFormFieldsValues() {
-        $this->data['AMOUNT'] = (number_format($this->getPriceTotal(), 2) * 100);
+        $this->data['AMOUNT'] = (number_format($this->getCommon()->getPriceTotal(), 2) * 100);
+        //$this->data['AMOUNT'] = (number_format($this->getPriceTotal(), 2) * 100);
         $this->data['CURRENCY'] = $this->getCommon()->getCurrencyCode();
         $this->data['LANGUAGE'] = $this->getRequest()->getLocale() . '_' . strtoupper($this->getRequest()->getLocale());
         $this->data['ORDERID'] = $this->getCurrentOrder()->getOrderNumber();
