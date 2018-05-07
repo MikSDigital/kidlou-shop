@@ -197,9 +197,6 @@ class CheckoutController extends Controller {
         $order = $serviceOrder->getCurrentOrder();
         $post = $serviceOrder->setPost()->getPost();
         $status = true;
-        $logger->info('REQUEST SHASIGN OUT: ' . $post->getShasignOut());
-        //$logger->info('REQUEST HASH CODE OUT: ' . $post->getHashCodeOut());
-
         if ($post->getShasignOut() == $post->getHashCodeOut()) {
             // status order
             $serviceOrder->setOrderStatus('complete');

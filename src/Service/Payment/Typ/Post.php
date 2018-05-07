@@ -232,8 +232,7 @@ class Post {
      * @return type $params
      */
     private function setParamsForHashCodeOut() {
-        $params = $this->getRequest()->request->all();
-        //$params = $this->getRequest()->query->all();
+        $params = $this->getRequest()->query->all();
         foreach ($params as $name => $data) {
             if ($name != 'SHASIGN' && $data != '') {
                 $this->data_params_hash[strtoupper($name)] = $data;
@@ -257,7 +256,7 @@ class Post {
      * @return type
      */
     private function setHashCodeOut() {
-        $payId = $this->getRequest()->request->get('PAYID');
+        $payId = $this->getRequest()->query->get('PAYID');
         if ($payId) {
             $params = $this->setParamsForHashCodeOut()->getParamsForHashCodeOut();
             // setzte alle zusammen mit dem secretkey
@@ -286,7 +285,6 @@ class Post {
      */
     public function getShasignOut() {
         return $this->getRequest()->query->get('SHASIGN');
-        //return $this->getRequest()->query->get('SHASIGN');
     }
 
 }
