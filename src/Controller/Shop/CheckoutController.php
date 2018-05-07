@@ -225,19 +225,17 @@ class CheckoutController extends Controller {
         $serviceOrder->setOrderStatus('canceled');
         $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
         $this->removeSessions($serviceOrder, $serviceCart);
-        return array(
-            'order' => $order
-        );
+        return $this->render('shop/checkout/postCancel.html.twig', array('order' => $order));
     }
 
     /**
      * @Template()
-     * @Route("/payment/post/back", name="checkout_order_post_back")
+     * @Route("/post/back", name="checkout_order_post_back")
      */
     public function postBackAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart) {
         $order = $serviceOrder->getCurrentOrder();
         $this->removeSessions($serviceOrder, $serviceCart);
-        return array();
+        return $this->render('shop/checkout/postBack.html.twig', array('order' => $order));
     }
 
     /**
@@ -249,7 +247,7 @@ class CheckoutController extends Controller {
         $serviceOrder->setOrderStatus('canceled');
         $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
         $this->removeSessions($serviceOrder, $serviceCart);
-        return array();
+        return $this->render('shop/checkout/postDecline.html.twig', array('order' => $order));
     }
 
     /**
@@ -261,7 +259,7 @@ class CheckoutController extends Controller {
         $serviceOrder->setOrderStatus('canceled');
         $serviceOrder->setAdditionalInformation($this->get('translator')->trans('Zahlung wurde abgebrochen'));
         $this->removeSessions($serviceOrder, $serviceCart);
-        return array();
+        return $this->render('shop/checkout/postException.html.twig', array('order' => $order));
     }
 
     /**
