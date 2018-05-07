@@ -193,10 +193,13 @@ class CheckoutController extends Controller {
      * @Template()
      * @Route("/post/success", name="checkout_order_post_success")
      */
-    public function postSuccessAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart, \Swift_Mailer $mailer) {
+    public function postSuccessAction(ServiceOrder $serviceOrder, ServiceCart $serviceCart, \Swift_Mailer $mailer, LoggerInterface $logger) {
         $order = $serviceOrder->getCurrentOrder();
         $post = $serviceOrder->setPost()->getPost();
         $status = true;
+        $logger->info('REQUEST SHASIGN OUT: ' . $post->getShasignOut());
+        //$logger->info('REQUEST HASH CODE OUT: ' . $post->getHashCodeOut());
+
         if ($post->getShasignOut() == $post->getHashCodeOut()) {
             // status order
             $serviceOrder->setOrderStatus('complete');

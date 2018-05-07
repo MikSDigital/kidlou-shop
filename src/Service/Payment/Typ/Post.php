@@ -169,7 +169,6 @@ class Post {
      */
     private function setFormFieldsValues() {
         $this->data['AMOUNT'] = (number_format($this->getCommon()->getPriceTotal(), 2) * 100);
-        //$this->data['AMOUNT'] = (number_format($this->getPriceTotal(), 2) * 100);
         $this->data['CURRENCY'] = $this->getCommon()->getCurrencyCode();
         $this->data['LANGUAGE'] = $this->getRequest()->getLocale() . '_' . strtoupper($this->getRequest()->getLocale());
         $this->data['ORDERID'] = $this->getCurrentOrder()->getOrderNumber();
@@ -233,8 +232,8 @@ class Post {
      * @return type $params
      */
     private function setParamsForHashCodeOut() {
-        //$params = $this->getRequest()->request->all();
-        $params = $this->getRequest()->query->all();
+        $params = $this->getRequest()->request->all();
+        //$params = $this->getRequest()->query->all();
         foreach ($params as $name => $data) {
             if ($name != 'SHASIGN' && $data != '') {
                 $this->data_params_hash[strtoupper($name)] = $data;
@@ -286,6 +285,7 @@ class Post {
      * @return type $string
      */
     public function getShasignOut() {
+        //return $this->getRequest()->query->get('SHASIGN');
         return $this->getRequest()->request->get('SHASIGN');
     }
 
