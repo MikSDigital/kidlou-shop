@@ -285,8 +285,8 @@ class Post {
      * @return type $string
      */
     public function getShasignOut() {
+        return $this->getRequest()->query->get('SHASIGN');
         //return $this->getRequest()->query->get('SHASIGN');
-        return $this->getRequest()->request->get('SHASIGN');
     }
 
 }
