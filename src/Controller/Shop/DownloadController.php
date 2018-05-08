@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Service\Product As ServiceProduct;
 use App\Service\Common As ServiceCommon;
+use App\Entity\Product;
 
 /**
  * @Route("/download")

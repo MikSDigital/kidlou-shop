@@ -16,6 +16,10 @@ use App\Service\Common As ServiceCommon;
 use App\Service\Product As ServiceProduct;
 use App\Service\ImageResizer As ServiceImageResizer;
 use App\Entity\Product;
+use App\Entity\Product\Description;
+use App\Entity\Product\Image;
+use App\Entity\Map\ProductAdditional;
+use App\Entity\Price;
 
 class AdminController extends Controller {
 
@@ -231,12 +235,11 @@ class AdminController extends Controller {
 
         $product = $reposProduct->findOneById($product_id);
         $language = $reposLanguage->findOneBy(array('short_name' => $lang));
-
         $arr_fields = array(
-            'descriptionname' => 'Description',
-            'tinymelongtext' => 'Description',
-            'tinymeshorttext' => 'Description',
-            'tinymeindicies' => 'Description',
+            'descriptionname' => '\\App\\Entity\\Product\\Description',
+            'tinymelongtext' => '\\App\\Entity\\Product\\Description',
+            'tinymeshorttext' => '\\App\\Entity\\Product\\Description',
+            'tinymeindicies' => '\\App\\Entity\\Product\\Description',
         );
 
         $arr_data = $request->request->all();
@@ -244,8 +247,9 @@ class AdminController extends Controller {
         foreach ($arr_data as $name => $data) {
             $field = $name;
             $field = explode('_', $field);
+
             if ($field[0] == 'descriptionname') {
-                $reposCommon = $this->getDoctrine()->getRepository($arr_fields[$field[0]] . '::class');
+                $reposCommon = $this->getDoctrine()->getRepository(Description::class);
                 $productDescription = $reposCommon->findOneBy(array('lang' => $language, 'product' => $product));
                 $productDescription->setName($data);
                 $em->persist($productDescription);
@@ -254,7 +258,7 @@ class AdminController extends Controller {
                 $crawler = new Crawler($data);
                 $crawler = $crawler->filter('body');
                 $data = trim($crawler->html());
-                $reposCommon = $this->getDoctrine()->getRepository($arr_fields[$field[0]] . '::class');
+                $reposCommon = $this->getDoctrine()->getRepository(Description::class);
                 $productDescription = $reposCommon->findOneBy(array('lang' => $language, 'product' => $product));
                 $productDescription->setShortText($data);
                 $em->persist($productDescription);
@@ -263,7 +267,7 @@ class AdminController extends Controller {
                 $crawler = new Crawler($data);
                 $crawler = $crawler->filter('body');
                 $data = trim($crawler->html());
-                $reposCommon = $this->getDoctrine()->getRepository($arr_fields[$field[0]] . '::class');
+                $reposCommon = $this->getDoctrine()->getRepository(Description::class);
                 $productDescription = $reposCommon->findOneBy(array('lang' => $language, 'product' => $product));
                 $productDescription->setLongText($data);
                 $em->persist($productDescription);
@@ -272,7 +276,7 @@ class AdminController extends Controller {
                 $crawler = new Crawler($data);
                 $crawler = $crawler->filter('body');
                 $data = trim($crawler->html());
-                $reposCommon = $this->getDoctrine()->getRepository($arr_fields[$field[0]] . '::class');
+                $reposCommon = $this->getDoctrine()->getRepository(Description::class);
                 $productIndicies = $reposCommon->findOneBy(array('lang' => $language, 'product' => $product));
                 $productIndicies->setIndicies($data);
                 $em->persist($productIndicies);
@@ -370,7 +374,7 @@ class AdminController extends Controller {
      * @Template()
      * @Route("/uploadelement/", name="admin_element_upload")
      */
-    public function uploadElement(Request $request) {
+    public function uploadElement(Request $request, ServiceCommon $serviceCommon, ServiceImageResizer $serviceImageResizer) {
 
         $product_id = $request->request->get('product_id');
         $lang = $request->request->get('lang');
@@ -409,7 +413,7 @@ class AdminController extends Controller {
             $files = $request->files->get("sendadditionalimages");
             $images = new ArrayCollection();
             if ($files) {
-                $images = $this->saveUploadImage($files[$sku], $children);
+                $images = $this->saveUploadImage($files[$sku], $children, '', $serviceCommon, $serviceImageResizer);
             }
 
             $productAdditional = new ProductAdditional();
@@ -488,21 +492,22 @@ class AdminController extends Controller {
             $em->flush();
         }
 
-        $reposPrice = $this->getDoctrine()->getRepository(\App\Entity\Price::class);
+        $reposPrice = $this->getDoctrine()->getRepository(Price::class);
         $prices = $reposPrice->findBy(array('product' => $children));
         foreach ($prices as $price) {
             $em->remove($price);
             $em->flush();
         }
 
+        // delete children
+        $em->remove($children);
+        $em->flush();
+
         $reposProductAdditional = $this->getDoctrine()->getRepository(\App\Entity\Map\ProductAdditional::class);
         $productAdditional = $reposProductAdditional->findOneBy(array('parent' => $product_id, 'children' => $children_id));
         $em->remove($productAdditional);
         $em->flush();
 
-        // delete children
-        $em->remove($children);
-        $em->flush();
 
         return new JsonResponse(array('html' => ''));
     }
@@ -540,7 +545,7 @@ class AdminController extends Controller {
      * @Template()
      * @Route("/imageupdate/", name="admin_image_update")
      */
-    public function setImageUpdateAction(Request $request) {
+    public function setImageUpdateAction(Request $request, ServiceCommon $serviceCommon, ServiceImageResizer $serviceImageResizer) {
         $em = $this->getDoctrine()->getManager();
         $product_id = $request->request->get('product_id');
         $lang = $request->request->get('lang');
@@ -561,7 +566,7 @@ class AdminController extends Controller {
             $priorOriginalName = $productImage->getOriginalName();
             $arr_files = array();
             $arr_files[] = $file;
-            $images = $this->saveUploadImage($arr_files, $product, $priorOriginalName);
+            $images = $this->saveUploadImage($arr_files, $product, $priorOriginalName, $serviceCommon, $serviceImageResizer);
             $arr_html[$image_id] = $this->renderView('admin/admin/image.html.twig', array(
                 'images' => $images,
                 'product' => $product,
@@ -576,7 +581,7 @@ class AdminController extends Controller {
      * @Template()
      * @Route("/elementupdate/", name="admin_element_update")
      */
-    public function setElementUpdateAction(Request $request) {
+    public function setElementUpdateAction(Request $request, ServiceCommon $serviceCommon, ServiceImageResizer $serviceImageResizer) {
         $em = $this->getDoctrine()->getManager();
         $product_id = $request->request->get('product_id');
         $lang = $request->request->get('lang');
@@ -626,7 +631,7 @@ class AdminController extends Controller {
                         $em->flush();
                     }
                 }
-                $images = $this->saveUploadImage($files[$child_id], $children);
+                $images = $this->saveUploadImage($files[$child_id], $children, '', $serviceCommon, $serviceImageResizer);
             } else {
                 if ($children->getImages()) {
                     $images = $children->getImages();
