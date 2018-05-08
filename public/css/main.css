@@ -9817,4 +9817,10 @@ html body div.order-overlay p {
   /* add padding to account for vertical scrollbar */
   padding-right: 20px; }
 
+.image-thumbs div {
+  padding-bottom: 20px; }
+
+.image-thumbs .img-product-thumbs {
+  cursor: pointer; }
+
 /*# sourceMappingURL=main.css.map */

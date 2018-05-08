@@ -16,9 +16,16 @@
                         {% set isdefault = 0 %}
                         {% for image in product.getImages if image.getIsDefault and isdefault == 0 %}
                             {% set isdefault = 1 %}
-                            <img src="/{{ image.getName }}" title="{{ product.getName }}" class="img-responsive"/>
+                            <img src="/{{ image.getName }}" title="{{ product.getName }}" class="img-responsive img-product-big"/>
                         {% endfor %}
                     </p>
+                    <div class="image-thumbs">
+                        {% for key, image in product.getImages %}
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <img src="/{{ image.getName }}" title="{{ product.getName }}" class="img-responsive img-product-thumbs"/>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="col-sm-7 col-xs-12">
                     <div class="product-name">

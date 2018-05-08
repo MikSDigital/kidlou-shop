@@ -98,6 +98,9 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on('click', '.img-product-thumbs', function (el) {
+        $(".img-product-big").attr('src', $(this).attr('src')).fadeIn();
+    });
 
     // checkout payment method click
     $('.payment-methods .radio input').click(function (el) {

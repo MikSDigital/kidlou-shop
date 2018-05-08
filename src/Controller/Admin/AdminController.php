@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\Common As ServiceCommon;
 use App\Service\Product As ServiceProduct;
 use App\Service\ImageResizer As ServiceImageResizer;
+use App\Entity\Product;
 
 class AdminController extends Controller {
 
