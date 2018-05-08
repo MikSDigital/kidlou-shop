@@ -498,7 +498,6 @@ class AdminController extends Controller {
             $em->remove($price);
             $em->flush();
         }
-
         // delete children
         $em->remove($children);
         $em->flush();
