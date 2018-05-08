@@ -49,7 +49,6 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
         // Dies wird für das speichern der Zone parameters gebraucht,
         // wird später gebraucht wenn der user mit seinem Login sich anmelden wird
         $this->setZoneToSession($request);
-
         // if current route is equal referer route than is index login area
         if (strpos($request->headers->get('referer'), $this->router->generate($request->get('_route')))) {
             return new RedirectResponse($this->router->generate('user_index'));

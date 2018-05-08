@@ -93,7 +93,6 @@ services:
         arguments: ["@security.http_utils"]
         public: false
 
-
     api_user_repository:
         class:   Doctrine\ORM\EntityManager
         factory: ["@doctrine.orm.entity_manager", "getRepository"]

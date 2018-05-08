@@ -54,7 +54,7 @@ security:
                 invalidate_session: false
             logout_on_user_change: true
         frontendlogin:
-            pattern: ^/%locale%
+            pattern: ^/
             anonymous: ~
             form_login:
                 login_path: user_login
