@@ -200,10 +200,10 @@
                         {% endfor %}
                         {% if imagedefault == 0 %}
                         <div class="col-md-2 col-image"><img src="/media/placeholder/placeholder80.jpg" title="" class="img-responsive"/></div>
-                        <div class="col-md-2"><input type="radio" name="product[insert][image][default][]"  checked='checked' /></div>
+                        <div class="col-md-2"><input type="radio" name="product[insert][image][default][]"  {% if product.images|length == 0 %} checked='checked'{% endif %} /></div>
                         <div class="col-md-4">Placeholder</div>
                         <div class="col-md-3">
-                            <input type="file" name="product[insert][image][]">
+                            <!-- <input type="file" class="image" name="product[insert][image][]"> -->
                         </div>
                         <div class="col-md-1"></div>
                     {% endif %}

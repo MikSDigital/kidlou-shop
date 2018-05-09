@@ -554,7 +554,7 @@ jQuery(function () {
         var lang = $('input[name=lang]').val();
         form_data.append('lang', lang);
         form_data.append('product_id', product_id);
-        $.each($('.image'), function (i, val) {
+        $.each($('.productimages .image'), function (i, val) {
             var file_data = $(this).prop('files')[0];
             if (file_data != undefined) {
                 var image_id = $(this).data('image-id');

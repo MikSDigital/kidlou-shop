@@ -384,8 +384,6 @@ class AdminController extends Controller {
         $product = $reposProduct->findOneById($product_id);
         $images = new ArrayCollection();
         $images = $this->saveUploadImage($files, $product, '', $serviceCommon, $serviceImageResizer);
-
-
         $html = $this->renderView('admin/admin/image.html.twig', array(
             'images' => $images,
             'product' => $product,
@@ -741,6 +739,7 @@ class AdminController extends Controller {
     protected function saveUploadImage($files, $product, $priorOriginalName = '', $serviceCommon, $serviceImageResizer) {
         $newNodes = 0;
         $images = new ArrayCollection();
+
         foreach ($files as $file) {
             if ($file->getClientOriginalExtension() != '') {
                 $arr_files = explode('.', $file->getClientOriginalName());
@@ -784,14 +783,14 @@ class AdminController extends Controller {
                 $image->setOriginalName($file->getClientOriginalName());
                 $image->setMimetyp($file->getClientMimeType());
                 if (strpos($file->getClientOriginalName(), '-default') === false) {
-                    $image->setIsDefault(false);
+                    if (count($files) == 1 && count($product->getImages()) == 0) {
+                        $image->setIsDefault(true);
+                    } else {
+                        $image->setIsDefault(false);
+                    }
                 } else {
                     // set all other to false
-                    $images = $reposImage->findBy(array('product' => $product, 'size
-
-
-
-            ' => $size));
+                    $images = $reposImage->findBy(array('product' => $product, 'size' => $size));
                     foreach ($images as $img) {
                         $img->setIsDefault(false);
                         $em = $this->getDoctrine()->getManager();
@@ -800,6 +799,8 @@ class AdminController extends Controller {
                     }
                     $image->setIsDefault(true);
                 }
+
+                // if first one
                 $image->setSize($size);
                 $image->setProduct($product);
                 $em = $this->getDoctrine()->getManager();
