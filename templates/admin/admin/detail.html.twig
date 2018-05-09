@@ -19,6 +19,12 @@
                     </select>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cat">{{ 'Status' | trans }}</label>
+                    <div><input class="mutation-status" data-url="{{ path('admin_status') }}" data-txt-status-ok="{{ 'active' | trans }}" data-txt-status-nok="{{ 'no active' | trans }}"{% if product.status == 1 %} checked {% endif %}type="checkbox"><span style="padding-left:20px;" class="txt-status">{% if product.status == 1 %}{{ 'active' | trans }}{% else %}{{ 'active' | trans }}{% endif %}</span></div>
+                </div>
+            </div>
         </div>
         <section class="box info admin">
             <div class="product-grid-detail">
@@ -50,12 +56,11 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="cat">{{ 'Status' | trans }}</label>
-                            <div><input class="mutation-status" data-url="{{ path('admin_status') }}" data-txt-status-ok="{{ 'active' | trans }}" data-txt-status-nok="{{ 'no active' | trans }}"{% if product.status == 1 %} checked {% endif %}type="checkbox"><span style="padding-left:20px;" class="txt-status">{% if product.status == 1 %}{{ 'active' | trans }}{% else %}{{ 'no active' | trans }}{% endif %}</span></div>
+                            <label for="sale">Sale</label>
+                            <input type="text" disabled="" class="form-control" placeholder="Sale" name="product[update][sale]" value="{{ product.sale | number_format(2) }}" />
                         </div>
                     </div>
                 </div>
-
                 <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
                 <div class="row">
                     <div class="col-md-6">
@@ -292,6 +297,9 @@
                 <div class="row">
                     <div class="col-md-9" style="margin-bottom: 10px;"><button  class="btn btn-default newadditionalelement">Add new element</button></div>
                     <div class="col-md-3" style="padding-bottom:10px;"><button data-url-element-update="{{ path('admin_element_update') }}" class="btn btn-default mutationelement admin-element-right">Mutation Element</button></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="padding-bottom:10px;"><button data-url="{{ path('admin_product_delete', {'id': product.id }) }}" class="btn btn-default delete-product admin-element-right">DELETE PRODUCT</button></div>
                 </div>
                 <div class="row"><div class="col-md-12 admin-border-bottom"></div></div>
 

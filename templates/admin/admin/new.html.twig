@@ -54,12 +54,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <!--
-                        {#% for calendartyp in calendartyps %#}
-                            <label for="price_{{ calendartyp.name }}">{{ 'Price in CHF' | trans }} / {{ calendartyp.name | trans }}</label>
-                            <input class="form-control price_{{ calendartyp.name }}" type="text" name="product[price][{{ calendartyp.name }}]" />
-                        {#% endfor %#}
-                        -->
+                        <label for="price_day">{{ 'Price in CHF' | trans}} / {{ 'day' | trans}}</label>
+                        <input class="form-control price_day" type="text" name="product[price]" />
                     </div>
                 </div>
             </div>
@@ -67,8 +63,8 @@
                 {% for language in languages %}
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="productname">{{ 'Product name ' | trans }} {{ language.name }}</label>
-                            <input class="form-control productname_{{ language.shortName }}" type="text" name="product[name][{{ language.shortName }}]"/>
+                            <label for="productname">{{ 'Product name ' | trans}} {{ language.name}}</label>
+                            <input class="form-control productname_{{ language.shortName}}" type="text" name="product[name][{{ language.shortName}}]"/>
                         </div>
                     </div>
                 {% endfor %}
@@ -76,13 +72,13 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-12" style="padding-top:10px; padding-bottom:10px; padding-right:15px;"><div class="form-group">
-                            <button data-url="{{ path('admin_product_new_save') }}"
-                                    data-url-redirect="{{ path('admin_product_detail_noid') }}"
-                                    data-error-message-select="{{ 'Please select' | trans }}"
-                                    data-error-message-input="{{ 'Field is empty' | trans }}"
-                                    data-error-message-input-price="{{ 'Is not a number' | trans }}"
-                                    data-error-message-send="{{ 'Sku exist already' | trans }}"
-                                    class="btn btn-default new-product admin-element-right">{{ 'Save' | trans }}</button>
+                            <button data-url="{{ path('admin_product_new_save')}}"
+                                    data-url-redirect="{{ path('admin_product_detail_noid')}}"
+                                    data-error-message-select="{{ 'Please select' | trans}}"
+                                    data-error-message-input="{{ 'Field is empty' | trans}}"
+                                    data-error-message-input-price="{{ 'Is not a number' | trans}}"
+                                    data-error-message-send="{{ 'Sku exist already' | trans}}"
+                                    class="btn btn-default new-product admin-element-right">{{ 'Save' | trans}}</button>
                         </div></div>
                 </div>
             </div>
@@ -97,7 +93,7 @@
 
 
 {% block javascripts %}
-    <script src="{{ asset('js/admin/common.js') }}"></script>
+    <script src="{{ asset('js/admin/common.js')}}"></script>
 {% endblock %}
 
 

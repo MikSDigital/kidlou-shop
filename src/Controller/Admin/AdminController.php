@@ -113,10 +113,9 @@ class AdminController extends Controller {
             // product price
             $price = new Price();
             $price->setProduct($product);
-            $price->setValue($requests['price']['week']);
+            $price->setValue($requests['price']);
             $em->persist($price);
             $em->flush();
-
             // product description
             $reposLanguage = $this->getDoctrine()->getRepository(\App\Entity\Language::class);
             $languages = $reposLanguage->findAll();
@@ -171,6 +170,58 @@ class AdminController extends Controller {
             'languages' => $languages,
             'navigation' => $navigation
         );
+    }
+
+    /**
+     * @Template()
+     * @Route("/productdelete/{id}/", name="admin_product_delete")
+     */
+    public function productDeleteAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        $product = $this->getDoctrine()->getRepository(Product::class)->findOneById($id);
+
+        // Description
+        foreach ($product->getDescriptions() as $description) {
+            $description->removeDescription($description);
+        }
+
+        // Price
+        $price = $this->getDoctrine()->getRepository(Price::class)->findOneBy(array('product' => $product));
+        if (!$price) {
+            $em->remove($price);
+            $em->flush();
+        }
+
+        $reposImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
+        $images = $reposImage->findBy(array('product' => $children));
+        foreach ($images as $image) {
+            $fs = new Filesystem();
+            $fs->remove($this->get('kernel')->getRootDir() . '/../public/' . $image->getSize()->getPath() . $image->getName());
+            $em->remove($image);
+            $em->flush();
+        }
+
+        $reposDescription = $this->getDoctrine()->getRepository(\App\Entity\Product\Description::class);
+        $descriptions = $reposDescription->findBy(array('product' => $children));
+        foreach ($descriptions as $description) {
+            $em->remove($description);
+            $em->flush();
+        }
+
+        $reposPrice = $this->getDoctrine()->getRepository(Price::class);
+        $prices = $reposPrice->findBy(array('product' => $children));
+        foreach ($prices as $price) {
+            $em->remove($price);
+            $em->flush();
+        }
+        // delete children
+        $em->remove($children);
+        $em->flush();
+
+        $reposProductAdditional = $this->getDoctrine()->getRepository(\App\Entity\Map\ProductAdditional::class);
+        $productAdditional = $reposProductAdditional->findOneBy(array('parent' => $product_id, 'children' => $children_id));
+        $em->remove($productAdditional);
+        $em->flush();
     }
 
     /**

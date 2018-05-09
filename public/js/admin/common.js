@@ -771,6 +771,11 @@ jQuery(function () {
         location.href = $(this).data('url');
     });
 
+    // Product Delete
+    $(document).on('click', '.delete-product', function (e) {
+        e.preventDefault();
+        location.href = $(this).data('url');
+    });
 
     function getAdditionalHtml() {
         var html = '<div class="row">';
