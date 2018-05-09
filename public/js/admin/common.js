@@ -213,7 +213,6 @@ jQuery(function () {
         if (!isAllowed) {
             return false;
         }
-
         form_data.append('product_id', $('input[name=product_id]').val());
         form_data.append('lang', $('input[name=lang]').val());
         var url = $(this).data('urlimage');
@@ -235,13 +234,19 @@ jQuery(function () {
                         html = val;
                     }
                 });
-                var obj;
+                var obj = $('.productimages');
                 $('.productimages').each(function () {
-                    obj = $(this);
+                    if ($(this).find('.image').length) {
+                        obj = $(this);
+                    }
                 });
                 obj.after(html);
                 $('.productimages').each(function () {
-                    obj = $(this);
+                    if ($(this).find('.image').length) {
+                        obj = $(this);
+                    } else {
+                        $(this).remove();
+                    }
                 });
                 var oObj;
                 obj = obj.next();
@@ -281,7 +286,18 @@ jQuery(function () {
                 data: form_data,
                 type: 'post',
                 success: function (data) {
+                    var objb = obj.parent().parent().prev();
                     obj.parent().parent().remove();
+                    if (!objb.hasClass("productimages")) {
+                        html = '<div class="row productimages">';
+                        html += '<div class="col-md-2 col-image"><img src="/media/placeholder/placeholder80.jpg" title="" class="img-responsive"/></div>';
+                        html += '<div class="col-md-2"><input type="radio" name="product[insert][image][default][]" checked="checked" /></div>';
+                        html += '<div class="col-md-4">Placeholder</div>';
+                        html += '<div class="col-md-3"></div>';
+                        html += '<div class="col-md-1"></div>';
+                        html += '</div>';
+                        objb.after(html);
+                    }
                     $('#bodyoverlay').fadeOut();
                 }
             });
