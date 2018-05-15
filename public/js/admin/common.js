@@ -827,7 +827,7 @@ jQuery(function () {
                     function (data) {
                         var results = [];
                         $.each(data, function (i, item) {
-                            var label = '<div class=""><img src="' + item.filename + '"/> ' + item.name + "</div>";
+                            var label = '<div class=""><img src="' + item.filename + '"/> ' + item.name + ' - <span style="font-style:italic;">' + item.value + "</span></div>";
                             results.push({'value': item.value, 'label': label, 'name': item.name, 'href': item.href})
                         })
                         response(results);
@@ -836,12 +836,12 @@ jQuery(function () {
 
         },
         select: function (event, ui) {
-            $(this).val(ui.item.name);
+            $(this).val(ui.item.name + ' - ' + ui.item.value);
             window.location.href = ui.item.href;
             return false;
         },
         focus: function (event, ui) {
-            $(this).val(ui.item.name);
+            $(this).val(ui.item.name + ' - ' + ui.item.value);
             return false;
         },
 
