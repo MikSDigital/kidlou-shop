@@ -497,7 +497,8 @@ class Common {
             }
             $url_index = count($arr_urls) + 1;
             $arr_urls['url_key' . $url_index] = $product['url_key'];
-            $arr_res[$key]["href"] = $this->getContainer()->get('router')->generate('category_product' . $url_index, $arr_urls);
+            $arr_urls['' . $url_index] = $product['url_key'];
+            $arr_res[$key]["href"] = $this->getContainer()->get('router')->generate('admin_product_detail_lang', array('id' => $product['id'], 'lang' => $lang));
         }
         return new JsonResponse($arr_res);
     }

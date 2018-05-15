@@ -817,9 +817,6 @@ jQuery(function () {
 
     var img_ajax = $(".admin-search-data").data('img');
 
-    var width = $("#admin-search").width();
-
-
     $("#admin-search").autocomplete({
         minLength: 2,
         cache: false,
@@ -828,7 +825,6 @@ jQuery(function () {
             $("#admin-search").attr("style", "background:transparent url('" + img_ajax + "')no-repeat 99% 10px;)");
             $.getJSON(url, {term: request.term},
                     function (data) {
-                        //$('.ui-autocomplete').css({'width': width + 'px'});
                         var results = [];
                         $.each(data, function (i, item) {
                             var label = '<div class=""><img src="' + item.filename + '"/> ' + item.name + "</div>";

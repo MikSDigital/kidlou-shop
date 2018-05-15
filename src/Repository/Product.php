@@ -47,7 +47,7 @@ class Product extends \Doctrine\ORM\EntityRepository {
     public function findShopProducts($name, $lang) {
         $query = $this->getEntityManager()
                 ->createQuery(
-                        "SELECT p.sku, p.url_key, pd.name, IFNULL(pi.name,'placeholder50.jpg') AS image, IFNULL(pis.path,'media/placeholder/') AS path FROM App\Entity\Product p
+                        "SELECT p.id, p.sku, p.url_key, pd.name, IFNULL(pi.name,'placeholder50.jpg') AS image, IFNULL(pis.path,'media/placeholder/') AS path FROM App\Entity\Product p
                                 INNER JOIN App\Entity\Product\Description pd WITH p.id = pd.product AND
                                 (p.sku LIKE :name
                                 OR pd.name LIKE :name
