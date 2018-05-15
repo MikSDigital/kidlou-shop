@@ -44,7 +44,5 @@ jQuery(function () {
                 .appendTo(ul);
     }
 
-
-
 });
 

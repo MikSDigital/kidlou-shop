@@ -7,7 +7,13 @@
 {% block pagetitle %}{{ 'Product List' | trans }}{% endblock %}
 {% block body %}
     <section class="box info admin">
-        <div class="col-md-12" style="padding-right: 0;"><button class="btn btn-default admin-element-right admin-element-bottom" onclick="location.href = '{{ path("admin_product_new") }}';" >{{ 'New Product' | trans }}</button></div>
+        <div class="form-group">
+            <div class="col-md-12" style="padding-right: 0;"><button class="btn btn-default admin-element-right admin-element-bottom" onclick="location.href = '{{ path("admin_product_new") }}';" >{{ 'New Product' | trans }}</button></div>
+        </div>
+        <div class="form-group">
+            <div class="admin-search-data" data-url="{{ path('admin_product_search') }}" admin-data-img="/media/icons/ajax-loader-16x16.gif"></div>
+            <div class="col-md-12" style="padding-right: 0; padding-left: 0;"><input type="text" name="search" class="form-control" placeholder="Suchen" style="margin-bottom: 10px;" /></div>
+        </div>
         <table class="table table-hover table-bordered table-admin">
             <tbody>
                 {% for product in products %}

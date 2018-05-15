@@ -14,6 +14,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\Common As ServiceCommon;
 use App\Service\Product As ServiceProduct;
+use App\Service\Navigation As ServiceNavigation;
 use App\Service\ImageResizer As ServiceImageResizer;
 use App\Entity\Product;
 use App\Entity\Product\Description;
@@ -144,10 +145,17 @@ class AdminController extends Controller {
         $productTyp = $reposProductTyp->findOneBy(array('short_name' => 'SIP'));
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
         $products = $reposProduct->findBy(array('typ' => $productTyp));
-
         return array(
             'products' => $products
         );
+    }
+
+    /**
+     * @Template()
+     * @Route("/search/product", name="admin_product_search")
+     */
+    public function productSearchAction(ServiceCommon $serviceCommon, ServiceNavigation $serviceNavigation) {
+        return $serviceCommon->getSearchData($serviceNavigation);
     }
 
     /**
