@@ -479,6 +479,30 @@ class Common {
     }
 
     /**
+     * Get plz and city
+     * @return \App\Service\JsonResponse
+     */
+    public function getAdmimSearchData($helperNavigation, $lang) {
+        $name = $this->getRequest()->get('term');
+        $products = $this->em->getRepository(\App\Entity\Product::class)->findShopProducts($name, $lang);
+        $arr_res = array();
+        foreach ($products as $key => $product) {
+            $arr_res[$key]["value"] = $product['sku'];
+            $arr_res[$key]["name"] = $product['name'];
+            $arr_res[$key]["filename"] = '/' . $product['path'] . $product['image'];
+            $arr_urls = array();
+            $arr_route_name = $helperNavigation->setProductPathFromUrl($product['url_key'])->getProductPathFromUrl();
+            foreach ($arr_route_name as $url_name => $name) {
+                $arr_urls[$url_name] = $name;
+            }
+            $url_index = count($arr_urls) + 1;
+            $arr_urls['url_key' . $url_index] = $product['url_key'];
+            $arr_res[$key]["href"] = $this->getContainer()->get('router')->generate('category_product' . $url_index, $arr_urls);
+        }
+        return new JsonResponse($arr_res);
+    }
+
+    /**
      * @return string
      */
     public function getImageName($sku, $name, $sizename) {
@@ -845,6 +869,14 @@ class Common {
      */
     public function getCurrencyCode() {
         return $this->currency_code;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getCurrentLocale() {
+        return $this->getRequest()->getLocale();
     }
 
     /**

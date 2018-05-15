@@ -8903,4 +8903,19 @@ label.control-label, .admin-padding-left-0 {
 .calendar-dates .emptydeliver {
   background: #f4f4f4; }
 
+ul.ui-autocomplete {
+  padding-left: 0; }
+
+.ui-autocomplete {
+  max-height: 300px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+  /* add padding to account for vertical scrollbar */
+  padding-right: 20px;
+  background: #FFFFFF; }
+
+#admin-search {
+  margin-bottom: 10px; }
+
 /*# sourceMappingURL=admin.css.map */

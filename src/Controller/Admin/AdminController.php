@@ -152,10 +152,10 @@ class AdminController extends Controller {
 
     /**
      * @Template()
-     * @Route("/search/product", name="admin_product_search")
+     * @Route("/search/product/{lang}/", name="admin_product_search")
      */
-    public function productSearchAction(ServiceCommon $serviceCommon, ServiceNavigation $serviceNavigation) {
-        return $serviceCommon->getSearchData($serviceNavigation);
+    public function productSearchAction($lang, ServiceCommon $serviceCommon, ServiceNavigation $serviceNavigation) {
+        return $serviceCommon->getAdmimSearchData($serviceNavigation, $lang);
     }
 
     /**

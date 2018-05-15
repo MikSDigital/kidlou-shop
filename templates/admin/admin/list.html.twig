@@ -3,6 +3,7 @@
 {% block title %} Product List {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
+    <link href="/css/jquery-ui.css" rel="stylesheet" />
 {% endblock %}
 {% block pagetitle %}{{ 'Product List' | trans }}{% endblock %}
 {% block body %}
@@ -11,9 +12,20 @@
             <div class="col-md-12" style="padding-right: 0;"><button class="btn btn-default admin-element-right admin-element-bottom" onclick="location.href = '{{ path("admin_product_new") }}';" >{{ 'New Product' | trans }}</button></div>
         </div>
         <div class="form-group">
-            <div class="admin-search-data" data-url="{{ path('admin_product_search') }}" admin-data-img="/media/icons/ajax-loader-16x16.gif"></div>
-            <div class="col-md-12" style="padding-right: 0; padding-left: 0;"><input type="text" name="search" class="form-control" placeholder="Suchen" style="margin-bottom: 10px;" /></div>
+            <form>
+                {% for lang in common.getLanguages() %}
+                    <div class="form-check admin-lang" style="float:left; padding-right:10px;">
+                        <input class="form-check-input" name="lang" value="{{ lang.getShortName() }}" {% if common.getCurrentLocale() == lang.getShortName() %} checked="checked" {% endif %} type="radio">
+                        <label class="form-check-label" for="lang">{{ lang.getShortName() }}</label>
+                    </div>
+                {% endfor %}
+            </form>
         </div>
+        <div class="form-group">
+            <div class="admin-search-data" data-url="{{ path('admin_product_search', { 'lang' : 'fr' } ) }}" admin-data-img="/media/icons/ajax-loader-16x16.gif"></div>
+            <div class="col-md-12" style="padding-right: 0; padding-left: 0;"><input type="text" name="search" id="admin-search" class="form-control" placeholder="Suchen" /></div>
+        </div>
+
         <table class="table table-hover table-bordered table-admin">
             <tbody>
                 {% for product in products %}
@@ -30,4 +42,8 @@
             </tbody>
         </table>
     </section>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/admin/common.js') }}"></script>
 {% endblock %}

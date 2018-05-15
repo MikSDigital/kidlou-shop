@@ -793,25 +793,49 @@ jQuery(function () {
         location.href = $(this).data('url');
     });
 
+    // Product Search
 
-    var url = $(".search-data").data('url');
-    var img_ajax = $(".search-data").data('img');
+    var url = $(".admin-search-data").data('url');
+    var lang = '';
+    $('div.admin-lang input').each(function (i, val) {
+        if ($(this).is(':checked')) {
+            lang = url.substr(url.length - 4);
+            url = url.substr(0, url.length - 4);
+            url = url + lang;
+        }
+    });
 
-    $("#search-admin").autocomplete({
+    $(document).on('click', 'div.admin-lang input', function (e) {
+        $('div.admin-lang input').each(function (i, val) {
+            $(this).prop("checked", false);
+        });
+        $(this).prop("checked", true);
+        lang = $(this).val();
+        url = url.substr(0, url.length - 4);
+        url = url + '/' + lang + '/';
+    });
+
+    var img_ajax = $(".admin-search-data").data('img');
+
+    var width = $("#admin-search").width();
+
+
+    $("#admin-search").autocomplete({
         minLength: 2,
         cache: false,
         dataType: 'json',
         source: function (request, response) {
-            $("#search").attr("style", "background:transparent url('" + img_ajax + "')no-repeat 99% 10px;)");
+            $("#admin-search").attr("style", "background:transparent url('" + img_ajax + "')no-repeat 99% 10px;)");
             $.getJSON(url, {term: request.term},
                     function (data) {
+                        //$('.ui-autocomplete').css({'width': width + 'px'});
                         var results = [];
                         $.each(data, function (i, item) {
                             var label = '<div class=""><img src="' + item.filename + '"/> ' + item.name + "</div>";
                             results.push({'value': item.value, 'label': label, 'name': item.name, 'href': item.href})
                         })
                         response(results);
-                        $("#search").attr("style", "");
+                        $("#admin-search").attr("style", "");
                     })
 
         },
