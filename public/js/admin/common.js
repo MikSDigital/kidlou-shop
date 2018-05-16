@@ -482,18 +482,24 @@ jQuery(function () {
                 $('.additionalelement').each(function () {
                     obj = $(this);
                 });
-                obj.after(html);
+                if (typeof obj == 'object') {
+                    obj.after(html);
+                }
                 $('.additionalelement').each(function () {
                     obj = $(this);
                 });
                 var oObj;
-                obj = obj.next();
-                while (!obj.hasClass('admin-rowsenadditionalelement')) {
-                    oObj = obj.next();
-                    obj.remove();
-                    obj = oObj;
+                if (typeof obj != "undefined") {
+                    obj = obj.next();
+                    while (!obj.hasClass('admin-rowsenadditionalelement')) {
+                        oObj = obj.next();
+                        obj.remove();
+                        obj = oObj;
+                    }
+                    obj.hide();
+                } else {
+                    location.href = location.href;
                 }
-                obj.hide();
                 $('#bodyoverlay').fadeOut();
             }
         });

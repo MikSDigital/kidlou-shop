@@ -193,75 +193,75 @@ class AdminController extends Controller {
      * @Route("/productdelete/{id}/", name="admin_product_delete")
      */
     public function productDeleteAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        $product = $this->getDoctrine()->getRepository(Product::class)->findOneById($id);
+
+        // check if has children
+        $reposProductAdditional = $this->getDoctrine()->getRepository(\App\Entity\Map\ProductAdditional::class);
+        $productAdditionals = $reposProductAdditional->findBy(array('parent' => $id));
+
+        $arr_children = array();
+        // if has children delete all elements
+        foreach ($productAdditionals as $productAdditional) {
+            $arr_children[] = $productAdditional->getChildren();
+            $children = $this->getDoctrine()->getRepository(Product::class)->findOneById($productAdditional->getChildren());
+            // children price
+            $price = $this->getDoctrine()->getRepository(Price::class)->findOneBy(array('product' => $children));
+            if ($price) {
+                $em->remove($price);
+                $em->flush();
+            }
+            // children description
+            foreach ($children->getDescriptions() as $description) {
+                $em->remove($description);
+                $em->flush();
+            }
+            // Images
+            $reposImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
+            $images = $reposImage->findBy(array('product' => $children));
+            foreach ($images as $image) {
+                $fs = new Filesystem();
+                $fs->remove($this->get('kernel')->getRootDir() . '/../public/' . $image->getSize()->getPath() . $image->getName());
+                $em->remove($image);
+                $em->flush();
+            }
+        }
+
+        foreach ($arr_children as $children_id) {
+            $reposProductAdditional = $this->getDoctrine()->getRepository(\App\Entity\Map\ProductAdditional::class);
+            $productAdditional = $reposProductAdditional->findBy(array('parent' => $id, 'children' => $children_id));
+            if ($productAdditional) {
+                $em->remove($productAdditional);
+                $em->flush();
+            }
+        }
+
+        // Product Price
+        $price = $this->getDoctrine()->getRepository(Price::class)->findOneBy(array('product' => $product));
+        if ($price) {
+            $em->remove($price);
+            $em->flush();
+        }
+
+        // Product Description
+        foreach ($product->getDescriptions() as $description) {
+            $em->remove($description);
+            $em->flush();
+        }
+
+        // Images
+        $reposImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
+        $images = $reposImage->findBy(array('product' => $product));
+        foreach ($images as $image) {
+            $fs = new Filesystem();
+            $fs->remove($this->get('kernel')->getRootDir() . '/../public/' . $image->getSize()->getPath() . $image->getName());
+            $em->remove($image);
+            $em->flush();
+        }
+        $em->remove($product);
+        $em->flush();
         $this->addFlash("success", "Product is deleted !");
         return $this->redirectToRoute('admin_product_list');
-//        $em = $this->getDoctrine()->getManager();
-//        $product = $this->getDoctrine()->getRepository(Product::class)->findOneById($id);
-//
-//        // check if has children
-//        $reposProductAdditional = $this->getDoctrine()->getRepository(\App\Entity\Map\ProductAdditional::class);
-//        $productAdditionals = $reposProductAdditional->findBy(array('parent' => $id));
-//
-//        $arr_children = array();
-//        // if has children delete all elements
-//        foreach ($productAdditionals as $productAdditional) {
-//            $arr_children[] = $productAdditional->getChildren();
-//            $children = $this->getDoctrine()->getRepository(Product::class)->findOneById($productAdditional->getChildren());
-//            // children price
-//            $price = $this->getDoctrine()->getRepository(Price::class)->findOneBy(array('product' => $children));
-//            if ($price) {
-//                $em->remove($price);
-//                $em->flush();
-//            }
-//            // children description
-//            foreach ($children->getDescriptions() as $description) {
-//                $em->remove($description);
-//                $em->flush();
-//            }
-//            // Images
-//            $reposImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
-//            $images = $reposImage->findBy(array('product' => $children));
-//            foreach ($images as $image) {
-//                $fs = new Filesystem();
-//                $fs->remove($this->get('kernel')->getRootDir() . '/../public/' . $image->getSize()->getPath() . $image->getName());
-//                $em->remove($image);
-//                $em->flush();
-//            }
-//        }
-//
-//        foreach ($arr_children as $children_id) {
-//            $reposProductAdditional = $this->getDoctrine()->getRepository(\App\Entity\Map\ProductAdditional::class);
-//            $productAdditional = $reposProductAdditional->findBy(array('parent' => $id, 'children' => $children_id));
-//            if ($productAdditional) {
-//                $em->remove($productAdditional);
-//                $em->flush();
-//            }
-//        }
-//
-//        // Product Price
-//        $price = $this->getDoctrine()->getRepository(Price::class)->findOneBy(array('product' => $product));
-//        if ($price) {
-//            $em->remove($price);
-//            $em->flush();
-//        }
-//
-//        // Product Description
-//        foreach ($product->getDescriptions() as $description) {
-//            $em->remove($description);
-//            $em->flush();
-//        }
-//
-//        // Images
-//        $reposImage = $this->getDoctrine()->getRepository(\App\Entity\Product\Image::class);
-//        $images = $reposImage->findBy(array('product' => $product));
-//        foreach ($images as $image) {
-//            $fs = new Filesystem();
-//            $fs->remove($this->get('kernel')->getRootDir() . '/../public/' . $image->getSize()->getPath() . $image->getName());
-//            $em->remove($image);
-//            $em->flush();
-//        }
-//        $em->remove($product);
-//        $em->flush();
     }
 
     /**
