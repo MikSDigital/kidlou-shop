@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\Common As ServiceCommon;
 use App\Service\Product As ServiceProduct;
@@ -192,7 +193,7 @@ class AdminController extends Controller {
     /**
      * @Route("/productdelete/{id}/", name="admin_product_delete")
      */
-    public function productDeleteAction($id) {
+    public function productDeleteAction($id, TranslatorInterface $translator) {
         $em = $this->getDoctrine()->getManager();
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneById($id);
 
@@ -252,7 +253,7 @@ class AdminController extends Controller {
         }
         $em->remove($product);
         $em->flush();
-        $this->addFlash("success", "Product is deleted !");
+        $this->addFlash("success", $translator->trans("Product is deleted !"));
         return $this->redirectToRoute('admin_product_list');
     }
 
