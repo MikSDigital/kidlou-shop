@@ -816,7 +816,6 @@ jQuery(function () {
     });
 
     var img_ajax = $(".admin-search-data").data('img');
-
     $("#admin-search").autocomplete({
         minLength: 2,
         cache: false,

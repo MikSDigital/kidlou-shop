@@ -138,15 +138,24 @@ class AdminController extends Controller {
 
     /**
      * @Template()
-     * @Route("/list", name="admin_product_list")
+     * @Route("/list/", name="admin_product_list")
+     * @Route("/list/{limit}/{offset}/", name="admin_product_list_limit")
      */
-    public function listAction() {
+    public function listAction($limit = null, $offset = null) {
+        if ($limit == null && $offset == null) {
+            $limit = 20;
+            $offset = 0;
+        }
         $reposProductTyp = $this->getDoctrine()->getRepository(\App\Entity\Product\Typ::class);
         $productTyp = $reposProductTyp->findOneBy(array('short_name' => 'SIP'));
         $reposProduct = $this->getDoctrine()->getRepository(Product::class);
-        $products = $reposProduct->findBy(array('typ' => $productTyp));
+        $items = count($reposProduct->findBy(array('typ' => $productTyp)));
+        $products = $reposProduct->findBy(array('typ' => $productTyp), null, $limit, $offset);
         return array(
-            'products' => $products
+            'products' => $products,
+            'limit' => $limit,
+            'offset' => $offset,
+            'items' => $items
         );
     }
 
