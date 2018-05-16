@@ -205,12 +205,6 @@ class AdminController extends Controller {
         foreach ($productAdditionals as $productAdditional) {
             $arr_children[] = $productAdditional->getChildren();
             $children = $this->getDoctrine()->getRepository(Product::class)->findOneById($productAdditional->getChildren());
-            // children price
-            $price = $this->getDoctrine()->getRepository(Price::class)->findOneBy(array('product' => $children));
-            if ($price) {
-                $em->remove($price);
-                $em->flush();
-            }
             // children description
             foreach ($children->getDescriptions() as $description) {
                 $em->remove($description);
@@ -229,18 +223,16 @@ class AdminController extends Controller {
 
         foreach ($arr_children as $children_id) {
             $reposProductAdditional = $this->getDoctrine()->getRepository(\App\Entity\Map\ProductAdditional::class);
-            $productAdditional = $reposProductAdditional->findBy(array('parent' => $id, 'children' => $children_id));
+            $productAdditional = $reposProductAdditional->findOneBy(array('parent' => $id, 'children' => $children_id));
             if ($productAdditional) {
                 $em->remove($productAdditional);
                 $em->flush();
             }
-        }
-
-        // Product Price
-        $price = $this->getDoctrine()->getRepository(Price::class)->findOneBy(array('product' => $product));
-        if ($price) {
-            $em->remove($price);
-            $em->flush();
+            $children = $this->getDoctrine()->getRepository(Product::class)->findOneById($children_id);
+            if ($children) {
+                $em->remove($children);
+                $em->flush();
+            }
         }
 
         // Product Description

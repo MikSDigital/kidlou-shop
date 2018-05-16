@@ -44,7 +44,7 @@ class Product {
     private $url_key;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Price", mappedBy="product")
+     * @ORM\OneToOne(targetEntity="App\Entity\Price", mappedBy="product", cascade={"persist","remove"})
      */
     private $price;
 
