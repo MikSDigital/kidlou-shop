@@ -8,13 +8,37 @@
 {% block pagetitle %}{{ 'Product List' | trans }}{% endblock %}
 {% block body %}
     <section class="box info admin">
+        {% for message in app.flashes('success') %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flash-notice-success">
+                        <strong>{{ message }}</strong>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
         <div class="form-group">
             <div class="col-md-12" style="padding-right: 0;"><button class="btn btn-default admin-element-right admin-element-bottom" onclick="location.href = '{{ path("admin_product_new") }}';" >{{ 'New Product' | trans }}</button></div>
         </div>
         <div class="row">
             <div class="col-md-5"></div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <select class="form-control" id="limit" onchange="location = this.value;">
+                        <option value="{{ path('admin_product_list_limit', {'limit' : 10, 'offset' : 0 }) }}" {% if limit == 10 %} selected="selected" {% endif %}>10</option>
+                        <option value="{{ path('admin_product_list_limit', {'limit' : 15, 'offset' : 0 }) }}" {% if limit == 15 %} selected="selected" {% endif %}>15</option>
+                        <option value="{{ path('admin_product_list_limit', {'limit' : 20, 'offset' : 0 }) }}" {% if limit == 20 %} selected="selected" {% endif %}>20</option>
+                        <option value="{{ path('admin_product_list_limit', {'limit' : 30, 'offset' : 0 }) }}" {% if limit == 30 %} selected="selected" {% endif %}>30</option>
+                        <option value="{{ path('admin_product_list_limit', {'limit' : 50, 'offset' : 0 }) }}" {% if limit == 50 %} selected="selected" {% endif %}>50</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-5"></div>
             <div class="col-md-1">{% if offset > 0 %}<a href="{{ path('admin_product_list_limit', {'limit' : limit, 'offset' : (offset - limit)} ) }}"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>{% endif %}</div>
-            <div class="col-md-1"><a href="{{ path('admin_product_list_limit', {'limit' : limit, 'offset' : (offset + limit)} ) }}"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></div>
+            <div class="col-md-1" style="text-align: right;">{% if items > (offset + limit) %}<a href="{{ path('admin_product_list_limit', {'limit' : limit, 'offset' : (offset + limit)} ) }}"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>{% endif %}</div>
             <div class="col-md-5"></div>
         </div>
         <div class="form-group">
@@ -47,6 +71,13 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-1">{% if offset > 0 %}<a href="{{ path('admin_product_list_limit', {'limit' : limit, 'offset' : (offset - limit)} ) }}"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>{% endif %}</div>
+            <div class="col-md-1">{% if items > (offset + limit) %}<a href="{{ path('admin_product_list_limit', {'limit' : limit, 'offset' : (offset + limit)} ) }}"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>{% endif %}</div>
+            <div class="col-md-5"></div>
+        </div>
+
     </section>
 {% endblock %}
 {% block javascripts %}
