@@ -53,6 +53,12 @@ security:
                 target: admin_login
                 invalidate_session: false
             logout_on_user_change: true
+        api:
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: App\Security\ApiKeyAuthenticator
+            provider: api_key_user_provider
         frontendlogin:
             pattern: ^/
             anonymous: ~
@@ -68,12 +74,6 @@ security:
                 success_handler: authentication_handler
                 invalidate_session: false
             logout_on_user_change: true
-        main:
-            pattern: ^/api
-            stateless: true
-            simple_preauth:
-                authenticator: App\Security\ApiKeyAuthenticator
-            provider: api_key_user_provider
 
                 #delete_cookies:
                 #    a: { path: null, domain: null }
