@@ -69,6 +69,9 @@ class ProductController extends Controller {
                     INNER JOIN App\Entity\Price pr WITH p.id = pr.product
                     ORDER BY l.id ASC
                 "
+//                    (SELECT GROUP_CONCAT(DISTINCT img.name, \'|\' , img.original_name SEPARATOR \',\') FROM App\Entity\Product p_img
+//                    INNER JOIN App\Entity\Product\Image pi_img WITH p_img.id = pi_img.product
+//                    INNER JOIN App\Entity\Product\Image\Size pis_img WITH pi_img.size = pis_img.id AND pis_img.name = 'image200') AS prod_img
         );
         $data = array();
         $products = $query->getArrayResult();
